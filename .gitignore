@@ -1,0 +1,10 @@
+.vs
+/Build
+/Library
+/Temp
+/*.userprefs
+/*.csproj
+/*.unityproj
+/*.sln
+steam_api64.dll
+Assets/_Game/Terrains/Procedural.asset
