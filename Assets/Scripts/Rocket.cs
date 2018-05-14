@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
+	[SerializeField]
+	float speed = 1.0f;
+
+	void Start()
+	{
+		GetComponent<Rigidbody2D>().velocity = new Vector3(0, -speed, 0);
+	}
+
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		GameObject go = collision.gameObject;

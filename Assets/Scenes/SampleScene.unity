@@ -163,7 +163,7 @@ MonoBehaviour:
   - {fileID: 1597940763}
   - {fileID: 1428152903}
   - {fileID: 72439939}
-  timeBetweenSpawn: 1
+  timeBetweenSpawn: 0.5
 --- !u!1 &72439937
 GameObject:
   m_ObjectHideFlags: 0
@@ -3422,7 +3422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0803792db28fde458b0938493d16e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.7
 --- !u!50 &1992463018
 Rigidbody2D:
   serializedVersion: 4
