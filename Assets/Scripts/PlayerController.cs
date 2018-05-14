@@ -19,8 +19,19 @@ public class PlayerController : MonoBehaviour
 		Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	}
 
+	void FixedUpdate()
+	{
+		SteadyRotation();
+	}
+
 	void Move(Vector2 direction)
 	{
 		rb.velocity = new Vector3(direction.x * speed, direction.y * speed, 0);
+	}
+
+	void SteadyRotation()
+	{
+		rb.angularVelocity = 0;
+		transform.rotation = Quaternion.identity;
 	}
 }

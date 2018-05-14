@@ -6,6 +6,8 @@ public class Rocket : MonoBehaviour
 {
 	[SerializeField]
 	float speed = 1.0f;
+	[SerializeField]
+	GameObject explosionFX;
 
 	void Start()
 	{
@@ -20,11 +22,19 @@ public class Rocket : MonoBehaviour
 		if (player != null)
 		{
 			player.LoseHealth (1);
-			Destroy(gameObject);
+			Die(true);
 		}
 		else if (go.GetComponent<Bottom>() != null)
 		{
-			Destroy(gameObject);
+			Die(false);
 		}
+	}
+
+	void Die(bool fx)
+	{
+		if(fx)
+			Instantiate(explosionFX, transform.position, Quaternion.identity);
+			
+		Destroy(gameObject);
 	}
 }
