@@ -21,9 +21,10 @@ public class PlayerController : MonoBehaviour
 
 	void Move(Vector2 direction)
 	{
-		const float factor = .1f;
-		transform.position = new Vector3(transform.position.x + direction.x * speed * factor, 
+		const float factor = 5.0f;
+		/*transform.position = new Vector3(transform.position.x + direction.x * speed * factor, 
 										transform.position.y + direction.y * speed * factor, 
-										transform.position.z);
+										transform.position.z);*/
+		rigidbody.velocity = new Vector3(direction.x * speed * factor, direction.y * speed * factor, 0);
 	}
 }
