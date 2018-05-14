@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-	public int id = 0;
-	public int health = 5;
+	[SerializeField]
+	private int id = 0;
+	public int Id { get { return id; } }
+
+	[SerializeField]
+	private int health = 10;
+	public int Health { get { return health; } }
 
 	public void LoseHealth(int value)
 	{

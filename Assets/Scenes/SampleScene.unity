@@ -1831,7 +1831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c394f0ecf74e2b46b7e4039b646ada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 2
   health: 5
 --- !u!50 &521172895
 Rigidbody2D:
@@ -3849,7 +3849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c394f0ecf74e2b46b7e4039b646ada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 3
   health: 5
 --- !u!50 &1549002445
 Rigidbody2D:
@@ -4837,7 +4837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c394f0ecf74e2b46b7e4039b646ada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1
   health: 5
 --- !u!50 &2055722347
 Rigidbody2D:
