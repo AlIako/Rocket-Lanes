@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class SinglePlayerController : MonoBehaviour
+public class SinglePlayerController : MonoBehaviour, INetworkController
 {
 	[SerializeField]
 	Player playerPrefab;
@@ -12,22 +12,27 @@ public class SinglePlayerController : MonoBehaviour
 	List<Transform> spawns;
 
 	NetworkChoser.NetworkType netType;
+	GameController gameController;
 
-	void Start ()
+	void Start()
 	{
 		NetworkChoser networkChoser = FindObjectOfType<NetworkChoser>();
 		netType = networkChoser.NetType;
 
-		SpawnAIs();
+		gameController = GameObject.FindObjectOfType<GameController>();
+
+		Initialize();
 	}
 	
-	void SpawnAIs ()
+	public void Initialize()
 	{
 		//spawn player
 		Player player1 = Instantiate(playerPrefab, spawns[0].transform.position, Quaternion.identity);
 		player1.SetId(0);
 		player1.PickColor();
 		player1.ApplyColor();
+		gameController.player = player1;
+		
 
 		//spawn AIs
 		for(int i = 0; i < 3; i++)
@@ -43,5 +48,10 @@ public class SinglePlayerController : MonoBehaviour
 			playerAI.PickColor();
 			playerAI.ApplyColor();
 		}
+	}
+
+    public void SpawnRocket(int fromPlayerId, int toPlayerId)
+	{
+		gameController.spawnerManagers[toPlayerId].Spawn();
 	}
 }

@@ -26,6 +26,7 @@ public class NetworkChoser : MonoBehaviour
 	[SerializeField]
 	private NetworkType netType = NetworkType.Singleplayer;
 	public NetworkType NetType { get { return netType; } }
+	public INetworkController networkController;
 
 	public void PickNetworkType(int type)
 	{
@@ -38,11 +39,20 @@ public class NetworkChoser : MonoBehaviour
 	{
 		//can't pass enum as parameter of OnClick callback
 		if(type == 0)
+		{
 			this.netType = NetworkType.Singleplayer;
+			networkController = singlePlayerController.GetComponent<SinglePlayerController>();
+		}
 		else if(type == 1)
+		{
 			this.netType = NetworkType.ServerClient;
+			networkController = serverClientNetworkManager.GetComponent<MyNetworkManager>();
+		}
 		else if(type == 2)
+		{
 			this.netType = NetworkType.P2P;
+			networkController = P2PController.GetComponent<P2PController>();
+		}
 	}
 
 	void EnterGameUI()

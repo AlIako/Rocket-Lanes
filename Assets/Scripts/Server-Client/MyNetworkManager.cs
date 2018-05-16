@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MyNetworkManager : NetworkManager
+public class MyNetworkManager : NetworkManager, INetworkController
 {
 	int nextPlayerId = 0;
 	NetworkStartPosition[] playerSpawns;
 
 	void Start()
 	{
-		FindPlayerSpawns();
+		Initialize();
 	}
 
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
@@ -26,8 +26,13 @@ public class MyNetworkManager : NetworkManager
 			nextPlayerId = 0;
     }
 
-	void FindPlayerSpawns()
+	public void Initialize()
 	{
 		playerSpawns = GameObject.FindObjectsOfType<NetworkStartPosition>();
+	}
+	
+    public void SpawnRocket(int fromPlayerId, int toPlayerId)
+	{
+		//NetworkServer.Spawn(spawnerManager.Spawn());
 	}
 }

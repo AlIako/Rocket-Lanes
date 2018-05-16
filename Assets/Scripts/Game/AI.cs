@@ -7,23 +7,49 @@ public class AI : MonoBehaviour
 	Player player;
 	Rigidbody2D rb;
 	float speed = 1.0f;
+	GameController gameController;
 
 	float timeBetweenDirections = 2.0f;
 	float nextTimeBetweenDirections = 2.0f;
 	float lastDirection = 0.0f;
 	float randomXDirection = 0.0f;
 	float randomYDirection = 0.0f;
+
+	float timeBetweenSendRockets = 1.0f;
+	float nextTimeBetweenSendRockets = 1.0f;
+	float lastSendRocket = 0.0f;
 	
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		player = GetComponent<Player>();
+		gameController = GameObject.FindObjectOfType<GameController>();
 		lastDirection = Time.time;
+		lastSendRocket = Time.time;
 	}
 	
 	void Update ()
 	{
 		PickDirection();
+		SendRocket();
 		Move(new Vector2(randomXDirection, randomYDirection));
+	}
+
+	void FixedUpdate()
+	{
+		SteadyRotation();
+	}
+
+	void SendRocket()
+	{
+		if(Time.time - lastSendRocket > nextTimeBetweenSendRockets)
+		{
+			gameController.SendRocket(player.Id, player.neighbourPlayerId);
+			nextTimeBetweenSendRockets = timeBetweenSendRockets + 
+										Random.Range(-timeBetweenSendRockets/10.0f, timeBetweenSendRockets/10.0f);
+			
+			lastSendRocket = Time.time;
+		}
 	}
 
 	void PickDirection()
@@ -44,5 +70,11 @@ public class AI : MonoBehaviour
 	{
 		direction.Normalize();
 		rb.velocity = new Vector3(direction.x * speed, direction.y * speed, 0);
+	}
+
+	void SteadyRotation()
+	{
+		rb.angularVelocity = 0;
+		transform.rotation = Quaternion.identity;
 	}
 }

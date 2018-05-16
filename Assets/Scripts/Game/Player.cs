@@ -9,12 +9,31 @@ public class Player : MonoBehaviour
 	private int id = 0;
 	public int Id { get { return id; } }
 
+	[HideInInspector]
+	public int neighbourPlayerId;
+
 	[SerializeField]
 	private int health = 10;
 	public int Health { get { return health; } }
 
 	private Color color = new Color(1.0f, 1.0f, 1.0f);
 	public Color Color { get { return color; } }
+
+	void Start()
+	{
+		ComputeNeighbourId();
+	}
+
+	void ComputeNeighbourId()
+	{
+		neighbourPlayerId = -1;
+		if(Id != -1)
+		{
+			neighbourPlayerId = Id + 1;
+			if(neighbourPlayerId >= 4)
+				neighbourPlayerId = 0;
+		}
+	}
 
 	public void LoseHealth(int value)
 	{
