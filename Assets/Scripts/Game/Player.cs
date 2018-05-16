@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Player : NetworkBehaviour
+public class Player : MonoBehaviour
 {
 	[SerializeField]
 	private int id = 0;
@@ -13,8 +13,8 @@ public class Player : NetworkBehaviour
 	private int health = 10;
 	public int Health { get { return health; } }
 
-	[SyncVar(hook = "OnChangeColor")]
-	Color color;
+	private Color color = new Color(1.0f, 1.0f, 1.0f);
+	public Color Color { get { return color; } }
 
 	public void LoseHealth(int value)
 	{
@@ -30,24 +30,8 @@ public class Player : NetworkBehaviour
 	{
 		this.id = id;
 	}
-	
-	void OnChangeColor(Color color)
-    {
-		GetComponent<SpriteRenderer>().color = color;
-    }
-	public override void OnStartClient()
-	{
-		//https://answers.unity.com/questions/1143773/syncvar-synchronizes-correctly-but-not-the-text-co.html
-		// Call it directly to update color component on other clients who join the game later.
-		OnChangeColor(color);
-	}
 
-	public override void OnStartAuthority()
-	{
-		pickColor();
-	}
-
-	void pickColor()
+	public void PickColor()
 	{
 		if(id == 0)
 			color = new Color(1.0f, 0.0f, 0.0f);
@@ -57,5 +41,12 @@ public class Player : NetworkBehaviour
 			color = new Color(0.3f, 0.85f, 0.0f);
 		else if(id == 3)
 			color = new Color(1.0f, 1.0f, 0.0f);
+	}
+
+	public void ApplyColor() { ApplyColor(color); }
+	public void ApplyColor(Color color)
+	{
+		this.color = color;
+		GetComponent<SpriteRenderer>().color = color;
 	}
 }

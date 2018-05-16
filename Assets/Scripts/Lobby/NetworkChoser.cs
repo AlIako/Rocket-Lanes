@@ -11,27 +11,54 @@ public class NetworkChoser : MonoBehaviour
 	GameObject lobbyUI;
 	
 	[SerializeField]
+	GameObject gameController;
+	
+	[SerializeField]
+	GameObject singlePlayerController;
+	
+	[SerializeField]
 	GameObject serverClientNetworkManager;
+	
+	[SerializeField]
+	GameObject P2PController;
 
 	public enum NetworkType {Singleplayer, ServerClient, P2P};
 	[SerializeField]
-	private NetworkType networkType = NetworkType.Singleplayer;
-	public NetworkType GetNetworkType { get { return networkType; } }
+	private NetworkType netType = NetworkType.Singleplayer;
+	public NetworkType NetType { get { return netType; } }
 
-	public void PickNetworkType(int networkType)
+	public void PickNetworkType(int type)
+	{
+		ApplyNetworkFromInt(type);
+		EnterGameUI();
+		ActivateControllers();
+	}
+
+	void ApplyNetworkFromInt(int type)
 	{
 		//can't pass enum as parameter of OnClick callback
-		if(networkType == 0)
-			this.networkType = NetworkType.Singleplayer;
-		else if(networkType == 1)
-			this.networkType = NetworkType.ServerClient;
-		else if(networkType == 2)
-			this.networkType = NetworkType.P2P;
+		if(type == 0)
+			this.netType = NetworkType.Singleplayer;
+		else if(type == 1)
+			this.netType = NetworkType.ServerClient;
+		else if(type == 2)
+			this.netType = NetworkType.P2P;
+	}
 
+	void EnterGameUI()
+	{
 		lobbyUI.SetActive(false);
 		inGameUI.SetActive(true);
-
-		if(this.networkType == NetworkType.ServerClient)
+	}
+	void ActivateControllers()
+	{
+		if(this.netType == NetworkType.Singleplayer)
+			singlePlayerController.SetActive(true);
+		else if(this.netType == NetworkType.ServerClient)
 			serverClientNetworkManager.SetActive(true);
+		else if(this.netType == NetworkType.P2P)
+			P2PController.SetActive(true);
+		
+		gameController.SetActive(true);
 	}
 }

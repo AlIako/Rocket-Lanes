@@ -18,14 +18,12 @@ public class PlayerController : MonoBehaviour
 	
 	void Update ()
 	{
-		if(player.isLocalPlayer)
-			Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+		Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	}
 
 	void FixedUpdate()
 	{
-		if(player.isLocalPlayer)
-			SteadyRotation();
+		SteadyRotation();
 	}
 
 	void Move(Vector2 direction)
