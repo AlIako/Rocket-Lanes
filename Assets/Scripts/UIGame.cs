@@ -5,9 +5,7 @@ using UnityEngine.Networking;
 
 public class UIGame : MonoBehaviour
 {
-	[SerializeField]
 	SpawnerManager spawnerManager;
-
 	NetworkManager networkManager;
 
 	void Start()
@@ -17,6 +15,29 @@ public class UIGame : MonoBehaviour
 	
 	public void SendRocket()
 	{
+		FindSpawnerManager();
 		NetworkServer.Spawn(spawnerManager.Spawn());
+	}
+
+	void FindSpawnerManager()
+	{
+		SpawnerManager[] spawnerManagers = GameObject.FindObjectsOfType<SpawnerManager>();
+		Player[] players = GameObject.FindObjectsOfType<Player>();
+		int playerId = -1;
+		foreach(Player player in players)
+		{
+			if(player.GetComponent<NetworkIdentity>().isLocalPlayer)
+				playerId = player.Id;
+		}
+
+		int neighbourPlayerId = -1;
+		if(playerId != -1)
+		{
+			neighbourPlayerId = playerId + 1;
+			if(neighbourPlayerId >= 4)
+				neighbourPlayerId = 0;
+		}
+
+		spawnerManager = spawnerManagers[neighbourPlayerId];
 	}
 }
