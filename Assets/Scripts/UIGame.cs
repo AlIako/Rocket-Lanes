@@ -36,8 +36,8 @@ public class UIGame : MonoBehaviour
 			neighbourPlayerId = playerId + 1;
 			if(neighbourPlayerId >= 4)
 				neighbourPlayerId = 0;
+			spawnerManager = spawnerManagers[neighbourPlayerId];
 		}
 
-		spawnerManager = spawnerManagers[neighbourPlayerId];
 	}
 }

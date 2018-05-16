@@ -8,20 +8,24 @@ public class PlayerController : MonoBehaviour
 	float speed = 1.0f;
 	
 	Rigidbody2D rb;
+	Player player;
 
 	void Start ()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		player = GetComponent<Player>();
 	}
 	
 	void Update ()
 	{
-		Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+		if(player.isLocalPlayer)
+			Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
 	}
 
 	void FixedUpdate()
 	{
-		SteadyRotation();
+		if(player.isLocalPlayer)
+			SteadyRotation();
 	}
 
 	void Move(Vector2 direction)
