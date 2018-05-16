@@ -15,9 +15,11 @@ public class MyNetworkManager : NetworkManager
 
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
-        GameObject player = (GameObject)Instantiate(playerPrefab, playerSpawns[nextPlayerId].transform.position, Quaternion.identity);
-        //player.GetComponent<Player>().color = Color.red;
-        NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+        GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, playerSpawns[nextPlayerId].transform.position, Quaternion.identity);
+		Player player = playerGameObject.GetComponent<Player>();
+		player.SetId(nextPlayerId);
+
+        NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
 
 		nextPlayerId ++;
 		if(nextPlayerId >= 4)
