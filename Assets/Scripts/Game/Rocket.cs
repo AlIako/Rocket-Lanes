@@ -24,7 +24,7 @@ public class Rocket : MonoBehaviour
 			player.LoseHealth (1);
 			Die(true);
 		}
-		else if (go.GetComponent<Bottom>() != null)
+		else if (go.tag.Equals("Bottom"))
 		{
 			Die(false);
 		}

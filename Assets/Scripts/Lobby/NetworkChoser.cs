@@ -38,6 +38,7 @@ public class NetworkChoser : MonoBehaviour
 	void ApplyNetworkFromInt(int type)
 	{
 		//can't pass enum as parameter of OnClick callback
+		//ToDo: I could use an array for this
 		this.netType = (NetworkType)type;
 		if(this.netType == NetworkType.Singleplayer)
 			networkController = singlePlayerController.GetComponent<SinglePlayerController>();
@@ -54,6 +55,7 @@ public class NetworkChoser : MonoBehaviour
 	}
 	void ActivateControllers()
 	{
+		//ToDo: I could use an array for this
 		if(this.netType == NetworkType.Singleplayer)
 			singlePlayerController.SetActive(true);
 		else if(this.netType == NetworkType.ServerClient)
