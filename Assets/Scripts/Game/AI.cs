@@ -35,11 +35,6 @@ public class AI : MonoBehaviour
 		Move(new Vector2(randomXDirection, randomYDirection));
 	}
 
-	void FixedUpdate()
-	{
-		SteadyRotation();
-	}
-
 	void SendRocket()
 	{
 		if(Time.time - lastSendRocket > nextTimeBetweenSendRockets)
@@ -70,11 +65,5 @@ public class AI : MonoBehaviour
 	{
 		direction.Normalize();
 		rb.velocity = new Vector3(direction.x * speed, direction.y * speed, 0);
-	}
-
-	void SteadyRotation()
-	{
-		rb.angularVelocity = 0;
-		transform.rotation = Quaternion.identity;
 	}
 }
