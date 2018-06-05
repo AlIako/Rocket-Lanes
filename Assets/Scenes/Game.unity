@@ -2408,8 +2408,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817f11f7afa9cbf41a0669275e2bea71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerManager: {fileID: 0}
-  gameController: {fileID: 0}
 --- !u!114 &677408057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2727,8 +2725,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817f11f7afa9cbf41a0669275e2bea71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerManager: {fileID: 0}
-  gameController: {fileID: 0}
 --- !u!1 &754375325
 GameObject:
   m_ObjectHideFlags: 0
@@ -3297,8 +3293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817f11f7afa9cbf41a0669275e2bea71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerManager: {fileID: 0}
-  gameController: {fileID: 0}
 --- !u!114 &1076856376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4006,8 +4000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817f11f7afa9cbf41a0669275e2bea71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerManager: {fileID: 0}
-  gameController: {fileID: 0}
 --- !u!114 &1211899773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4583,7 +4575,6 @@ MonoBehaviour:
   - {fileID: 2023758647}
   - {fileID: 1216538225}
   player: {fileID: 0}
-  neighbourPlayerId: 0
 --- !u!4 &1475150366 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4240435248227860, guid: 0bf46bda66c60864b97a74dbc32273bb,

@@ -38,21 +38,13 @@ public class NetworkChoser : MonoBehaviour
 	void ApplyNetworkFromInt(int type)
 	{
 		//can't pass enum as parameter of OnClick callback
-		if(type == 0)
-		{
-			this.netType = NetworkType.Singleplayer;
+		this.netType = (NetworkType)type;
+		if(this.netType == NetworkType.Singleplayer)
 			networkController = singlePlayerController.GetComponent<SinglePlayerController>();
-		}
-		else if(type == 1)
-		{
-			this.netType = NetworkType.ServerClient;
+		else if(this.netType == NetworkType.ServerClient)
 			networkController = serverClientNetworkManager.GetComponent<MyNetworkManager>();
-		}
-		else if(type == 2)
-		{
-			this.netType = NetworkType.P2P;
+		else if(this.netType == NetworkType.P2P)
 			networkController = P2PController.GetComponent<P2PController>();
-		}
 	}
 
 	void EnterGameUI()
