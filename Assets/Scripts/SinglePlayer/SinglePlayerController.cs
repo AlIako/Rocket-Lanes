@@ -27,6 +27,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		player1.SetId(0);
 		player1.PickColor();
 		player1.ApplyColor();
+		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
 		
 
@@ -35,10 +36,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		{
 			Player playerAI = Instantiate(playerPrefab, spawns[1 + i].transform.position, Quaternion.identity);
 			playerAI.SetId(1 + i);
-
-			Destroy(playerAI.GetComponent<PlayerController>());
-			Destroy(playerAI.GetComponent<NetworkTransform>());
-			Destroy(playerAI.GetComponent<NetworkIdentity>());
+			
 			playerAI.gameObject.AddComponent<AI>();
 
 			playerAI.PickColor();

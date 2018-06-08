@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
 	[SerializeField]
 	private int id = 0;
@@ -22,6 +22,16 @@ public class Player : MonoBehaviour
 	void Start()
 	{
 		ComputeNeighbourId();
+	}
+
+	//server-client only
+	public override void OnStartAuthority()
+	{
+		GameController gc = GameObject.FindObjectOfType<GameController>();
+		gc.player = this;
+
+		PlayerController pc = GetComponent<PlayerController>();
+		pc.enabled = true;
 	}
 
 	void ComputeNeighbourId()
