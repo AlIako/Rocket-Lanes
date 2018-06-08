@@ -19,7 +19,7 @@ public class AI : MonoBehaviour
 	float nextTimeBetweenSendRockets = 1.0f;
 	float lastSendRocket = 0.0f;
 	
-	void Start ()
+	void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
 		player = GetComponent<Player>();
@@ -28,7 +28,7 @@ public class AI : MonoBehaviour
 		lastSendRocket = Time.time;
 	}
 	
-	void Update ()
+	void Update()
 	{
 		PickDirection();
 		SendRocket();

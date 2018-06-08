@@ -17,13 +17,16 @@ public class GameController : MonoBehaviour
 		networkController = networkChoser.networkController;
 	}
 
-	public void SendRocket()
-	{
-		SendRocket(player.Id, player.neighbourPlayerId);
-	}
-
+	public void SendRocket() { SendRocket(player.Id, player.neighbourPlayerId); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
-		networkController.SpawnRocket(playerId, neighbourPlayerId);
+		List<int> parameters = new List<int>();
+		parameters.Add(playerId);
+		parameters.Add(neighbourPlayerId);
+		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parameters.ToArray());
+		if(consentResult != -1)
+		{
+			spawnerManagers[neighbourPlayerId].Spawn(consentResult);
+		}
 	}
 }

@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class P2PController : MonoBehaviour, INetworkController
 {
-
-	// Use this for initialization
 	void Start ()
-	{
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
 	{
 		
 	}
@@ -22,8 +14,9 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	}
 	
-    public void SpawnRocket(int fromPlayerId, int toPlayerId)
+    public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
-
+		//Vote necessary! Pick majority
+		return 1;
 	}
 }

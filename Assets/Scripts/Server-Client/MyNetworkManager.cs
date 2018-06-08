@@ -31,8 +31,13 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		playerSpawns = GameObject.FindObjectsOfType<NetworkStartPosition>();
 	}
 	
-    public void SpawnRocket(int fromPlayerId, int toPlayerId)
+    /*public void SpawnRocket(int fromPlayerId, int toPlayerId)
 	{
-		//NetworkServer.Spawn(spawnerManager.Spawn());
+		NetworkServer.Spawn(spawnerManager.Spawn());
+	}*/
+
+    public int AskForConsent(ConsentAction consentAction, int[] parameters)
+	{
+		return 1;
 	}
 }

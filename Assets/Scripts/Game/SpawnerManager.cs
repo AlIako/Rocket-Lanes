@@ -39,7 +39,7 @@ public class SpawnerManager : MonoBehaviour
 		{
 			if(Time.time - lastSpawn >= timeBetweenSpawn)
 			{
-				Spawn();
+				Spawn(GetRandomSpawnerIndex());
 				lastSpawn = Time.time;
 			}
 		}
@@ -56,9 +56,13 @@ public class SpawnerManager : MonoBehaviour
 		}
 	}
 
-	public GameObject Spawn()
+	public int GetRandomSpawnerIndex()
 	{
-		int index = Random.Range(0, spawners.Count);
+		return Random.Range(0, spawners.Count);
+	}
+
+	public GameObject Spawn(int index)
+	{
 		GameObject spawner = spawners[index];
 		return Instantiate(projectile, spawner.transform.position, spawner.transform.rotation);
 	}
