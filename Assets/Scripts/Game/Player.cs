@@ -24,16 +24,6 @@ public class Player : NetworkBehaviour
 		ComputeNeighbourId();
 	}
 
-	//server-client only
-	public override void OnStartAuthority()
-	{
-		GameController gc = GameObject.FindObjectOfType<GameController>();
-		gc.player = this;
-
-		PlayerController pc = GetComponent<PlayerController>();
-		pc.enabled = true;
-	}
-
 	void ComputeNeighbourId()
 	{
 		neighbourPlayerId = -1;
@@ -77,5 +67,16 @@ public class Player : NetworkBehaviour
 	{
 		this.color = color;
 		GetComponent<SpriteRenderer>().color = color;
+	}
+
+
+	//server-client only
+	public override void OnStartAuthority()
+	{
+		GameController gc = GameObject.FindObjectOfType<GameController>();
+		gc.player = this;
+
+		PlayerController pc = GetComponent<PlayerController>();
+		pc.enabled = true;
 	}
 }

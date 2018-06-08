@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
 
 	INetworkController networkController;
 
-	void Start ()
+	void Start()
 	{
 		NetworkChoser networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
 		networkController = networkChoser.networkController;
@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
 		parameters.Add(neighbourPlayerId);
 		int[] parametersInt = parameters.ToArray();
 		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
+		Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
 		if(consentResult != -1)
 		{
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
