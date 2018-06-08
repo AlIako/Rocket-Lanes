@@ -17,8 +17,11 @@ public class P2PController : MonoBehaviour, INetworkController
 	
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
-		//Vote necessary! Pick majority
-		return 1;
+		if(consentAction == ConsentAction.SpawnRocket)
+		{
+			//Vote necessary! Pick majority
+		}
+		return -1;
 	}
 
     public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)

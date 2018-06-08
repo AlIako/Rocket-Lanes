@@ -35,7 +35,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
-		return gameController.spawnerManagers[parameters[1]].GetRandomSpawnerIndex();
+		if(consentAction == ConsentAction.SpawnRocket)
+		{
+			return gameController.spawnerManagers[parameters[1]].GetRandomSpawnerIndex();
+		}
+		return -1;
 	}
 	
     public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
