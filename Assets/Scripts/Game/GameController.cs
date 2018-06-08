@@ -23,10 +23,11 @@ public class GameController : MonoBehaviour
 		List<int> parameters = new List<int>();
 		parameters.Add(playerId);
 		parameters.Add(neighbourPlayerId);
-		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parameters.ToArray());
+		int[] parametersInt = parameters.ToArray();
+		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
 		if(consentResult != -1)
 		{
-			spawnerManagers[neighbourPlayerId].Spawn(consentResult);
+			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
 		}
 	}
 }

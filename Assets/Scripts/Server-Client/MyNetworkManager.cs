@@ -7,9 +7,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 {
 	int nextPlayerId = 0;
 	NetworkStartPosition[] playerSpawns;
+	GameController gameController;
 
 	void Start()
 	{
+		gameController = GameObject.FindObjectOfType<GameController>();
 		Initialize();
 	}
 
@@ -30,14 +32,18 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	{
 		playerSpawns = GameObject.FindObjectsOfType<NetworkStartPosition>();
 	}
-	
-    /*public void SpawnRocket(int fromPlayerId, int toPlayerId)
-	{
-		NetworkServer.Spawn(spawnerManager.Spawn());
-	}*/
 
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
-		return 1;
+		return gameController.spawnerManagers[parameters[1]].GetRandomSpawnerIndex();
+	}
+	
+    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+	{
+		if(consentAction == ConsentAction.SpawnRocket)
+		{
+			if(Network.isServer)
+				NetworkServer.Spawn(gameController.spawnerManagers[parameters[1]].Spawn(consentResult));
+		}
 	}
 }

@@ -11,14 +11,10 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	[SerializeField]
 	List<Transform> spawns;
 
-	NetworkChoser.NetworkType netType;
 	GameController gameController;
 
 	void Start()
 	{
-		NetworkChoser networkChoser = FindObjectOfType<NetworkChoser>();
-		netType = networkChoser.NetType;
-
 		gameController = GameObject.FindObjectOfType<GameController>();
 
 		Initialize();
@@ -64,5 +60,13 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 			return gameController.spawnerManagers[parameters[1]].GetRandomSpawnerIndex();
 		}
 		return -1;
+	}
+	
+    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+	{
+		if(consentAction == ConsentAction.SpawnRocket)
+		{
+			gameController.spawnerManagers[parameters[1]].Spawn(consentResult);
+		}
 	}
 }
