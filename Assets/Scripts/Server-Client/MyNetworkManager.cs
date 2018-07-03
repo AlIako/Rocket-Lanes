@@ -16,6 +16,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		Initialize();
 	}
 
+	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, playerSpawns[nextPlayerId].transform.position, Quaternion.identity);
@@ -23,6 +24,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		player.SetId(nextPlayerId);
 		player.PickColor();
 		player.ApplyColor();
+		player.SetNeighbourId(gameController.ComputeNeighbourId(player.Id));
 
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
 

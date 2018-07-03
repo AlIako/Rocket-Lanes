@@ -21,18 +21,6 @@ public class Player : NetworkBehaviour
 
 	void Start()
 	{
-		ComputeNeighbourId();
-	}
-
-	void ComputeNeighbourId()
-	{
-		neighbourPlayerId = -1;
-		if(Id != -1)
-		{
-			neighbourPlayerId = Id + 1;
-			if(neighbourPlayerId >= 4)
-				neighbourPlayerId = 0;
-		}
 	}
 
 	public void LoseHealth(int value)
@@ -48,6 +36,11 @@ public class Player : NetworkBehaviour
 	public void SetId(int id)
 	{
 		this.id = id;
+	}
+
+	public void SetNeighbourId(int neighbourId)
+	{
+		this.neighbourPlayerId = neighbourId;
 	}
 
 	public void PickColor()

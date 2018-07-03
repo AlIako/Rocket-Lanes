@@ -17,6 +17,19 @@ public class GameController : MonoBehaviour
 		networkController = networkChoser.networkController;
 	}
 
+	public int ComputeNeighbourId(int playerId)
+	{
+		int neighbourPlayerId = -1;
+		if(playerId != -1)
+		{
+			neighbourPlayerId = playerId + 1;
+			if(neighbourPlayerId >= 4)
+				neighbourPlayerId = 0;
+		}
+		Debug.Log("[GameController:ComputeNeighbourId] " + neighbourPlayerId);
+		return neighbourPlayerId;
+	}
+
 	public void SendRocket() { SendRocket(player.Id, player.neighbourPlayerId); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
