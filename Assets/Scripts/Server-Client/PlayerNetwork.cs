@@ -14,6 +14,11 @@ public class PlayerNetwork : NetworkBehaviour
 	{
 		player = GetComponent<Player>();
 	}
+
+	public void SetColor(Color color)
+	{
+		this.color = color;
+	}
 	
 	void OnChangeColor(Color color)
     {

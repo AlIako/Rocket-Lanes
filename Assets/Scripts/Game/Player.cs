@@ -60,6 +60,8 @@ public class Player : NetworkBehaviour
 	{
 		this.color = color;
 		GetComponent<SpriteRenderer>().color = color;
+
+		Debug.Log("[Player:ApplyColor] " + color);
 	}
 
 

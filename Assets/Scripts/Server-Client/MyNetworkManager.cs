@@ -24,6 +24,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		player.SetId(nextPlayerId);
 		player.PickColor();
 		player.ApplyColor();
+		//player.GetComponent<PlayerNetwork>().SetColor(player.Color);
 		player.SetNeighbourId(gameController.ComputeNeighbourId(player.Id));
 
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
