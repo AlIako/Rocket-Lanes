@@ -1,11 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Lane : MonoBehaviour
 {
-	public int laneId = 0;
+	public int id = 0;
 	public Player player;
+	public SpawnerManager spawnManager;
+	public NetworkStartPosition startPosition;
+	
+	Color color = new Color(1.0f, 1.0f, 1.0f);
+
+	void Start()
+	{
+		PickColor();
+	}
+
+	void PickColor()
+	{
+		if(id == 0)
+			color = new Color(1.0f, 0.0f, 0.0f);
+		else if(id == 1)
+			color = new Color(0.0f, 0.3f, 1.0f);
+		else if(id == 2)
+			color = new Color(0.3f, 0.85f, 0.0f);
+		else if(id == 3)
+			color = new Color(1.0f, 1.0f, 0.0f);
+	}
 
 	public bool IsOccupied()
 	{
@@ -15,10 +37,13 @@ public class Lane : MonoBehaviour
 	public void Enter(Player player)
 	{
 		this.player = player;
+		player.lane = this;
+		player.ApplyColor(this.color);
 	}
 
 	public void Leave(Player player)
 	{
+		player.lane = null;
 		player = null;
 	}
 

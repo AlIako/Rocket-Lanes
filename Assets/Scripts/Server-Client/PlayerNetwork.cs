@@ -5,6 +5,8 @@ using UnityEngine.Networking;
 
 public class PlayerNetwork : NetworkBehaviour
 {
+	//THIS CLASS IS DEPRECATED FOR NOW
+	
 	[SyncVar(hook = "OnChangeColor")]
 	Color color;
 

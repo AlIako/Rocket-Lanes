@@ -28,7 +28,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
-			gameController.spawnerManagers[parameters[1]].Spawn(consentResult);
+			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
 		}
 	}
 }

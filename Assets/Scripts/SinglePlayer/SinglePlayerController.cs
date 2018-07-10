@@ -24,9 +24,6 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	{
 		//spawn player
 		Player player1 = Instantiate(playerPrefab, spawns[0].transform.position, Quaternion.identity);
-		player1.SetId(0);
-		player1.PickColor();
-		player1.ApplyColor();
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
 		
@@ -35,19 +32,14 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		for(int i = 0; i < 3; i++)
 		{
 			Player playerAI = Instantiate(playerPrefab, spawns[1 + i].transform.position, Quaternion.identity);
-			playerAI.SetId(1 + i);
-			
 			playerAI.gameObject.AddComponent<AI>();
-
-			playerAI.PickColor();
-			playerAI.ApplyColor();
 		}
 	}
 
     public void SpawnRocket(int fromPlayerId, int toPlayerId)
 	{
-		int randomIndex = gameController.spawnerManagers[toPlayerId].GetRandomSpawnerIndex();
-		gameController.spawnerManagers[toPlayerId].Spawn(randomIndex);
+		int randomIndex = gameController.lanes[toPlayerId].spawnManager.GetRandomSpawnerIndex();
+		gameController.lanes[toPlayerId].spawnManager.Spawn(randomIndex);
 	}
 
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
@@ -55,7 +47,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
 			//get random lane index from targeted spawnManager
-			return gameController.spawnerManagers[parameters[1]].GetRandomSpawnerIndex();
+			return gameController.lanes[parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
 		return -1;
 	}
@@ -64,7 +56,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
-			gameController.spawnerManagers[parameters[1]].Spawn(consentResult);
+			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
 		}
 	}
 }

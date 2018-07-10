@@ -19,24 +19,18 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
-        GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, playerSpawns[nextPlayerId].transform.position, Quaternion.identity);
+		Lane lane = gameController.GetFirstUnoccupiedLane();
+        GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, lane.startPosition.transform.position, Quaternion.identity);
 		Player player = playerGameObject.GetComponent<Player>();
-		player.SetId(nextPlayerId);
-		player.PickColor();
 
 		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
 		if(playerNetwork != null)
 		{
 			playerNetwork.enabled = true;
-			playerNetwork.SetColor(player.Color);
 		}
 		else Debug.Log("[MyNetworkManager:OnServerAddPlayer] playerNetwork script not found");
 
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
-
-		nextPlayerId ++;
-		if(nextPlayerId >= 4)
-			nextPlayerId = 0;
     }
 
 	public void Initialize()
@@ -61,7 +55,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
         var msg = netMsg.ReadMessage<IntArrayMessage>();
 		if(msg.consentAction == ConsentAction.SpawnRocket)
 		{
-			result = gameController.spawnerManagers[msg.parameters[1]].GetRandomSpawnerIndex();
+			result = gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
 		ApplyConsent(msg.consentAction, msg.parameters, result);
         Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
@@ -74,7 +68,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			if(NetworkServer.active)
 			{
-				NetworkServer.Spawn(gameController.spawnerManagers[parameters[1]].Spawn(consentResult));
+				NetworkServer.Spawn(gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult));
 			}
 		}
 	}

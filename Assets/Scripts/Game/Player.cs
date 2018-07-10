@@ -5,16 +5,11 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour
 {
-	[SerializeField]
-	private int id = 0;
-	public int Id { get { return id; } }
+	public Lane lane;
 
 	[SerializeField]
 	private int health = 10;
 	public int Health { get { return health; } }
-
-	private Color color = new Color(1.0f, 1.0f, 1.0f);
-	public Color Color { get { return color; } }
 
 	void Start()
 	{
@@ -30,30 +25,9 @@ public class Player : NetworkBehaviour
 		}
 	}
 
-	public void SetId(int id)
-	{
-		this.id = id;
-	}
-
-	public void PickColor()
-	{
-		if(id == 0)
-			color = new Color(1.0f, 0.0f, 0.0f);
-		else if(id == 1)
-			color = new Color(0.0f, 0.3f, 1.0f);
-		else if(id == 2)
-			color = new Color(0.3f, 0.85f, 0.0f);
-		else if(id == 3)
-			color = new Color(1.0f, 1.0f, 0.0f);
-	}
-
-	public void ApplyColor() { ApplyColor(color); }
 	public void ApplyColor(Color color)
 	{
-		this.color = color;
 		GetComponent<SpriteRenderer>().color = color;
-
-		Debug.Log("[Player:ApplyColor] " + color);
 	}
 
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-	public SpawnerManager[] spawnerManagers;
 	public Lane[] lanes;
 
 	[HideInInspector]
@@ -18,10 +17,10 @@ public class GameController : MonoBehaviour
 		networkController = networkChoser.networkController;
 	}
 
-	public int GetNextOccupiedLaneId(Player player)
+	public int GetNextOccupiedLaneId(Player p)
 	{
-		int laneId = player.Id;
-		for(int i = 0; i < 4; i ++)
+		int laneId = p.lane.id;
+		for(int i = 0; i < 3; i ++)
 		{
 			laneId ++;
 			if(laneId >= 4)
@@ -30,10 +29,27 @@ public class GameController : MonoBehaviour
 			if(lanes[laneId].IsOccupied())
 				return laneId;
 		}
-		return -1;
+		
+		//if no other player, just send to next lane
+		laneId = p.lane.id;
+		laneId ++;
+		if(laneId >= 4)
+			laneId = 0;
+		
+		return laneId;
 	}
 
-	public void SendRocket() { SendRocket(player.Id, GetNextOccupiedLaneId(player)); }
+	public Lane GetFirstUnoccupiedLane()
+	{
+		foreach(Lane lane in lanes)
+		{
+			if(!lane.IsOccupied())
+				return lane;
+		}
+		return null;
+	}
+
+	public void SendRocket() { SendRocket(player.lane.id, GetNextOccupiedLaneId(player)); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
 		List<int> parameters = new List<int>();

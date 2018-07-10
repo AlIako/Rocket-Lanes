@@ -1803,6 +1803,21 @@ Prefab:
       propertyPath: laneId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: spawnManager
+      value: 
+      objectReference: {fileID: 2023758647}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: startPosition
+      value: 
+      objectReference: {fileID: 916466614}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: id
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4cc615b171df85a4596ab1757bbfda12, type: 2}
   m_IsPrefabParent: 0
@@ -1903,6 +1918,21 @@ Prefab:
     - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
         type: 2}
       propertyPath: laneId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: spawnManager
+      value: 
+      objectReference: {fileID: 1216538225}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: startPosition
+      value: 
+      objectReference: {fileID: 420389550}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: id
       value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2229,6 +2259,16 @@ Prefab:
       propertyPath: m_Size.x
       value: 0.16
       objectReference: {fileID: 0}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: spawnManager
+      value: 
+      objectReference: {fileID: 1475150367}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: startPosition
+      value: 
+      objectReference: {fileID: 1361346739}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4cc615b171df85a4596ab1757bbfda12, type: 2}
   m_IsPrefabParent: 0
@@ -2434,6 +2474,21 @@ Prefab:
     - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
         type: 2}
       propertyPath: laneId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: spawnManager
+      value: 
+      objectReference: {fileID: 1200160406}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: startPosition
+      value: 
+      objectReference: {fileID: 1200447163}
+    - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 2}
+      propertyPath: id
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -4876,11 +4931,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c959655759e9940a3112f7ac9247bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnerManagers:
-  - {fileID: 1475150367}
-  - {fileID: 1200160406}
-  - {fileID: 2023758647}
-  - {fileID: 1216538225}
   lanes:
   - {fileID: 557820701}
   - {fileID: 636455650}

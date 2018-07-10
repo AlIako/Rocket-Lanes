@@ -102,6 +102,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laneId: 0
   player: {fileID: 0}
+  spawnManager: {fileID: 0}
+  startPosition: {fileID: 0}
 --- !u!114 &114887514920423462
 MonoBehaviour:
   m_ObjectHideFlags: 1
