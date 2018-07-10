@@ -9,7 +9,6 @@ public class Player : NetworkBehaviour
 	private int id = 0;
 	public int Id { get { return id; } }
 
-	[HideInInspector]
 	public int neighbourPlayerId;
 
 	[SerializeField]

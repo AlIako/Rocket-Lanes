@@ -1218,6 +1218,12 @@ Transform:
   m_Father: {fileID: 1229764274}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &420389550 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114487047910816066, guid: 77683a1b0385edb489cbec6f859a2e2f,
+    type: 2}
+  m_PrefabInternal: {fileID: 482647303}
+  m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
 --- !u!1 &422775627
 GameObject:
   m_ObjectHideFlags: 0
@@ -3167,6 +3173,12 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &916466614 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114487047910816066, guid: 77683a1b0385edb489cbec6f859a2e2f,
+    type: 2}
+  m_PrefabInternal: {fileID: 597737177}
+  m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
 --- !u!1001 &961134441
 Prefab:
   m_ObjectHideFlags: 0
@@ -3976,6 +3988,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1928965592}
   m_Script: {fileID: 11500000, guid: 94f1bdc216916ad46928a989ac5b3fa2, type: 3}
+--- !u!114 &1200447163 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114487047910816066, guid: 77683a1b0385edb489cbec6f859a2e2f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1311249702}
+  m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
 --- !u!1 &1211899770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4503,6 +4521,12 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &1361346739 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114487047910816066, guid: 77683a1b0385edb489cbec6f859a2e2f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1890968695}
+  m_Script: {fileID: -1050975500, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
 --- !u!1001 &1416917657
 Prefab:
   m_ObjectHideFlags: 0
@@ -5322,6 +5346,11 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
+  playerSpawns:
+  - {fileID: 1361346739}
+  - {fileID: 1200447163}
+  - {fileID: 916466614}
+  - {fileID: 420389550}
 --- !u!4 &1859607570
 Transform:
   m_ObjectHideFlags: 0

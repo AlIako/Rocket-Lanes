@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 public class MyNetworkManager : NetworkManager, INetworkController
 {
 	int nextPlayerId = 0;
-	NetworkStartPosition[] playerSpawns;
+	public NetworkStartPosition[] playerSpawns;
 	GameController gameController;
 	NetworkClient networkClient;
 
@@ -42,7 +42,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public void Initialize()
 	{
-		playerSpawns = GameObject.FindObjectsOfType<NetworkStartPosition>();
 		NetworkServer.RegisterHandler(NetworkMessages.AskForConsentMsg, OnAskForConsentMsg);
 	}
 
