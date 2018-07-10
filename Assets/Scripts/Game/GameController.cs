@@ -17,12 +17,43 @@ public class GameController : MonoBehaviour
 		networkController = networkChoser.networkController;
 	}
 
-	public int ComputeNeighbourId(int playerId)
+	public int ComputeNeighbourId(Player player)
 	{
-		int neighbourPlayerId = -1;
-		if(playerId != -1)
+		//find the nearest player right of you. if none, find the most left player
+		double playerX = player.transform.position.x;
+		Player[] players = GameObject.FindObjectsOfType<Player>();
+		Player nearestRight = null;
+		Player mostLeft = null;
+		foreach(Player p in players)
 		{
-			neighbourPlayerId = playerId + 1;
+			//dont take self into account
+			if(p != player)
+			{
+				if(p.transform.position.x > playerX)
+				{
+					if(nearestRight == null || p.transform.position.x < nearestRight.transform.position.x)
+						nearestRight = p;
+				}
+				else if(p.transform.position.x < playerX)
+				{
+					if(mostLeft == null || p.transform.position.x < mostLeft.transform.position.x)
+						mostLeft = p;
+				}
+			}
+		}
+
+		int neighbourPlayerId = -1;
+		if(nearestRight != null)
+		{
+			neighbourPlayerId = nearestRight.Id;
+		}
+		else if(mostLeft != null)
+		{
+			neighbourPlayerId = mostLeft.Id;
+		}
+		else if(player.Id != -1)
+		{
+			neighbourPlayerId = player.Id + 1;
 			if(neighbourPlayerId >= 4)
 				neighbourPlayerId = 0;
 		}

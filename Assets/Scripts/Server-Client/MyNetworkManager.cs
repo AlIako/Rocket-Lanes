@@ -23,7 +23,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		Player player = playerGameObject.GetComponent<Player>();
 		player.SetId(nextPlayerId);
 		player.PickColor();
-		player.SetNeighbourId(gameController.ComputeNeighbourId(player.Id));
+		player.SetNeighbourId(gameController.ComputeNeighbourId(player));
 
 		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
 		if(playerNetwork != null)
