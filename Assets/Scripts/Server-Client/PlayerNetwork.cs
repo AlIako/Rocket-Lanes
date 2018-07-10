@@ -5,15 +5,8 @@ using UnityEngine.Networking;
 
 public class PlayerNetwork : NetworkBehaviour
 {
-	Player player;
-
 	[SyncVar(hook = "OnChangeColor")]
 	Color color;
-
-	void Start()
-	{
-		player = GetComponent<Player>();
-	}
 
 	public void SetColor(Color color)
 	{
@@ -22,7 +15,7 @@ public class PlayerNetwork : NetworkBehaviour
 	
 	void OnChangeColor(Color color)
     {
-		player.ApplyColor(color);
+		GetComponent<Player>().ApplyColor(color);
     }
 
 	public override void OnStartClient()
@@ -34,7 +27,7 @@ public class PlayerNetwork : NetworkBehaviour
 
 	public override void OnStartAuthority()
 	{
-		player.PickColor();
+		GetComponent<Player>().PickColor();
 	}
 
 }
