@@ -42,10 +42,6 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 			playerAI.PickColor();
 			playerAI.ApplyColor();
 		}
-		
-		Player[] players = GameObject.FindObjectsOfType<Player>();
-		foreach(Player p in players)
-			p.SetNeighbourId(gameController.ComputeNeighbourId(p));
 	}
 
     public void SpawnRocket(int fromPlayerId, int toPlayerId)

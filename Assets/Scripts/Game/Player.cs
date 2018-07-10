@@ -9,8 +9,6 @@ public class Player : NetworkBehaviour
 	private int id = 0;
 	public int Id { get { return id; } }
 
-	public int neighbourPlayerId;
-
 	[SerializeField]
 	private int health = 10;
 	public int Health { get { return health; } }
@@ -35,11 +33,6 @@ public class Player : NetworkBehaviour
 	public void SetId(int id)
 	{
 		this.id = id;
-	}
-
-	public void SetNeighbourId(int neighbourId)
-	{
-		this.neighbourPlayerId = neighbourId;
 	}
 
 	public void PickColor()
@@ -73,4 +66,20 @@ public class Player : NetworkBehaviour
 		PlayerController pc = GetComponent<PlayerController>();
 		pc.enabled = true;
 	}
+
+	void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.GetComponent<Lane>())
+        {
+            other.GetComponent<Lane>().Enter(this);
+        }
+    }
+
+	void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.GetComponent<Lane>())
+        {
+            other.GetComponent<Lane>().Leave(this);
+        }
+    }
 }

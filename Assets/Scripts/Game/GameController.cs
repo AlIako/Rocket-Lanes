@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 	public SpawnerManager[] spawnerManagers;
+	public Lane[] lanes;
 
 	[HideInInspector]
 	public Player player;
@@ -17,51 +18,22 @@ public class GameController : MonoBehaviour
 		networkController = networkChoser.networkController;
 	}
 
-	public int ComputeNeighbourId(Player player)
+	public int GetNextOccupiedLaneId(Player player)
 	{
-		//find the nearest player right of you. if none, find the most left player
-		double playerX = player.transform.position.x;
-		Player[] players = GameObject.FindObjectsOfType<Player>();
-		Player nearestRight = null;
-		Player mostLeft = null;
-		foreach(Player p in players)
+		int laneId = player.Id;
+		for(int i = 0; i < 4; i ++)
 		{
-			//dont take self into account
-			if(p != player)
-			{
-				if(p.transform.position.x > playerX)
-				{
-					if(nearestRight == null || p.transform.position.x < nearestRight.transform.position.x)
-						nearestRight = p;
-				}
-				else if(p.transform.position.x < playerX)
-				{
-					if(mostLeft == null || p.transform.position.x < mostLeft.transform.position.x)
-						mostLeft = p;
-				}
-			}
+			laneId ++;
+			if(laneId >= 4)
+				laneId = 0;
+			
+			if(lanes[laneId].IsOccupied())
+				return laneId;
 		}
-
-		int neighbourPlayerId = -1;
-		if(nearestRight != null)
-		{
-			neighbourPlayerId = nearestRight.Id;
-		}
-		else if(mostLeft != null)
-		{
-			neighbourPlayerId = mostLeft.Id;
-		}
-		else if(player.Id != -1)
-		{
-			neighbourPlayerId = player.Id + 1;
-			if(neighbourPlayerId >= 4)
-				neighbourPlayerId = 0;
-		}
-		Debug.Log("[GameController:ComputeNeighbourId] " + neighbourPlayerId);
-		return neighbourPlayerId;
+		return -1;
 	}
 
-	public void SendRocket() { SendRocket(player.Id, player.neighbourPlayerId); }
+	public void SendRocket() { SendRocket(player.Id, GetNextOccupiedLaneId(player)); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
 		List<int> parameters = new List<int>();

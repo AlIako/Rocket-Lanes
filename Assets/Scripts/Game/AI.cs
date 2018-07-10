@@ -39,7 +39,7 @@ public class AI : MonoBehaviour
 	{
 		if(Time.time - lastSendRocket > nextTimeBetweenSendRockets)
 		{
-			gameController.SendRocket(player.Id, player.neighbourPlayerId);
+			gameController.SendRocket(player.Id, gameController.GetNextOccupiedLaneId(player));
 			nextTimeBetweenSendRockets = timeBetweenSendRockets + 
 										Random.Range(-timeBetweenSendRockets/10.0f, timeBetweenSendRockets/10.0f);
 			
