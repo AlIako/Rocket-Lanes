@@ -15,19 +15,20 @@ public class PlayerNetwork : NetworkBehaviour
 	
 	void OnChangeColor(Color color)
     {
-		GetComponent<Player>().ApplyColor(color);
+		//GetComponent<Player>().ApplyColor(color);
     }
 
 	public override void OnStartClient()
 	{
 		//https://answers.unity.com/questions/1143773/syncvar-synchronizes-correctly-but-not-the-text-co.html
 		// Call it directly to update color component on other clients who join the game later.
-		OnChangeColor(color);
+		//OnChangeColor(color);
+		GetComponent<Player>().ApplyColor(color);
 	}
 
 	public override void OnStartAuthority()
 	{
-		GetComponent<Player>().PickColor();
+		//GetComponent<Player>().PickColor();
 	}
 
 }

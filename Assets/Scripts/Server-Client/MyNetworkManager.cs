@@ -23,7 +23,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		Player player = playerGameObject.GetComponent<Player>();
 		player.SetId(nextPlayerId);
 		player.PickColor();
-		player.ApplyColor();
 		player.SetNeighbourId(gameController.ComputeNeighbourId(player.Id));
 
 		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
@@ -32,10 +31,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 			playerNetwork.enabled = true;
 			playerNetwork.SetColor(player.Color);
 		}
-		else
-		{
-			Debug.Log("[MyNetworkManager:OnServerAddPlayer] playerNetwork script not found");
-		}
+		else Debug.Log("[MyNetworkManager:OnServerAddPlayer] playerNetwork script not found");
 
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
 
