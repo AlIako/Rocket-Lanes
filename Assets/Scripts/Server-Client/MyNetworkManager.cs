@@ -72,4 +72,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
 			}
 		}
 	}
+
+	public bool HandleCollisions(Lane lane)
+	{
+		//only if server
+		return NetworkServer.active;
+	}
 }

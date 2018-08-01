@@ -31,4 +31,10 @@ public class P2PController : MonoBehaviour, INetworkController
 			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
 		}
 	}
+
+	public bool HandleCollisions(Lane lane)
+	{
+		//only if its own lane
+		return gameController.player.lane.id == lane.id;
+	}
 }

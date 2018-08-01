@@ -63,4 +63,13 @@ public class GameController : MonoBehaviour
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
 		}
 	}
+
+	public bool HandleCollisions(Lane lane)
+	{
+		if(lane == null)
+			return false;
+		bool result = networkController.HandleCollisions(lane);
+		Debug.Log("Handle Collisions for lane " + lane.id + ": " + result);
+		return result;
+	}
 }

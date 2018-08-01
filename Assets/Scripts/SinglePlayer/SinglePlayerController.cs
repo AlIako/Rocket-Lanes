@@ -59,4 +59,9 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
 		}
 	}
+
+	public bool HandleCollisions(Lane lane)
+	{
+		return true;
+	}
 }

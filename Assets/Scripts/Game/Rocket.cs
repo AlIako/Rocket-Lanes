@@ -9,32 +9,36 @@ public class Rocket : MonoBehaviour
 	[SerializeField]
 	GameObject explosionFX;
 
+	Lane lane = null;
+	GameController gameController = null;
+
 	void Start()
 	{
 		GetComponent<Rigidbody2D>().velocity = new Vector3(0, -speed, 0);
+		gameController = GameObject.FindObjectOfType<GameController>();
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		GameObject go = collision.gameObject;
-
-		Player player = go.GetComponent<Player> ();
-		if (player != null)
+	void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.GetComponent<Lane>())
+            lane = other.GetComponent<Lane>();
+		else if(gameController.HandleCollisions(lane))
 		{
-			player.LoseHealth (1);
-			Die(true);
+			Player player = other.GetComponent<Player>();
+			if (player != null)
+			{
+				player.LoseHealth(1);
+				Destroy(gameObject);
+			}
+			else if (other.tag.Equals("Bottom"))
+			{
+				Destroy(gameObject);
+			}
 		}
-		else if (go.tag.Equals("Bottom"))
-		{
-			Die(false);
-		}
-	}
+    }
 
-	void Die(bool fx)
-	{
-		if(fx)
-			Instantiate(explosionFX, transform.position, Quaternion.identity);
-			
-		Destroy(gameObject);
-	}
+	public void OnDestroy()
+    {
+		Instantiate(explosionFX, transform.position, Quaternion.identity);
+    }
 }

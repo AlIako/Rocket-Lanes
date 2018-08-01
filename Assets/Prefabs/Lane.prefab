@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de235722231b0ea4f9af83a255f1e5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laneId: 0
+  id: 0
   player: {fileID: 0}
   spawnManager: {fileID: 0}
   startPosition: {fileID: 0}
