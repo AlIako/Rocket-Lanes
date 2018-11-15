@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class P2PController : MonoBehaviour, INetworkController
 {
 	GameController gameController;
+	string targetIp;
+
 	void Start ()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
@@ -36,5 +39,18 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		//only if its own lane
 		return gameController.player.lane.id == lane.id;
+	}
+
+	public void NewGame()
+	{
+		Debug.Log("Starting New P2P Game...");
+	}
+
+	public void JoinGame()
+	{
+		GameObject IPField = GameObject.FindGameObjectWithTag("IPField");
+		targetIp = IPField.GetComponent<InputField>().text;
+
+		Debug.Log("Joining P2P Game " + targetIp + "...");
 	}
 }

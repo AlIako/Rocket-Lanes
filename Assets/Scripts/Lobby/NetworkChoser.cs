@@ -21,6 +21,9 @@ public class NetworkChoser : MonoBehaviour
 	
 	[SerializeField]
 	GameObject P2PController;
+	
+	[SerializeField]
+	GameObject ChoseP2P;
 
 	public enum NetworkType {Singleplayer, ServerClient, P2P};
 	[SerializeField]
@@ -61,7 +64,10 @@ public class NetworkChoser : MonoBehaviour
 		else if(this.netType == NetworkType.ServerClient)
 			serverClientNetworkManager.SetActive(true);
 		else if(this.netType == NetworkType.P2P)
+		{
 			P2PController.SetActive(true);
+			ChoseP2P.SetActive(true);
+		}
 		
 		gameController.SetActive(true);
 	}
