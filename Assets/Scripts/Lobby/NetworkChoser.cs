@@ -5,9 +5,6 @@ using UnityEngine;
 public class NetworkChoser : MonoBehaviour
 {
 	[SerializeField]
-	GameObject inGameUI;
-	
-	[SerializeField]
 	GameObject lobbyUI;
 	
 	[SerializeField]
@@ -54,7 +51,6 @@ public class NetworkChoser : MonoBehaviour
 	void EnterGameUI()
 	{
 		lobbyUI.SetActive(false);
-		inGameUI.SetActive(true);
 	}
 	void ActivateControllers()
 	{

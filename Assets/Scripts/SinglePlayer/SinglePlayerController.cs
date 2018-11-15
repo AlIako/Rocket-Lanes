@@ -34,6 +34,8 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 			Player playerAI = Instantiate(playerPrefab, spawns[1 + i].transform.position, Quaternion.identity);
 			playerAI.gameObject.AddComponent<AI>();
 		}
+
+		gameController.StartGame();
 	}
 
     public void SpawnRocket(int fromPlayerId, int toPlayerId)

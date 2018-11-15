@@ -6,6 +6,9 @@ public class GameController : MonoBehaviour
 {
 	public Lane[] lanes;
 
+	[SerializeField]
+	GameObject InGameUI;
+
 	[HideInInspector]
 	public Player player;
 
@@ -15,6 +18,12 @@ public class GameController : MonoBehaviour
 	{
 		NetworkChoser networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
 		networkController = networkChoser.networkController;
+	}
+
+	public void StartGame()
+	{
+		//Reveal in-game UI
+		InGameUI.SetActive(true);
 	}
 
 	public int GetNextOccupiedLaneId(Player p)

@@ -33,6 +33,14 @@ public class MyNetworkManager : NetworkManager, INetworkController
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
     }
 
+	public override void OnClientConnect(NetworkConnection connection)
+    {
+        Debug.Log(connection.connectionId + " Connected!");
+
+		//Reveal in-game UI
+		gameController.StartGame();
+    }
+
 	public void Initialize()
 	{
 		NetworkServer.RegisterHandler(NetworkMessages.AskForConsentMsg, OnAskForConsentMsg);
