@@ -37,6 +37,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
     {
         Debug.Log(connection.connectionId + " Connected!");
 
+		//Bypass "Client Ready" button
+		ClientScene.Ready(connection);
+		ClientScene.AddPlayer((short)connection.connectionId);
+
 		//Reveal in-game UI
 		gameController.StartGame();
     }

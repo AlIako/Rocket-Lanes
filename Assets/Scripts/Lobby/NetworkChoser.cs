@@ -31,7 +31,7 @@ public class NetworkChoser : MonoBehaviour
 	public void PickNetworkType(int type)
 	{
 		ApplyNetworkFromInt(type);
-		EnterGameUI();
+		QuitLobbyUI();
 		ActivateControllers();
 	}
 
@@ -48,7 +48,7 @@ public class NetworkChoser : MonoBehaviour
 			networkController = P2PController.GetComponent<P2PController>();
 	}
 
-	void EnterGameUI()
+	void QuitLobbyUI()
 	{
 		lobbyUI.SetActive(false);
 	}
