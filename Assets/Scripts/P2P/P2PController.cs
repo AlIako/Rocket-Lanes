@@ -11,6 +11,7 @@ public class P2PController : MonoBehaviour, INetworkController
 {
 	GameController gameController;
 	string targetIp;
+	int myPort;
 	int targetPort;
 
 	bool initialized = false;
@@ -32,16 +33,13 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void NewGame()
 	{
-		Debug.Log("Starting New P2P Game...");
+		Debug.Log("Starting New P2P Game... port: " + myPort);
 
 		Initialize();
 	}
 
 	public void Initialize()
 	{
-		GameObject PortField = GameObject.FindGameObjectWithTag("PortField");
-		targetPort = Int32.Parse(PortField.GetComponent<InputField>().text);
-
 		//https://docs.unity3d.com/Manual/UNetUsingTransport.html
 		NetworkTransport.Init();
 
@@ -51,7 +49,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 		topology = new HostTopology(config, 3);
 
-		hostId = NetworkTransport.AddHost(topology, targetPort);
+		hostId = NetworkTransport.AddHost(topology, myPort);
 		Debug.Log("hostId: " + hostId);
 
 		initialized = true;
@@ -62,10 +60,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		GameObject IPField = GameObject.FindGameObjectWithTag("IPField");
 		targetIp = IPField.GetComponent<InputField>().text;
 
-		GameObject PortField = GameObject.FindGameObjectWithTag("PortField");
-		targetPort = Int32.Parse(PortField.GetComponent<InputField>().text);
-
-		Debug.Log("Joining P2P Game " + targetIp + "...");
+		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
 
 		Initialize();
 
@@ -121,6 +116,16 @@ public class P2PController : MonoBehaviour, INetworkController
         if ((NetworkError)error != NetworkError.Ok)
             Debug.Log(label + " error: " + (NetworkError)error);
         else Debug.Log( label + ": " + (NetworkError)error);
+	}
+
+	public void SetMyPort(int port)
+	{
+		this.myPort = port;
+	}
+
+	public void SetTargetPort(int port)
+	{
+		this.targetPort = port;
 	}
 
 
