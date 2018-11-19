@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 
 public class MyNetworkManager : NetworkManager, INetworkController
 {
-	int nextPlayerId = 0;
 	public NetworkStartPosition[] playerSpawns;
 	GameController gameController;
 	NetworkClient networkClient;
@@ -21,7 +20,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
     {
 		Lane lane = gameController.GetFirstUnoccupiedLane();
         GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, lane.startPosition.transform.position, Quaternion.identity);
-		Player player = playerGameObject.GetComponent<Player>();
+		//Player player = playerGameObject.GetComponent<Player>();
 
 		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
 		if(playerNetwork != null)

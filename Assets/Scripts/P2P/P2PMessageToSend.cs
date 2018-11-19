@@ -10,7 +10,7 @@ public class P2PMessageToSend
 	public P2PMessageToSend(P2PMessage message)
 	{
 		this.message = message;
-		int lastTimestampSent = 0;
+		this.lastTimestampSent = 0;
 	}
 
 	public bool ReadyToSend(int cooldown)
