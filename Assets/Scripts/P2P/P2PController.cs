@@ -13,7 +13,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	string targetIp;
 	int targetPort;
 
-	int initialized = 0;
+	bool initialized = false;
 
 	int myReliableChannelId;
 	//int myUnreliableChannelId;
@@ -34,10 +34,10 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		Debug.Log("Starting New P2P Game...");
 
-		IniNetwork();
+		Initialize();
 	}
 
-	void IniNetwork()
+	public void Initialize()
 	{
 		GameObject PortField = GameObject.FindGameObjectWithTag("PortField");
 		targetPort = Int32.Parse(PortField.GetComponent<InputField>().text);
@@ -54,7 +54,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		hostId = NetworkTransport.AddHost(topology, targetPort);
 		Debug.Log("hostId: " + hostId);
 
-		initialized ++;
+		initialized = true;
 	}
 
 	public void JoinGame()
@@ -67,36 +67,23 @@ public class P2PController : MonoBehaviour, INetworkController
 
 		Debug.Log("Joining P2P Game " + targetIp + "...");
 
-		IniNetwork();
+		Initialize();
 
 		connectionId = NetworkTransport.Connect(hostId, targetIp, targetPort, 0, out error);
 		Debug.Log("connectionId: " + connectionId);
 		CheckError("Connect");
 	}
 
-	public void Disconnect()
-	{
+	void OnApplicationQuit()
+    {
 		NetworkTransport.Disconnect(hostId, connectionId, out error);
 		CheckError("Disconnect");
 		NetworkTransport.Shutdown();
-	}
-
-	void OnApplicationQuit()
-    {
-        Debug.Log("Application ending after " + Time.time + " seconds");
-		Disconnect();
     }
-
-	void CheckError(string label)
-	{
-        if ((NetworkError)error != NetworkError.Ok)
-            Debug.Log(label + " error: " + (NetworkError)error);
-        else Debug.Log( label + ": " + (NetworkError)error);
-	}
 
 	void Update()
 	{
-		if(initialized < 2)
+		if(!initialized)
 			return;
 		
 		int recHostId; 
@@ -129,13 +116,15 @@ public class P2PController : MonoBehaviour, INetworkController
 						", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
 	}
 
-
-
-	public void Initialize()
+	void CheckError(string label)
 	{
-
+        if ((NetworkError)error != NetworkError.Ok)
+            Debug.Log(label + " error: " + (NetworkError)error);
+        else Debug.Log( label + ": " + (NetworkError)error);
 	}
-	
+
+
+
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
