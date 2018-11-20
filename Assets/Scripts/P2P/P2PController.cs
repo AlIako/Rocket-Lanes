@@ -109,6 +109,14 @@ public class P2PController : MonoBehaviour, INetworkController
 		return player;
 	}
 
+	public void DespawnPlayer(int lane)
+	{
+		Player player = players.FirstOrDefault(p => p.lane.id == lane);
+		if(player != null)
+			Destroy(player.gameObject);
+		players.Remove(player);
+	}
+
 	void SendPositionInformation()
 	{
 		float currentTime = Time.time * 1000;
@@ -123,7 +131,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 	}
 
-	public void ReceivePositionInformation(PositionMessage message)
+	public void ReceivePositionInformation(int hostId, int connectionId, PositionMessage message)
 	{
 		int lane = System.Convert.ToInt32(message.lane);
 		Player player = players.FirstOrDefault(p => p.lane.id == lane);
@@ -132,6 +140,10 @@ public class P2PController : MonoBehaviour, INetworkController
 			player.transform.position = message.position;
 		}
 		else SpawnPlayer(lane);
+
+		P2PConnection connection = P2PConnections.GetConnection(hostId, connectionId);
+		if(connection != null)
+			connection.lane = lane;
 	}
 
 	void OnApplicationQuit()

@@ -15,9 +15,8 @@ public class P2PConnections
 
 	public static void ConnectEvent(int hostId, int connectionId)
 	{
-		P2PConnection connection = connections.FirstOrDefault(c => 
-								c.hostId == hostId && 
-								c.connectionId == connectionId);
+		P2PConnection connection = P2PConnections.GetConnection(hostId, connectionId);
+
 		if(connection == null)
 		{
 			//new connection from targeted ip or new player
@@ -100,6 +99,7 @@ public class P2PConnections
 		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.RequestPlayersInfo);
 	}
 
+	//if succesfully connected to all, the game can start
 	static void CheckConnectionsStatus()
 	{
 		bool connectedToAll = true;
@@ -113,16 +113,14 @@ public class P2PConnections
 			p2PController.StartGame();
 	}
 
-	public static void RemoveConnection(int recHostId, int connectionId)
+	public static void RemoveConnection(int hostId, int connectionId)
 	{
-		P2PConnection connection = connections.FirstOrDefault(c => 
-								c.hostId == recHostId && 
-								c.connectionId == connectionId);
+		P2PConnection connection = P2PConnections.GetConnection(hostId, connectionId);
 		if(connection == null)
 			Debug.Log("Warning! Connection with " + connection + " doesn't exist");
 		else
 		{
-			//Remove connection
+			p2PController.DespawnPlayer(connection.lane);
 			connections.Remove(connection);
 			Debug.Log("Remove connection with " + connection);
 		}
@@ -133,5 +131,13 @@ public class P2PConnections
 		foreach(P2PConnection connection in connections)
 			connection.Disconnect();
 		connections.Clear();
+	}
+
+	public static P2PConnection GetConnection(int hostId, int connectionId)
+	{
+		P2PConnection connection = connections.FirstOrDefault(c => 
+								c.hostId == hostId && 
+								c.connectionId == connectionId);
+		return connection;
 	}
 }

@@ -10,6 +10,7 @@ public class P2PConnection
 	public int connectionId;
 	public string ip;
 	public int port;
+	public int lane = -1;
 	bool connectionSuccessful = false;
 
 	public P2PConnection(int hostId, int connectionId, bool fetchConnectionInfo = true)

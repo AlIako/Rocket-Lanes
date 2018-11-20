@@ -57,7 +57,7 @@ public class P2PListener
         // two bytes. It is the second two bytes on the buffer.
         byte[] readerMsgTypeData = networkReader.ReadBytes(2);
         short readerMsgType = (short)((readerMsgTypeData[1] << 8) + readerMsgTypeData[0]);
-        Debug.Log("Message of type " + readerMsgType + ", of size " + readerMsgSize + " received");
+        //Debug.Log("Message of type " + readerMsgType + ", of size " + readerMsgSize + " received");
 
 		if(readerMsgType == MessageTypes.PlayersInfo)
 		{
@@ -74,7 +74,7 @@ public class P2PListener
 		{
 			PositionMessage message = new PositionMessage();
 			message.Deserialize(networkReader);
-			p2PController.ReceivePositionInformation(message);
+			p2PController.ReceivePositionInformation(recHostId, connectionId, message);
 		}
     }
 }
