@@ -5,18 +5,18 @@ using UnityEngine.Networking;
 
 public class PositionMessage : MessageBase
 {
-    public uint netId;
+    public uint lane;
     public Vector2 position;
 
     public override void Deserialize(NetworkReader reader)
     {
-        netId = reader.ReadPackedUInt32();
+        lane = reader.ReadPackedUInt32();
         position = reader.ReadVector2();
     }
 
     public override void Serialize(NetworkWriter writer)
     {
-        writer.WritePackedUInt32(netId);
+        writer.WritePackedUInt32(lane);
         writer.Write(position);
     }
 }

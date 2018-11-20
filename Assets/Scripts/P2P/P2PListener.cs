@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public class P2PListener
 {
+	public static P2PController p2PController;
 	static int recHostId;
 	static int connectionId;
 	static int channelId;
@@ -68,6 +69,12 @@ public class P2PListener
 		else if(readerMsgType == MessageTypes.RequestPlayersInfo)
 		{
 			P2PConnections.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
+		}
+		else if(readerMsgType == MessageTypes.Position)
+		{
+			PositionMessage message = new PositionMessage();
+			message.Deserialize(networkReader);
+			p2PController.ReceivePositionInformation(message);
 		}
     }
 }

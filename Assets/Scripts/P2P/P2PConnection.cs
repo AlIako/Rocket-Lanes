@@ -13,14 +13,20 @@ public class P2PConnection
 	public int lane; //todo
 	bool connectionSuccessful = false;
 
-	public P2PConnection(int hostId, int connectionId)
+	public P2PConnection(int hostId, int connectionId, bool fetchConectionInfo = true)
 	{
 		this.hostId = hostId;
 		this.connectionId = connectionId;
+		this.ip = "";
+		this.port = 0;
+		this.lane = 0;
 
-		UnityEngine.Networking.Types.NetworkID netId;
-        UnityEngine.Networking.Types.NodeID nodeId;
-		NetworkTransport.GetConnectionInfo(hostId, connectionId, out ip, out port, out netId, out nodeId, out P2PController.error);
+		if(fetchConectionInfo)
+		{
+			UnityEngine.Networking.Types.NetworkID netId;
+        	UnityEngine.Networking.Types.NodeID nodeId;
+			NetworkTransport.GetConnectionInfo(hostId, connectionId, out ip, out port, out netId, out nodeId, out P2PController.error);
+		}
 	}
 
 	public override string ToString()

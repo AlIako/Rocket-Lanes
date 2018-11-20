@@ -17,4 +17,10 @@ public class P2PSender
 		NetworkTransport.Send(hostId, connectionId, channelId, writerData, P2PController.bufferLength, out P2PController.error);
 		P2PController.CheckError("Send");
 	}
+
+	public static void SendToAll(int channelId, MessageBase message, short messageType)
+	{
+		foreach(P2PConnection connection in P2PConnections.connections)
+			Send(connection.hostId, connection.connectionId, channelId, message, messageType);
+	}
 }

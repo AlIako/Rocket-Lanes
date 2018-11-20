@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 
 public class P2PConnections
 {
-	static List<P2PConnection> connections = new List<P2PConnection>();
+	public static List<P2PConnection> connections = new List<P2PConnection>();
+	public static P2PController p2PController;
 	public static int myHostId;
 
 	public static bool requestPlayersInfoSent = false;
@@ -22,14 +23,16 @@ public class P2PConnections
 			//new connection from targeted ip or new player
 			connection = new P2PConnection(hostId, connectionId);
 			connection.SuccessfullyConnect();
-			connections.Add(connection);
-			Debug.Log("New connection with " + connection);
 
-			if(P2PController.GameStarted())
+			if(p2PController.GameStarted())
 			{
 				//todo
 				//here we would ask consent to others if the newcomer has the right to join the game
+				//and compute his lane Id
+				connection.lane = p2PController.GetGameController().GetFirstUnoccupiedLane().id;
 			}
+			connections.Add(connection);
+			Debug.Log("New connection with " + connection);
 		}
 		else if(!connection.ConnectionSuccessful())
 		{
@@ -38,7 +41,7 @@ public class P2PConnections
 		}
 
 		//on connecting to an existing game, request infos of other players
-		if(!P2PController.GameStarted())
+		if(!p2PController.GameStarted())
 		{
 			if(!requestPlayersInfoSent)
 				P2PConnections.RequestPlayersInfo(hostId, connectionId);
@@ -53,11 +56,13 @@ public class P2PConnections
 		PlayersInfoMessage message = new PlayersInfoMessage();
 		message.connections = new List<P2PConnection>();
 		foreach(P2PConnection connection in connections)
-		{
-			//send all connections except the one with the requester
-			if(!(connection.hostId == hostId && connection.connectionId == connectionId))
-				message.connections.Add(connection);
-		}
+			message.connections.Add(connection);
+
+		//add fake connection info for self (for lane)
+		P2PConnection fakeConnection = new P2PConnection(999, 999, false);
+		fakeConnection.lane = p2PController.myLane;
+		message.connections.Add(fakeConnection);
+
 		Debug.Log("Sharing players info, count: " + message.connections.Count);
 		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.PlayersInfo);
 	}
@@ -74,11 +79,25 @@ public class P2PConnections
 		{
 			foreach(P2PConnection connection in message.connections)
 			{
-				Debug.Log("Fetched and request connection with " + connection);
+				//get lane for first connection
+				if(connection.hostId == 999 && connection.connectionId == 999)
+				{
+					connections[0].lane = connection.lane;
+					//p2PController.SpawnPlayer(connection.lane);
+				}
+				//get lane for self
+				else if(connection.port == p2PController.myPort) //is port enough to identify? think about different devices
+				{
+					p2PController.myLane = connection.lane;
+				}
+				else
+				{
+					Debug.Log("Fetched and request connection with " + connection);
 
-				//send connection requests
-				NetworkTransport.Connect(myHostId, connection.ip, connection.port, 0, out P2PController.error);
-				P2PController.CheckError("Connect");
+					//send connection requests
+					NetworkTransport.Connect(myHostId, connection.ip, connection.port, 0, out P2PController.error);
+					P2PController.CheckError("Connect");
+				}
 			}
 		}
 		playersInfoReceived = true;
@@ -102,7 +121,7 @@ public class P2PConnections
 		}
 
 		if(connectedToAll)
-			P2PController.StartGame();
+			p2PController.StartGame();
 	}
 
 	public static void RemoveConnection(int recHostId, int connectionId)
