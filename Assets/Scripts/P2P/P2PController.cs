@@ -9,20 +9,21 @@ using UnityEngine.Networking;
 
 public class P2PController : MonoBehaviour, INetworkController
 {
-	GameController gameController;
 	int myPort;
 	string targetIp; //only when joining
 	int targetPort; //only when joining
 	bool initialized = false;
-	int myHostId;
 
-	public static int bufferLength = 256;
+	static GameController gameController;
+	public static int bufferLength = 1024;
 	public static byte error;
 
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
 		Initialize();
+
+		StartGame();
 	}
 
 	public void JoinGame()
@@ -30,7 +31,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
 		Initialize();
 
-		NetworkTransport.Connect(myHostId, targetIp, targetPort, 0, out error);
+		NetworkTransport.Connect(P2PConnections.myHostId, targetIp, targetPort, 0, out error);
 		CheckError("Connect");
 	}
 
@@ -53,10 +54,20 @@ public class P2PController : MonoBehaviour, INetworkController
 
 		HostTopology topology = new HostTopology(config, 10);
 
-		myHostId = NetworkTransport.AddHost(topology, myPort);
-		Debug.Log("myHostId: " + myHostId);
+		P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
+		//Debug.Log("myHostId: " + P2PConnections.myHostId);
 
 		initialized = true;
+	}
+
+	public static void StartGame()
+	{
+		P2PConnections.playersInfoReceived = true;
+		P2PConnections.requestPlayersInfoSent = true;
+		
+		if(P2PController.gameController == null)
+			P2PController.gameController = GameObject.FindObjectOfType<GameController>();
+		P2PController.gameController.StartGame();
 	}
 
 	void OnApplicationQuit()
@@ -72,9 +83,14 @@ public class P2PController : MonoBehaviour, INetworkController
         else Debug.Log( label + ": " + (NetworkError)error);
 	}
 
-	void Start()
+	void Awake()
 	{
-		gameController = GameObject.FindObjectOfType<GameController>();
+		P2PController.gameController = GameObject.FindObjectOfType<GameController>();
+	}
+
+	public static bool GameStarted()
+	{
+		return GameController.gameStarted;
 	}
 
 	public void SetMyPort(int port)

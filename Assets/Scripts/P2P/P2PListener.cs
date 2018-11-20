@@ -6,11 +6,12 @@ using UnityEngine.Networking;
 
 public class P2PListener
 {
+	static int recHostId;
+	static int connectionId;
+	static int channelId;
+	
 	public static void Listen()
 	{
-		int recHostId;
-		int connectionId;
-		int channelId;
 		byte[] recBuffer = new byte[P2PController.bufferLength];
 		int bufferSize = P2PController.bufferLength;
 		int dataSize;
@@ -28,16 +29,45 @@ public class P2PListener
 			case NetworkEventType.Nothing:
 				break;
 			case NetworkEventType.ConnectEvent:
-				P2PConnections.ShareConnections(recHostId, connectionId); //share other connections to the new arrived
-				P2PConnections.AddConnection(recHostId, connectionId, channelId);
+				P2PConnections.ConnectEvent(recHostId, connectionId);
 				break;
 			case NetworkEventType.DataEvent:
+				CreateNetworkReader(recBuffer);
 				break;
 			case NetworkEventType.DisconnectEvent:
-				P2PConnections.RemoveConnection(recHostId, connectionId, channelId);
+				P2PConnections.RemoveConnection(recHostId, connectionId);
 				break;
 			case NetworkEventType.BroadcastEvent:
 				break;
 		}
 	}
+
+	static void CreateNetworkReader(byte[] data)
+    {
+		//https://docs.unity3d.com/ScriptReference/Networking.NetworkReader.html
+        NetworkReader networkReader = new NetworkReader(data);
+
+        // The first two bytes in the buffer represent the size of the message. This is equal to the NetworkReader.Length
+        // minus the size of the prefix.
+        byte[] readerMsgSizeData = networkReader.ReadBytes(2);
+        short readerMsgSize = (short)((readerMsgSizeData[1] << 8) + readerMsgSizeData[0]);
+
+        // The message type added in NetworkWriter.StartMessage is to be read now. It is a short and so consists of
+        // two bytes. It is the second two bytes on the buffer.
+        byte[] readerMsgTypeData = networkReader.ReadBytes(2);
+        short readerMsgType = (short)((readerMsgTypeData[1] << 8) + readerMsgTypeData[0]);
+        Debug.Log("Message of type " + readerMsgType + ", of size " + readerMsgSize + " received");
+
+		if(readerMsgType == MessageTypes.PlayersInfo)
+		{
+			PlayersInfoMessage message = new PlayersInfoMessage();
+			message.Deserialize(networkReader);
+
+			P2PConnections.FetchPlayersInfo(message);
+		}
+		else if(readerMsgType == MessageTypes.RequestPlayersInfo)
+		{
+			P2PConnections.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
+		}
+    }
 }

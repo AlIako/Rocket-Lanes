@@ -6,9 +6,15 @@ using UnityEngine.Networking;
 
 public class P2PSender
 {
-	public static void Send(int hostId, int connectionId, int channelId, byte[] buffer)
+	public static void Send(int hostId, int connectionId, int channelId, MessageBase message, short messageType)
 	{
-		NetworkTransport.Send(hostId, connectionId, channelId, buffer, P2PController.bufferLength, out P2PController.error);
+		NetworkWriter writer = new NetworkWriter();
+		writer.StartMessage(messageType);
+		message.Serialize(writer);
+		writer.FinishMessage();
+		byte[] writerData = writer.ToArray();
+
+		NetworkTransport.Send(hostId, connectionId, channelId, writerData, P2PController.bufferLength, out P2PController.error);
 		P2PController.CheckError("Send");
 	}
 }

@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
 
 	INetworkController networkController;
 
+	public static bool gameStarted = false;
+
 	void Start()
 	{
 		NetworkChoser networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
@@ -24,6 +26,7 @@ public class GameController : MonoBehaviour
 	{
 		//Reveal in-game UI
 		InGameUI.SetActive(true);
+		gameStarted = true;
 	}
 
 	public int GetNextOccupiedLaneId(Player p)
