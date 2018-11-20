@@ -10,18 +10,16 @@ public class P2PConnection
 	public int connectionId;
 	public string ip;
 	public int port;
-	public int lane; //todo
 	bool connectionSuccessful = false;
 
-	public P2PConnection(int hostId, int connectionId, bool fetchConectionInfo = true)
+	public P2PConnection(int hostId, int connectionId, bool fetchConnectionInfo = true)
 	{
 		this.hostId = hostId;
 		this.connectionId = connectionId;
 		this.ip = "";
 		this.port = 0;
-		this.lane = 0;
 
-		if(fetchConectionInfo)
+		if(fetchConnectionInfo)
 		{
 			UnityEngine.Networking.Types.NetworkID netId;
         	UnityEngine.Networking.Types.NodeID nodeId;
@@ -31,7 +29,7 @@ public class P2PConnection
 
 	public override string ToString()
 	{
-		return ip + ":" + port + ", hostId: " + hostId + ", connectionId: " + connectionId + ", lane: " + lane;
+		return ip + ":" + port + ", hostId: " + hostId + ", connectionId: " + connectionId;
 	}
 
 	public void Disconnect()

@@ -21,8 +21,8 @@ public class P2PListener
 		
 		if(recData != NetworkEventType.Nothing)
 		{
-			Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
-						", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
+			//Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
+			//			", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
 		}
 		
 		switch (recData)

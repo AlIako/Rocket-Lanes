@@ -77,7 +77,6 @@ public class P2PController : MonoBehaviour, INetworkController
 		HostTopology topology = new HostTopology(config, 10);
 
 		P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
-		//Debug.Log("myHostId: " + P2PConnections.myHostId);
 
 		initialized = true;
 	}
@@ -96,7 +95,6 @@ public class P2PController : MonoBehaviour, INetworkController
 		if(gameController == null)
 			gameController = GameObject.FindObjectOfType<GameController>();
 
-		//spawn player
 		Player player1 = SpawnPlayer(myLane);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
@@ -114,7 +112,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	void SendPositionInformation()
 	{
 		float currentTime = Time.time * 1000;
-		if(currentTime - lastSendPosition > cooldownSendPosition)
+		if(GameStarted() && currentTime - lastSendPosition > cooldownSendPosition)
 		{
 			lastSendPosition = Time.time * 1000;
 			PositionMessage message = new PositionMessage();
@@ -146,7 +144,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
         if ((NetworkError)error != NetworkError.Ok)
             Debug.Log(label + " error: " + (NetworkError)error);
-        else Debug.Log( label + ": " + (NetworkError)error);
+        //else Debug.Log( label + ": " + (NetworkError)error);
 	}
 
 	void Start()
