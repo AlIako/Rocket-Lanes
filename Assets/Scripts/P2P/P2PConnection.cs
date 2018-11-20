@@ -7,7 +7,7 @@ public class P2PConnection
 {
 	public int hostId;
 	public int connectionId;
-	public int channelId;
+	public int channelId; //channelId maybe not defining a connection?
 
 	public P2PConnection(int hostId, int connectionId, int channelId)
 	{

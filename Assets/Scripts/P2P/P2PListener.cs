@@ -11,8 +11,8 @@ public class P2PListener
 		int recHostId;
 		int connectionId;
 		int channelId;
-		byte[] recBuffer = new byte[256];
-		int bufferSize = 256;
+		byte[] recBuffer = new byte[P2PController.bufferLength];
+		int bufferSize = P2PController.bufferLength;
 		int dataSize;
 		byte error;
 		NetworkEventType recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
@@ -28,11 +28,8 @@ public class P2PListener
 			case NetworkEventType.Nothing:
 				break;
 			case NetworkEventType.ConnectEvent:
+				P2PConnections.ShareConnections(recHostId, connectionId); //share other connections to the new arrived
 				P2PConnections.AddConnection(recHostId, connectionId, channelId);
-				//buffer = Encoding.UTF8.GetBytes("Hello from " + myPort);
-				//When the connection is done, a ConnectEvent is received. Now you can start sending data.
-				//NetworkTransport.Send(recHostId, connectionId, myReliableChannelId, buffer, bufferLength, out error);
-				//P2PController.CheckError("Send");
 				break;
 			case NetworkEventType.DataEvent:
 				break;

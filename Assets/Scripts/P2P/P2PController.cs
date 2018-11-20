@@ -10,18 +10,13 @@ using UnityEngine.Networking;
 public class P2PController : MonoBehaviour, INetworkController
 {
 	GameController gameController;
-	string targetIp;
 	int myPort;
-	int targetPort;
-
+	string targetIp; //only when joining
+	int targetPort; //only when joining
 	bool initialized = false;
-
-	int myReliableChannelId;
-	//int myUnreliableChannelId;
-	ConnectionConfig config;
-	HostTopology topology;
 	int myHostId;
-	
+
+	public static int bufferLength = 256;
 	public static byte error;
 
 	public void NewGame()
@@ -52,11 +47,11 @@ public class P2PController : MonoBehaviour, INetworkController
 		//https://docs.unity3d.com/Manual/UNetUsingTransport.html
 		NetworkTransport.Init();
 
-		config = new ConnectionConfig();
-		myReliableChannelId = config.AddChannel(QosType.Reliable);
-		//myUnreliableChannelId = config.AddChannel(QosType.Unreliable);
+		ConnectionConfig config = new ConnectionConfig();
+		P2PChannels.ReliableChannelId = config.AddChannel(QosType.Reliable);
+		P2PChannels.UnreliableChannelId = config.AddChannel(QosType.Unreliable);
 
-		topology = new HostTopology(config, 10);
+		HostTopology topology = new HostTopology(config, 10);
 
 		myHostId = NetworkTransport.AddHost(topology, myPort);
 		Debug.Log("myHostId: " + myHostId);

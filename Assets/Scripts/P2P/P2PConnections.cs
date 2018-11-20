@@ -7,6 +7,13 @@ public class P2PConnections
 {
 	static List<P2PConnection> connections = new List<P2PConnection>();
 
+	public static void ShareConnections(int hostId, int connectionId)
+	{
+		byte[] buffer = new byte[P2PController.bufferLength];
+		buffer = System.Text.Encoding.UTF8.GetBytes("Hello, here are informations about other connections: " + connections.Count);
+		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, buffer);
+	}
+
 	public static void AddConnection(int recHostId, int connectionId, int channelId)
 	{
 		P2PConnection connection = connections.FirstOrDefault(c => 

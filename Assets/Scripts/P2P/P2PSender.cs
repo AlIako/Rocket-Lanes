@@ -6,8 +6,9 @@ using UnityEngine.Networking;
 
 public class P2PSender
 {
-	//static byte[] buffer = new byte[256];
-	//static int bufferLength = 256;
-
-
+	public static void Send(int hostId, int connectionId, int channelId, byte[] buffer)
+	{
+		NetworkTransport.Send(hostId, connectionId, channelId, buffer, P2PController.bufferLength, out P2PController.error);
+		P2PController.CheckError("Send");
+	}
 }
