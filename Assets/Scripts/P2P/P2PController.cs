@@ -20,22 +20,31 @@ public class P2PController : MonoBehaviour, INetworkController
 	//int myUnreliableChannelId;
 	ConnectionConfig config;
 	HostTopology topology;
-	int hostId;
-	byte error;
-	int connectionId;
-	byte[] buffer = new byte[256];
-	int bufferLength = 256;
-
-	void Start ()
-	{
-		gameController = GameObject.FindObjectOfType<GameController>();
-	}
+	int myHostId;
+	
+	public static byte error;
 
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
-
 		Initialize();
+	}
+
+	public void JoinGame()
+	{
+		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
+		Initialize();
+
+		NetworkTransport.Connect(myHostId, targetIp, targetPort, 0, out error);
+		CheckError("Connect");
+	}
+
+	void Update()
+	{
+		if(!initialized)
+			return;
+
+		P2PListener.Listen();
 	}
 
 	public void Initialize()
@@ -47,75 +56,30 @@ public class P2PController : MonoBehaviour, INetworkController
 		myReliableChannelId = config.AddChannel(QosType.Reliable);
 		//myUnreliableChannelId = config.AddChannel(QosType.Unreliable);
 
-		topology = new HostTopology(config, 3);
+		topology = new HostTopology(config, 10);
 
-		hostId = NetworkTransport.AddHost(topology, myPort);
-		Debug.Log("hostId: " + hostId);
+		myHostId = NetworkTransport.AddHost(topology, myPort);
+		Debug.Log("myHostId: " + myHostId);
 
 		initialized = true;
 	}
 
-	public void JoinGame()
-	{
-		GameObject IPField = GameObject.FindGameObjectWithTag("IPField");
-		targetIp = IPField.GetComponent<InputField>().text;
-
-		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
-
-		Initialize();
-
-		connectionId = NetworkTransport.Connect(hostId, targetIp, targetPort, 0, out error);
-		Debug.Log("connectionId: " + connectionId);
-		CheckError("Connect");
-	}
-
 	void OnApplicationQuit()
     {
-		NetworkTransport.Disconnect(hostId, connectionId, out error);
-		CheckError("Disconnect");
+		P2PConnections.DisconnectAll();
 		NetworkTransport.Shutdown();
     }
 
-	void Update()
-	{
-		if(!initialized)
-			return;
-		
-		int recHostId; 
-		int connectionId; 
-		int channelId; 
-		byte[] recBuffer = new byte[256]; 
-		int bufferSize = 256;
-		int dataSize;
-		byte error;
-		NetworkEventType recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
-		switch (recData)
-		{
-			case NetworkEventType.Nothing:
-				break;
-			case NetworkEventType.ConnectEvent:
-				buffer = Encoding.UTF8.GetBytes("Hello!");
-				//When the connection is done, a ConnectEvent is received. Now you can start sending data.
-				NetworkTransport.Send(hostId, connectionId, myReliableChannelId, buffer, bufferLength, out error);
-				CheckError("Send");
-				break;
-			case NetworkEventType.DataEvent:
-				break;
-			case NetworkEventType.DisconnectEvent:
-				break;
-			case NetworkEventType.BroadcastEvent:
-				break;
-		}
-		if(recData != NetworkEventType.Nothing)
-			Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
-						", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
-	}
-
-	void CheckError(string label)
+	public static void CheckError(string label)
 	{
         if ((NetworkError)error != NetworkError.Ok)
             Debug.Log(label + " error: " + (NetworkError)error);
         else Debug.Log( label + ": " + (NetworkError)error);
+	}
+
+	void Start()
+	{
+		gameController = GameObject.FindObjectOfType<GameController>();
 	}
 
 	public void SetMyPort(int port)
@@ -126,6 +90,11 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void SetTargetPort(int port)
 	{
 		this.targetPort = port;
+	}
+
+	public void SetTargetIp(string ip)
+	{
+		this.targetIp = ip;
 	}
 
 
