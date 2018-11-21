@@ -80,7 +80,7 @@ public class P2PConnections
 		{
 			Debug.Log("Game is full");
 			p2PController.myLane = -1;
-			p2PController.LeaveGame();
+			p2PController.DisplayError("Game is full");
 			return;
 		}
 

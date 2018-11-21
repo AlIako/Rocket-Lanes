@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour
 		gameStarted = true;
 	}
 
-	public void LeaveGame()
+	public void LeaveGame(bool enterUI = true)
 	{
 		networkController.Quit();
 		
@@ -41,7 +41,8 @@ public class GameController : MonoBehaviour
 		gameStarted = false;
 		player = null;
 
-		networkChoser.EnterLobbyUI();
+		if(enterUI)
+			networkChoser.EnterLobbyUI();
 	}
 
 	public int GetNextOccupiedLaneId(Player p)

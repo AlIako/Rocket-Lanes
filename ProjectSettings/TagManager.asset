@@ -8,6 +8,8 @@ TagManager:
   - IPField
   - TargetPortField
   - MyPortField
+  - ErrorText
+  - ErrorPanel
   layers:
   - Default
   - TransparentFX

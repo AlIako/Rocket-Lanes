@@ -125,6 +125,12 @@ public class P2PController : MonoBehaviour, INetworkController
 			Destroy(p.gameObject);
 	}
 
+	public void DisplayError(string er)
+	{
+		gameController.LeaveGame(false);
+		FindObjectOfType<UIController>().DisplayError(er);
+	}
+
 	public Player SpawnPlayer(int lane)
 	{
 		Player player = Instantiate(playerPrefab, gameController.lanes[lane].startPosition.transform.position, Quaternion.identity);
