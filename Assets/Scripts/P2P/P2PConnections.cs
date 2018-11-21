@@ -150,4 +150,11 @@ public class P2PConnections
 								c.connectionId == connectionId);
 		return connection;
 	}
+
+	public static void Reset()
+	{
+		connections = new List<P2PConnection>();
+		requestPlayersInfoSent = false;
+		playersInfoReceived = false;
+	}
 }

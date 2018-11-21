@@ -108,10 +108,21 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void LeaveGame()
 	{
+		initialized = false;
 		P2PConnections.DisconnectAll();
 		NetworkTransport.Shutdown();
 
+		P2PConnections.Reset();
 		players.Clear();
+		
+		//destroy rockets and players
+		Rocket[] rockets = FindObjectsOfType<Rocket>();
+		foreach(Rocket rocket in rockets)
+			Destroy(rocket.gameObject);
+			
+		Player[] ps = FindObjectsOfType<Player>();
+		foreach(Player p in ps)
+			Destroy(p.gameObject);
 	}
 
 	public Player SpawnPlayer(int lane)
