@@ -76,7 +76,7 @@ public class NetworkChoser : MonoBehaviour
 			ChoseP2P.SetActive(true);
 		}
 		
-		gameController.SetActive(true);
+		gameController.GetComponent<GameController>().networkController = currentController.GetComponent<INetworkController>();
 	}
 
 	void DeactivateControllers()

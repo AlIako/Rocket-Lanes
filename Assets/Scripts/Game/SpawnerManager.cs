@@ -13,7 +13,9 @@ public class SpawnerManager : MonoBehaviour
 	[SerializeField]
 	bool alwaysSpawning = false;
 
+	[SerializeField]
 	List<GameObject> spawners;
+
 	float lastSpawn = 0.0f;
 
 	void Start ()

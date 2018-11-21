@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TargetIp : MonoBehaviour
 {
-	void Start()
+	void OnEnable()
 	{
 		UpdateField();
 	}

@@ -13,9 +13,6 @@ public class P2PController : MonoBehaviour, INetworkController
 	[SerializeField]
 	Player playerPrefab;
 
-	[SerializeField]
-	List<Transform> spawns;
-
 	[HideInInspector]
 	public int myPort;
 
@@ -36,10 +33,15 @@ public class P2PController : MonoBehaviour, INetworkController
 	float lastSendPosition = 0;
 	float cooldownSendPosition = 100;
 
+	void Start()
+	{
+		gameController = GameObject.FindObjectOfType<GameController>();
+		Initialize();
+	}
+
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
-		Initialize();
 
 		StartNewGame();
 	}
@@ -47,7 +49,6 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void JoinGame()
 	{
 		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
-		Initialize();
 
 		NetworkTransport.Connect(P2PConnections.myHostId, targetIp, targetPort, 0, out error);
 		CheckError("Connect");
@@ -76,9 +77,8 @@ public class P2PController : MonoBehaviour, INetworkController
 
 		HostTopology topology = new HostTopology(config, 10);
 
-		P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
-
-		initialized = true;
+		int myHostId = P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
+		Debug.Log("MyHostId: " + myHostId);
 	}
 
 	public void StartNewGame()
@@ -91,15 +91,14 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		P2PConnections.playersInfoReceived = true;
 		P2PConnections.requestPlayersInfoSent = true;
-		
-		if(gameController == null)
-			gameController = GameObject.FindObjectOfType<GameController>();
 
 		Player player1 = SpawnPlayer(myLane);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
 
 		gameController.StartGame();
+
+		initialized = true;
 	}
 
 	public void Quit()
@@ -113,12 +112,11 @@ public class P2PController : MonoBehaviour, INetworkController
 		NetworkTransport.Shutdown();
 
 		players.Clear();
-		gameController.LeaveGame();
 	}
 
 	public Player SpawnPlayer(int lane)
 	{
-		Player player = Instantiate(playerPrefab, spawns[lane].transform.position, Quaternion.identity);
+		Player player = Instantiate(playerPrefab, gameController.lanes[lane].startPosition.transform.position, Quaternion.identity);
 		players.Add(player);
 		return player;
 	}
@@ -172,15 +170,8 @@ public class P2PController : MonoBehaviour, INetworkController
         //else Debug.Log( label + ": " + (NetworkError)error);
 	}
 
-	void Start()
-	{
-		gameController = GameObject.FindObjectOfType<GameController>();
-	}
-
 	public GameController GetGameController()
 	{
-		if(gameController == null)
-			gameController = GameObject.FindObjectOfType<GameController>();
 		return gameController;
 	}
 

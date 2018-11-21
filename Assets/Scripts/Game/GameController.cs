@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour
 	[HideInInspector]
 	public Player player;
 
-	INetworkController networkController;
+	[HideInInspector]
+	public INetworkController networkController;
+	
 	NetworkChoser networkChoser;
 
 	public static bool gameStarted = false;

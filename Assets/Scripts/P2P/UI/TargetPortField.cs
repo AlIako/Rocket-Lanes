@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class TargetPortField : MonoBehaviour
 {
-	void Start()
+	void OnEnable()
 	{
 		UpdateField();
 	}

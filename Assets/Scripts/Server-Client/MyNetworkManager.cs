@@ -20,7 +20,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
     {
 		Lane lane = gameController.GetFirstUnoccupiedLane();
         GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, lane.startPosition.transform.position, Quaternion.identity);
-		//Player player = playerGameObject.GetComponent<Player>();
 
 		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
 		if(playerNetwork != null)
@@ -51,6 +50,17 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public void Quit()
 	{
+		if(NetworkServer.active)
+		{
+			//destroy rockets and players
+			Rocket[] rockets = FindObjectsOfType<Rocket>();
+			foreach(Rocket rocket in rockets)
+				Destroy(rocket.gameObject);
+				
+			Player[] players = FindObjectsOfType<Player>();
+			foreach(Player p in players)
+				Destroy(p.gameObject);
+		}
 		NetworkServer.Shutdown();
 	}
 

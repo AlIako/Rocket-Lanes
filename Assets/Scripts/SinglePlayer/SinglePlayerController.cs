@@ -13,6 +13,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
+		Debug.Log("Found gameController: " + gameController);
 
 		Initialize();
 	}
@@ -58,7 +59,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
 			//get random lane index from targeted spawnManager
-			gameController = GameObject.FindObjectOfType<GameController>();
+			//gameController = GameObject.FindObjectOfType<GameController>();
 			return gameController.lanes[parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
 		return -1;
@@ -68,6 +69,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
+			Debug.Log("ap1: " + parameters[1] + ", lane count: " + gameController.lanes.Length);
 			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
 		}
 	}
