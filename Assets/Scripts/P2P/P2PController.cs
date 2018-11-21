@@ -102,6 +102,20 @@ public class P2PController : MonoBehaviour, INetworkController
 		gameController.StartGame();
 	}
 
+	public void Quit()
+	{
+		LeaveGame();
+	}
+
+	public void LeaveGame()
+	{
+		P2PConnections.DisconnectAll();
+		NetworkTransport.Shutdown();
+
+		players.Clear();
+		gameController.LeaveGame();
+	}
+
 	public Player SpawnPlayer(int lane)
 	{
 		Player player = Instantiate(playerPrefab, spawns[lane].transform.position, Quaternion.identity);
@@ -148,8 +162,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	void OnApplicationQuit()
     {
-		P2PConnections.DisconnectAll();
-		NetworkTransport.Shutdown();
+		LeaveGame();
     }
 
 	public static void CheckError(string label)

@@ -8,9 +8,6 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	[SerializeField]
 	Player playerPrefab;
 
-	[SerializeField]
-	List<Transform> spawns;
-
 	GameController gameController;
 
 	void Start()
@@ -23,7 +20,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 	public void Initialize()
 	{
 		//spawn player
-		Player player1 = Instantiate(playerPrefab, spawns[0].transform.position, Quaternion.identity);
+		Player player1 = Instantiate(playerPrefab, gameController.lanes[0].startPosition.transform.position, Quaternion.identity);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
 		
@@ -31,11 +28,23 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		//spawn AIs
 		for(int i = 0; i < 3; i++)
 		{
-			Player playerAI = Instantiate(playerPrefab, spawns[1 + i].transform.position, Quaternion.identity);
+			Player playerAI = Instantiate(playerPrefab, gameController.lanes[1 + i].startPosition.transform.position, Quaternion.identity);
 			playerAI.gameObject.AddComponent<AI>();
 		}
 
 		gameController.StartGame();
+	}
+
+	public void Quit()
+	{
+		//destroy rockets and players
+		Rocket[] rockets = FindObjectsOfType<Rocket>();
+		foreach(Rocket rocket in rockets)
+			Destroy(rocket.gameObject);
+			
+		Player[] players = FindObjectsOfType<Player>();
+		foreach(Player p in players)
+			Destroy(p.gameObject);
 	}
 
     public void SpawnRocket(int fromPlayerId, int toPlayerId)
@@ -49,6 +58,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
 			//get random lane index from targeted spawnManager
+			gameController = GameObject.FindObjectOfType<GameController>();
 			return gameController.lanes[parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
 		return -1;

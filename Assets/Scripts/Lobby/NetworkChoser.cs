@@ -22,6 +22,8 @@ public class NetworkChoser : MonoBehaviour
 	[SerializeField]
 	GameObject ChoseP2P;
 
+	private GameObject currentController = null;
+
 	public enum NetworkType {Singleplayer, ServerClient, P2P};
 	[SerializeField]
 	private NetworkType netType = NetworkType.Singleplayer;
@@ -47,35 +49,43 @@ public class NetworkChoser : MonoBehaviour
 			networkController = P2PController.GetComponent<P2PController>();
 	}
 
+	public void EnterLobbyUI()
+	{
+		lobbyUI.SetActive(true);
+		DeactivateControllers();
+	}
+
 	void QuitLobbyUI()
 	{
 		lobbyUI.SetActive(false);
 	}
+
 	void ActivateControllers()
 	{
 		if(this.netType == NetworkType.Singleplayer)
 		{
-			singlePlayerController.SetActive(true);
-			Destroy(P2PController);
-			Destroy(ChoseP2P);
-			Destroy(serverClientNetworkManager);
+			currentController = Instantiate(singlePlayerController);
 		}
 		else if(this.netType == NetworkType.ServerClient)
 		{
-			serverClientNetworkManager.SetActive(true);
-			Destroy(P2PController);
-			Destroy(ChoseP2P);
-			Destroy(singlePlayerController);
+			currentController = Instantiate(serverClientNetworkManager);
 		}
 		else if(this.netType == NetworkType.P2P)
 		{
-			P2PController.SetActive(true);
+			currentController = Instantiate(P2PController);
 			ChoseP2P.SetActive(true);
-
-			Destroy(serverClientNetworkManager);
-			Destroy(singlePlayerController);
 		}
 		
 		gameController.SetActive(true);
+	}
+
+	void DeactivateControllers()
+	{
+		if(currentController != null)
+		{
+			Destroy(currentController.gameObject);
+			currentController = null;
+			ChoseP2P.SetActive(false);
+		}
 	}
 }

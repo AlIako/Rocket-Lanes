@@ -13,12 +13,13 @@ public class GameController : MonoBehaviour
 	public Player player;
 
 	INetworkController networkController;
+	NetworkChoser networkChoser;
 
 	public static bool gameStarted = false;
 
 	void Start()
 	{
-		NetworkChoser networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
+		networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
 		networkController = networkChoser.networkController;
 	}
 
@@ -27,6 +28,18 @@ public class GameController : MonoBehaviour
 		//Reveal in-game UI
 		InGameUI.SetActive(true);
 		gameStarted = true;
+	}
+
+	public void LeaveGame()
+	{
+		networkController.Quit();
+		
+		//Reveal in-game UI
+		InGameUI.SetActive(false);
+		gameStarted = false;
+		player = null;
+
+		networkChoser.EnterLobbyUI();
 	}
 
 	public int GetNextOccupiedLaneId(Player p)

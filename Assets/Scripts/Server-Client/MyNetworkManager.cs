@@ -49,6 +49,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		NetworkServer.RegisterHandler(NetworkMessages.AskForConsentMsg, OnAskForConsentMsg);
 	}
 
+	public void Quit()
+	{
+		NetworkServer.Shutdown();
+	}
+
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
 		IntArrayMessage msg = new IntArrayMessage();

@@ -53,7 +53,10 @@ public class P2PConnections
 	{
 		PlayersInfoMessage message = new PlayersInfoMessage();
 
-		message.freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane().id;
+		Lane freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane();
+		if(freeLane == null)
+			message.freeLane = 10;
+		else message.freeLane = freeLane.id;
 
 		message.connections = new List<P2PConnection>();
 		foreach(P2PConnection connection in connections)
@@ -70,8 +73,16 @@ public class P2PConnections
 	public static void FetchPlayersInfo(PlayersInfoMessage message)
 	{
 		Debug.Log("Fetching players infos..." + message.connections.Count + " my lane: " + message.freeLane);
+		playersInfoReceived = true;
 		
 		p2PController.myLane = message.freeLane;
+		if(!(p2PController.myLane >= 0 && p2PController.myLane < 4))
+		{
+			Debug.Log("Game is full");
+			p2PController.myLane = -1;
+			p2PController.LeaveGame();
+			return;
+		}
 
 		if(connections.Count > 1)
 		{
@@ -88,7 +99,6 @@ public class P2PConnections
 				P2PController.CheckError("Connect");
 			}
 		}
-		playersInfoReceived = true;
 		CheckConnectionsStatus();
 	}
 
