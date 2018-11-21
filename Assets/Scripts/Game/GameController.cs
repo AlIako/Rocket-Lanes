@@ -36,7 +36,6 @@ public class GameController : MonoBehaviour
 	{
 		networkController.Quit();
 		
-		//Reveal in-game UI
 		InGameUI.SetActive(false);
 		gameStarted = false;
 		player = null;
