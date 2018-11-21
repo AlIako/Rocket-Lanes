@@ -36,12 +36,12 @@ public class P2PController : MonoBehaviour, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
-		Initialize();
 	}
 
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
+		Initialize();
 
 		StartNewGame();
 	}
@@ -49,6 +49,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void JoinGame()
 	{
 		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
+		Initialize();
 
 		NetworkTransport.Connect(P2PConnections.myHostId, targetIp, targetPort, 0, out error);
 		CheckError("Connect");
@@ -78,7 +79,8 @@ public class P2PController : MonoBehaviour, INetworkController
 		HostTopology topology = new HostTopology(config, 10);
 
 		int myHostId = P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
-		Debug.Log("MyHostId: " + myHostId);
+
+		initialized = true;
 	}
 
 	public void StartNewGame()
@@ -97,8 +99,6 @@ public class P2PController : MonoBehaviour, INetworkController
 		gameController.player = player1;
 
 		gameController.StartGame();
-
-		initialized = true;
 	}
 
 	public void Quit()
