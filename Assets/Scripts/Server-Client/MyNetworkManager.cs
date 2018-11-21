@@ -52,6 +52,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	{
 		ClientScene.DestroyAllClientObjects();
 		NetworkServer.SetAllClientsNotReady();
+		NetworkServer.Reset();
 		NetworkServer.Shutdown();
 	}
 
