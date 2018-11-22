@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -9,20 +10,20 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	GameObject InGameUI;
 
+	[SerializeField]
+	GameObject networkControllerGameObject;
+
 	[HideInInspector]
 	public Player player;
 
 	[HideInInspector]
-	public INetworkController networkController;
-	
-	NetworkChoser networkChoser;
-
 	public static bool gameStarted = false;
+
+	INetworkController networkController;
 
 	void Start()
 	{
-		networkChoser = GameObject.FindObjectOfType<NetworkChoser>();
-		networkController = networkChoser.networkController;
+		networkController = networkControllerGameObject.GetComponent<INetworkController>();
 	}
 
 	public void StartGame()
@@ -41,7 +42,7 @@ public class GameController : MonoBehaviour
 		player = null;
 
 		if(enterUI)
-			networkChoser.EnterLobbyUI();
+        	SceneManager.LoadScene("Main Menu");
 	}
 
 	public int GetNextOccupiedLaneId(Player p)

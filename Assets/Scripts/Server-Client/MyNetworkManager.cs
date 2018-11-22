@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 
 public class MyNetworkManager : NetworkManager, INetworkController
 {
-	public NetworkStartPosition[] playerSpawns;
 	GameController gameController;
 	NetworkClient networkClient;
 
@@ -13,6 +12,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
 		Initialize();
+	}
+
+	void Awake()
+	{
+		
 	}
 
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
