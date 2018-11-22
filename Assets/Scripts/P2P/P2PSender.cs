@@ -20,7 +20,7 @@ public class P2PSender
 
 	public static void SendToAll(int channelId, MessageBase message, short messageType)
 	{
-		foreach(P2PConnection connection in P2PConnections.connections)
+		foreach(P2PConnection connection in P2PConnectionManager.connections)
 			Send(connection.hostId, connection.connectionId, channelId, message, messageType);
 	}
 }

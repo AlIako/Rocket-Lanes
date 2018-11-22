@@ -31,13 +31,13 @@ public class P2PListener
 			case NetworkEventType.Nothing:
 				break;
 			case NetworkEventType.ConnectEvent:
-				P2PConnections.ConnectEvent(recHostId, connectionId);
+				P2PConnectionManager.ConnectEvent(recHostId, connectionId);
 				break;
 			case NetworkEventType.DataEvent:
 				CreateNetworkReader(recBuffer);
 				break;
 			case NetworkEventType.DisconnectEvent:
-				P2PConnections.RemoveConnection(recHostId, connectionId);
+				P2PConnectionManager.RemoveConnection(recHostId, connectionId);
 				break;
 			case NetworkEventType.BroadcastEvent:
 				break;
@@ -51,25 +51,25 @@ public class P2PListener
 
         // The first two bytes in the buffer represent the size of the message. This is equal to the NetworkReader.Length
         // minus the size of the prefix.
-        //byte[] readerMsgSizeData = networkReader.ReadBytes(2);
+        byte[] readerMsgSizeData = networkReader.ReadBytes(2);
         //short readerMsgSize = (short)((readerMsgSizeData[1] << 8) + readerMsgSizeData[0]);
 
         // The message type added in NetworkWriter.StartMessage is to be read now. It is a short and so consists of
         // two bytes. It is the second two bytes on the buffer.
         byte[] readerMsgTypeData = networkReader.ReadBytes(2);
         short readerMsgType = (short)((readerMsgTypeData[1] << 8) + readerMsgTypeData[0]);
-        //Debug.Log("Message of type " + readerMsgType + ", of size " + readerMsgSize + " received");
+        //Debug.Log("Message of type " + readerMsgType + " received");
 
 		if(readerMsgType == MessageTypes.PlayersInfo)
 		{
 			PlayersInfoMessage message = new PlayersInfoMessage();
 			message.Deserialize(networkReader);
 
-			P2PConnections.FetchPlayersInfo(message);
+			P2PConnectionManager.FetchPlayersInfo(message);
 		}
 		else if(readerMsgType == MessageTypes.RequestPlayersInfo)
 		{
-			P2PConnections.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
+			P2PConnectionManager.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
 		}
 		else if(readerMsgType == MessageTypes.Position)
 		{

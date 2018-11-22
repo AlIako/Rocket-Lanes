@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class P2PConnections
+public class P2PConnectionManager
 {
 	public static List<P2PConnection> connections = new List<P2PConnection>();
 	public static P2PController p2PController;
@@ -15,7 +15,7 @@ public class P2PConnections
 
 	public static void ConnectEvent(int hostId, int connectionId)
 	{
-		P2PConnection connection = P2PConnections.GetConnection(hostId, connectionId);
+		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
 
 		if(connection == null)
 		{
@@ -41,8 +41,9 @@ public class P2PConnections
 		//on connecting to an existing game, request infos of other players
 		if(!p2PController.GameStarted())
 		{
+			//Debug.Log("Game not started yet");
 			if(!requestPlayersInfoSent)
-				P2PConnections.RequestPlayersInfo(hostId, connectionId);
+				P2PConnectionManager.RequestPlayersInfo(hostId, connectionId);
 			if(playersInfoReceived)
 				CheckConnectionsStatus();
 		}
@@ -104,6 +105,7 @@ public class P2PConnections
 
 	public static void RequestPlayersInfo(int hostId, int connectionId)
 	{
+		//Debug.Log("RequestPlayersInfo");
 		requestPlayersInfoSent = true;
 		RequestPlayersInfoMessage message = new RequestPlayersInfoMessage();
 		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.RequestPlayersInfo);
@@ -125,7 +127,7 @@ public class P2PConnections
 
 	public static void RemoveConnection(int hostId, int connectionId)
 	{
-		P2PConnection connection = P2PConnections.GetConnection(hostId, connectionId);
+		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
 		if(connection == null)
 			Debug.Log("Warning! Connection with " + connection + " doesn't exist");
 		else

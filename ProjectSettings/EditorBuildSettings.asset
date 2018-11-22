@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/P2P.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/Main Menu.unity
+    guid: 93115ed89668918409b58e626f700035
   - enabled: 1
     path: Assets/Scenes/Server-Client.unity
     guid: 10280e3dba12d024286cc131f13792d8
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: 93115ed89668918409b58e626f700035
+    path: Assets/Scenes/P2P.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/SinglePlayer.unity
+    guid: 14a16c6af01454841a87ff33b04e16ef
   m_configObjects: {}
