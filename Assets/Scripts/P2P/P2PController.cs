@@ -23,7 +23,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	string targetIp; //only when joining
 	int targetPort; //only when joining
-	bool initialized = false;
+	int initialized = 0;
 	List<Player> players = new List<Player>();
 
 	public static int bufferLength = 1024;
@@ -57,8 +57,8 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	void Update()
 	{
-		if(!initialized)
-			return;
+		if(initialized < 2)
+			return; 
 		
 		SendPositionInformation();
 		P2PListener.Listen();
@@ -79,8 +79,9 @@ public class P2PController : MonoBehaviour, INetworkController
 		HostTopology topology = new HostTopology(config, 10);
 
 		int myHostId = P2PConnections.myHostId = NetworkTransport.AddHost(topology, myPort);
+		Debug.Log("MyHostId: " + myHostId);
 
-		initialized = true;
+		initialized ++;
 	}
 
 	public void StartNewGame()
@@ -108,7 +109,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void LeaveGame()
 	{
-		initialized = false;
+		initialized = 0;
 		P2PConnections.DisconnectAll();
 		NetworkTransport.Shutdown();
 
