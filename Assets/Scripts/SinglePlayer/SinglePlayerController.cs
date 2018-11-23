@@ -59,7 +59,6 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
 			//get random lane index from targeted spawnManager
-			//gameController = GameObject.FindObjectOfType<GameController>();
 			return gameController.lanes[parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
 		return -1;

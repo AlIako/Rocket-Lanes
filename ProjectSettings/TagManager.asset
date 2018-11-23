@@ -10,6 +10,7 @@ TagManager:
   - MyPortField
   - ErrorText
   - ErrorPanel
+  - Grid
   layers:
   - Default
   - TransparentFX

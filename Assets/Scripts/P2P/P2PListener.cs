@@ -51,7 +51,7 @@ public class P2PListener
 
         // The first two bytes in the buffer represent the size of the message. This is equal to the NetworkReader.Length
         // minus the size of the prefix.
-        byte[] readerMsgSizeData = networkReader.ReadBytes(2);
+        networkReader.ReadBytes(2);
         //short readerMsgSize = (short)((readerMsgSizeData[1] << 8) + readerMsgSizeData[0]);
 
         // The message type added in NetworkWriter.StartMessage is to be read now. It is a short and so consists of

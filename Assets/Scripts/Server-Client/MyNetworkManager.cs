@@ -11,12 +11,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
-		Initialize();
-	}
-
-	void Awake()
-	{
-		
 	}
 
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
@@ -52,12 +46,26 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		NetworkServer.RegisterHandler(NetworkMessages.AskForConsentMsg, OnAskForConsentMsg);
 	}
 
+	public override void OnStartHost()
+	{
+		Initialize();
+		base.OnStartHost();
+	}
+
+
+
 	public void Quit()
 	{
+		StopClient();
+		StopHost();
+		StopServer();
+		
+		/*NetworkServer.UnregisterHandler(NetworkMessages.AskForConsentMsg);
+		
 		ClientScene.DestroyAllClientObjects();
 		NetworkServer.SetAllClientsNotReady();
 		NetworkServer.Reset();
-		NetworkServer.Shutdown();
+		NetworkServer.Shutdown();*/
 	}
 
     public int AskForConsent(ConsentAction consentAction, int[] parameters)

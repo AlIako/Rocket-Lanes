@@ -35,10 +35,9 @@ public class GameController : MonoBehaviour
 
 	public void LeaveGame(bool enterUI = true)
 	{
+		gameStarted = false;
 		networkController.Quit();
 		
-		InGameUI.SetActive(false);
-		gameStarted = false;
 		player = null;
 
 		if(enterUI)
@@ -86,10 +85,10 @@ public class GameController : MonoBehaviour
 		int[] parametersInt = parameters.ToArray();
 		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
 		Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
-		if(consentResult != -1)
+		/*if(consentResult != -1)
 		{
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
-		}
+		}*/
 	}
 
 	public bool HandleCollisions(Lane lane)

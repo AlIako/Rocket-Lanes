@@ -536,6 +536,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 5101928406406588000, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5101928406406588002, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1119,7 +1124,7 @@ MonoBehaviour:
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
   m_NetworkAddress: localhost
-  m_DontDestroyOnLoad: 1
+  m_DontDestroyOnLoad: 0
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01

@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 5101928406406588003}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4006,6 +4006,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 61830416675117184, guid: 4cc615b171df85a4596ab1757bbfda12,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.16
+      objectReference: {fileID: 0}
     - target: {fileID: 114592056760338930, guid: 4cc615b171df85a4596ab1757bbfda12,
         type: 3}
       propertyPath: spawnManager
@@ -4016,11 +4021,6 @@ PrefabInstance:
       propertyPath: startPosition
       value: 
       objectReference: {fileID: 5141718275674463876}
-    - target: {fileID: 61830416675117184, guid: 4cc615b171df85a4596ab1757bbfda12,
-        type: 3}
-      propertyPath: m_Size.x
-      value: 0.16
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
 --- !u!4 &5106273638457047578 stripped
