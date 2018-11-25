@@ -39,7 +39,6 @@ public class Rocket : MonoBehaviour
 
 	public void OnDestroy()
     {
-		if(GameController.gameStarted)
-			Instantiate(explosionFX, transform.position, Quaternion.identity);
+		Instantiate(explosionFX, transform.position, Quaternion.identity);
     }
 }

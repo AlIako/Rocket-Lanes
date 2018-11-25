@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 
 public class P2PSender
 {
-	public static void Send(int hostId, int connectionId, int channelId, MessageBase message, short messageType)
+	public P2PConnectionManager p2PConnectionManager;
+	public void Send(int hostId, int connectionId, int channelId, MessageBase message, short messageType)
 	{
 		NetworkWriter writer = new NetworkWriter();
 		writer.StartMessage(messageType);
@@ -18,9 +19,9 @@ public class P2PSender
 		P2PController.CheckError("Send");
 	}
 
-	public static void SendToAll(int channelId, MessageBase message, short messageType)
+	public void SendToAll(int channelId, MessageBase message, short messageType)
 	{
-		foreach(P2PConnection connection in P2PConnectionManager.connections)
+		foreach(P2PConnection connection in p2PConnectionManager.connections)
 			Send(connection.hostId, connection.connectionId, channelId, message, messageType);
 	}
 }

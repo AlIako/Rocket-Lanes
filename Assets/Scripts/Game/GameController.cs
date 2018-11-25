@@ -5,31 +5,37 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-	public Lane[] lanes;
-
 	[SerializeField]
 	GameObject InGameUI;
-
-	[SerializeField]
-	GameObject networkControllerGameObject;
 
 	[HideInInspector]
 	public Player player;
 
 	[HideInInspector]
-	public static bool gameStarted = false;
+	public bool gameStarted = false;
 
-	INetworkController networkController;
+	private List<Lane> lanes;
+	private INetworkController networkController;
 
-	void Start()
+	void Awake()
 	{
-		networkController = networkControllerGameObject.GetComponent<INetworkController>();
+		FindLanes();
+	}
+
+	public void FindLanes()
+	{
+		lanes = new List<Lane>();
+		lanes.Add(GameObject.FindGameObjectWithTag("Lane1").GetComponent<Lane>());
+		lanes.Add(GameObject.FindGameObjectWithTag("Lane2").GetComponent<Lane>());
+		lanes.Add(GameObject.FindGameObjectWithTag("Lane3").GetComponent<Lane>());
+		lanes.Add(GameObject.FindGameObjectWithTag("Lane4").GetComponent<Lane>());
 	}
 
 	public void StartGame()
 	{
-		//Reveal in-game UI
-		InGameUI.SetActive(true);
+		if(InGameUI != null)
+			InGameUI.SetActive(true);
+		
 		gameStarted = true;
 	}
 
@@ -76,6 +82,16 @@ public class GameController : MonoBehaviour
 		return null;
 	}
 
+	public Lane GetLane(int index)
+	{
+		return lanes[index];
+	}
+
+	public void SetNetworkController(INetworkController n)
+	{
+		networkController = n;
+	}
+
 	public void SendRocket() { SendRocket(player.lane.id, GetNextOccupiedLaneId(player)); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
@@ -85,10 +101,10 @@ public class GameController : MonoBehaviour
 		int[] parametersInt = parameters.ToArray();
 		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
 		Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
-		/*if(consentResult != -1)
+		if(consentResult != -1) //for p2p and singleplayer. Server-Client uses another callback (OnAskForConsentMsg)
 		{
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
-		}*/
+		}
 	}
 
 	public bool HandleCollisions(Lane lane)

@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class P2PChannels
 {
-	public static int ReliableChannelId;
-	public static int UnreliableChannelId;
+	public int ReliableChannelId;
+	public int UnreliableChannelId;
 }

@@ -3974,6 +3974,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5101928407425404617}
     m_Modifications:
+    - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
+      propertyPath: m_TagString
+      value: Lane1
+      objectReference: {fileID: 0}
     - target: {fileID: 4661977234838192, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.68
@@ -4039,6 +4043,10 @@ PrefabInstance:
     - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_Name
       value: Lane
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
+      propertyPath: m_TagString
+      value: Lane2
       objectReference: {fileID: 0}
     - target: {fileID: 4661977234838192, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4942,6 +4950,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lane
       objectReference: {fileID: 0}
+    - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
+      propertyPath: m_TagString
+      value: Lane4
+      objectReference: {fileID: 0}
     - target: {fileID: 4661977234838192, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.68
@@ -5075,6 +5087,10 @@ PrefabInstance:
     - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_Name
       value: Lane
+      objectReference: {fileID: 0}
+    - target: {fileID: 1937126447013060, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
+      propertyPath: m_TagString
+      value: Lane3
       objectReference: {fileID: 0}
     - target: {fileID: 4661977234838192, guid: 4cc615b171df85a4596ab1757bbfda12, type: 3}
       propertyPath: m_LocalPosition.x

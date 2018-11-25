@@ -11,6 +11,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
+		gameController.SetNetworkController(this);
 	}
 
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
@@ -85,7 +86,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
         var msg = netMsg.ReadMessage<IntArrayMessage>();
 		if(msg.consentAction == ConsentAction.SpawnRocket)
 		{
-			result = gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
+			result = gameController.GetLane(msg.parameters[1]).spawnManager.GetRandomSpawnerIndex();
 		}
 		ApplyConsent(msg.consentAction, msg.parameters, result);
         Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
@@ -98,7 +99,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			if(NetworkServer.active)
 			{
-				NetworkServer.Spawn(gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult));
+				NetworkServer.Spawn(gameController.GetLane(parameters[1]).spawnManager.Spawn(consentResult));
 			}
 		}
 	}

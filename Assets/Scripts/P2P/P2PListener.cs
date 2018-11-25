@@ -6,12 +6,13 @@ using UnityEngine.Networking;
 
 public class P2PListener
 {
-	public static P2PController p2PController;
-	static int recHostId;
-	static int connectionId;
-	static int channelId;
+	public P2PController p2PController;
+	public P2PConnectionManager p2PConnectionManager;
+	int recHostId;
+	int connectionId;
+	int channelId;
 	
-	public static void Listen()
+	public void Listen()
 	{
 		byte[] recBuffer = new byte[P2PController.bufferLength];
 		int bufferSize = P2PController.bufferLength;
@@ -21,9 +22,8 @@ public class P2PListener
 		
 		if(recData != NetworkEventType.Nothing)
 		{
-			//Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
+			//Debug.Log(p2PController.myPort + " Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
 			//			", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
-			channelId ++; //get rid of warning
 		}
 		
 		switch (recData)
@@ -31,20 +31,20 @@ public class P2PListener
 			case NetworkEventType.Nothing:
 				break;
 			case NetworkEventType.ConnectEvent:
-				P2PConnectionManager.ConnectEvent(recHostId, connectionId);
+				p2PConnectionManager.ConnectEvent(recHostId, connectionId, channelId);
 				break;
 			case NetworkEventType.DataEvent:
 				CreateNetworkReader(recBuffer);
 				break;
 			case NetworkEventType.DisconnectEvent:
-				P2PConnectionManager.RemoveConnection(recHostId, connectionId);
+				p2PConnectionManager.RemoveConnection(recHostId, connectionId);
 				break;
 			case NetworkEventType.BroadcastEvent:
 				break;
 		}
 	}
 
-	static void CreateNetworkReader(byte[] data)
+	void CreateNetworkReader(byte[] data)
     {
 		//https://docs.unity3d.com/ScriptReference/Networking.NetworkReader.html
         NetworkReader networkReader = new NetworkReader(data);
@@ -58,18 +58,18 @@ public class P2PListener
         // two bytes. It is the second two bytes on the buffer.
         byte[] readerMsgTypeData = networkReader.ReadBytes(2);
         short readerMsgType = (short)((readerMsgTypeData[1] << 8) + readerMsgTypeData[0]);
-        //Debug.Log("Message of type " + readerMsgType + " received");
+        //Debug.Log(p2PController.myPort + " Message of type " + readerMsgType + " received");
 
 		if(readerMsgType == MessageTypes.PlayersInfo)
 		{
 			PlayersInfoMessage message = new PlayersInfoMessage();
 			message.Deserialize(networkReader);
 
-			P2PConnectionManager.FetchPlayersInfo(message);
+			p2PConnectionManager.FetchPlayersInfo(message);
 		}
 		else if(readerMsgType == MessageTypes.RequestPlayersInfo)
 		{
-			P2PConnectionManager.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
+			p2PConnectionManager.SharePlayersInfo(recHostId, connectionId, channelId); //share other connections to the new arrived
 		}
 		else if(readerMsgType == MessageTypes.Position)
 		{

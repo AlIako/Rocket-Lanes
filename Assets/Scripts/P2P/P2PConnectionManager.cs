@@ -6,16 +6,18 @@ using UnityEngine.Networking;
 
 public class P2PConnectionManager
 {
-	public static List<P2PConnection> connections = new List<P2PConnection>();
-	public static P2PController p2PController;
-	public static int myHostId;
+	public List<P2PConnection> connections = new List<P2PConnection>();
+	public P2PController p2PController;
+	public P2PSender p2PSender;
+	public P2PChannels p2PChannels;
+	public int myHostId;
 
-	public static bool requestPlayersInfoSent = false;
-	public static bool playersInfoReceived = false;
+	public bool requestPlayersInfoSent = false;
+	public bool playersInfoReceived = false;
 
-	public static void ConnectEvent(int hostId, int connectionId)
+	public void ConnectEvent(int hostId, int connectionId, int channelId)
 	{
-		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
+		P2PConnection connection = GetConnection(hostId, connectionId);
 
 		if(connection == null)
 		{
@@ -41,16 +43,20 @@ public class P2PConnectionManager
 		//on connecting to an existing game, request infos of other players
 		if(!p2PController.GameStarted())
 		{
-			//Debug.Log("Game not started yet");
+			Debug.Log("Game not started yet");
 			if(!requestPlayersInfoSent)
-				P2PConnectionManager.RequestPlayersInfo(hostId, connectionId);
+				RequestPlayersInfo(hostId, connectionId, channelId);
 			if(playersInfoReceived)
 				CheckConnectionsStatus();
+		}
+		else
+		{
+			Debug.Log("Game already started for " + p2PController.myPort);
 		}
 		
 	}
 
-	public static void SharePlayersInfo(int hostId, int connectionId)
+	public void SharePlayersInfo(int hostId, int connectionId, int channelId)
 	{
 		PlayersInfoMessage message = new PlayersInfoMessage();
 
@@ -68,10 +74,10 @@ public class P2PConnectionManager
 		}
 
 		Debug.Log("Sharing players info, count: " + message.connections.Count);
-		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.PlayersInfo);
+		p2PSender.Send(hostId, connectionId, channelId, message, MessageTypes.PlayersInfo);
 	}
 
-	public static void FetchPlayersInfo(PlayersInfoMessage message)
+	public void FetchPlayersInfo(PlayersInfoMessage message)
 	{
 		Debug.Log("Fetching players infos..." + message.connections.Count + " my lane: " + message.freeLane);
 		playersInfoReceived = true;
@@ -103,16 +109,16 @@ public class P2PConnectionManager
 		CheckConnectionsStatus();
 	}
 
-	public static void RequestPlayersInfo(int hostId, int connectionId)
+	public void RequestPlayersInfo(int hostId, int connectionId, int channelId)
 	{
-		//Debug.Log("RequestPlayersInfo");
+		Debug.Log("RequestPlayersInfo");
 		requestPlayersInfoSent = true;
 		RequestPlayersInfoMessage message = new RequestPlayersInfoMessage();
-		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.RequestPlayersInfo);
+		p2PSender.Send(hostId, connectionId, channelId, message, MessageTypes.RequestPlayersInfo);
 	}
 
 	//if succesfully connected to all, the game can start
-	static void CheckConnectionsStatus()
+	void CheckConnectionsStatus()
 	{
 		bool connectedToAll = true;
 		foreach(P2PConnection connection in connections)
@@ -122,14 +128,17 @@ public class P2PConnectionManager
 		}
 
 		if(connectedToAll)
+		{
+			Debug.Log("Connected to All. Can now Start Game");
 			p2PController.StartGame();
+		}
 	}
 
-	public static void RemoveConnection(int hostId, int connectionId)
+	public void RemoveConnection(int hostId, int connectionId)
 	{
-		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
+		P2PConnection connection = GetConnection(hostId, connectionId);
 		if(connection == null)
-			Debug.Log("Warning! Connection with " + connection + " doesn't exist");
+			Debug.Log("Warning! Connection with " + hostId + ", " + connectionId + " doesn't exist");
 		else
 		{
 			p2PController.DespawnPlayer(connection.lane);
@@ -138,14 +147,14 @@ public class P2PConnectionManager
 		}
 	}
 
-	public static void DisconnectAll()
+	public void DisconnectAll()
 	{
 		foreach(P2PConnection connection in connections)
 			connection.Disconnect();
 		connections.Clear();
 	}
 
-	public static P2PConnection GetConnection(int hostId, int connectionId)
+	public P2PConnection GetConnection(int hostId, int connectionId)
 	{
 		P2PConnection connection = connections.FirstOrDefault(c => 
 								c.hostId == hostId && 
@@ -153,7 +162,7 @@ public class P2PConnectionManager
 		return connection;
 	}
 
-	public static void Reset()
+	public void Reset()
 	{
 		connections = new List<P2PConnection>();
 		requestPlayersInfoSent = false;

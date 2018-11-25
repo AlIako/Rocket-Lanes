@@ -20,8 +20,15 @@ public class P2PController : MonoBehaviour, INetworkController
 	public int myLane;
 	
 	GameController gameController;
+	P2PConnectionManager p2PConnectionManager;
+	P2PListener p2PListener;
+	P2PSender p2PSender;
+	P2PChannels p2PChannels;
+	
+	static ConnectionConfig config = null;
+	static HostTopology topology = null;
 
-	string targetIp; //only when joining
+	string targetIp = "127.0.0.1"; //only when joining
 	int targetPort; //only when joining
 	bool initialized = false;
 	List<Player> players = new List<Player>();
@@ -36,6 +43,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
+		gameController.SetNetworkController(this);
 	}
 
 	public void NewGame()
@@ -51,7 +59,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
 		Initialize();
 
-		NetworkTransport.Connect(P2PConnectionManager.myHostId, targetIp, targetPort, 0, out error);
+		NetworkTransport.Connect(p2PConnectionManager.myHostId, targetIp, targetPort, 0, out error);
 		CheckError("Connect");
 	}
 
@@ -61,24 +69,43 @@ public class P2PController : MonoBehaviour, INetworkController
 			return;
 		
 		SendPositionInformation();
-		P2PListener.Listen();
+		p2PListener.Listen();
 	}
 
 	public void Initialize()
 	{
-		P2PConnectionManager.p2PController = this;
-		P2PListener.p2PController = this;
+		p2PChannels = new P2PChannels();
+		p2PConnectionManager = new P2PConnectionManager();
+		p2PConnectionManager.p2PController = this;
+		p2PConnectionManager.p2PChannels = p2PChannels;
+
+		p2PListener = new P2PListener();
+		p2PListener.p2PController = this;
+		p2PListener.p2PConnectionManager = p2PConnectionManager;
+
+		p2PSender = new P2PSender();
+		p2PSender.p2PConnectionManager = p2PConnectionManager;
+
+		p2PConnectionManager.p2PSender = p2PSender;
+
+
+
 
 		//https://docs.unity3d.com/Manual/UNetUsingTransport.html
 		NetworkTransport.Init();
 
-		ConnectionConfig config = new ConnectionConfig();
-		P2PChannels.ReliableChannelId = config.AddChannel(QosType.Reliable);
-		P2PChannels.UnreliableChannelId = config.AddChannel(QosType.Unreliable);
+		if(config == null)
+			config = new ConnectionConfig();
+		
+		p2PChannels.ReliableChannelId = config.AddChannel(QosType.Reliable);
+		p2PChannels.UnreliableChannelId = config.AddChannel(QosType.Unreliable);
+		Debug.Log("New ReliableChannelId: " + p2PChannels.ReliableChannelId);
+		Debug.Log("New UnreliableChannelId: " + p2PChannels.UnreliableChannelId);
 
-		HostTopology topology = new HostTopology(config, 10);
+		if(topology == null)
+			topology = new HostTopology(config, 10);
 
-		P2PConnectionManager.myHostId = NetworkTransport.AddHost(topology, myPort);
+		p2PConnectionManager.myHostId = NetworkTransport.AddHost(topology, myPort);
 
 		initialized = true;
 	}
@@ -91,8 +118,8 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void StartGame()
 	{
-		P2PConnectionManager.playersInfoReceived = true;
-		P2PConnectionManager.requestPlayersInfoSent = true;
+		p2PConnectionManager.playersInfoReceived = true;
+		p2PConnectionManager.requestPlayersInfoSent = true;
 
 		Player player1 = SpawnPlayer(myLane);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
@@ -109,10 +136,10 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void LeaveGame()
 	{
 		initialized = false;
-		P2PConnectionManager.DisconnectAll();
+		p2PConnectionManager.DisconnectAll();
 		NetworkTransport.Shutdown();
 
-		P2PConnectionManager.Reset();
+		p2PConnectionManager.Reset();
 		players.Clear();
 		
 		//destroy rockets and players
@@ -134,7 +161,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	public Player SpawnPlayer(int lane)
 	{
 		//Debug.Log("Spawn player on lane " + lane);
-		Player player = Instantiate(playerPrefab, gameController.lanes[lane].startPosition.transform.position, Quaternion.identity);
+		Player player = Instantiate(playerPrefab, gameController.GetLane(lane).startPosition.transform.position, Quaternion.identity);
 		players.Add(player);
 		return player;
 	}
@@ -157,7 +184,7 @@ public class P2PController : MonoBehaviour, INetworkController
 			message.lane = System.Convert.ToUInt32(myLane);
 			message.position = gameController.player.transform.position;
 
-			P2PSender.SendToAll(P2PChannels.UnreliableChannelId, message, MessageTypes.Position);
+			p2PSender.SendToAll(p2PChannels.UnreliableChannelId, message, MessageTypes.Position);
 		}
 	}
 
@@ -169,9 +196,13 @@ public class P2PController : MonoBehaviour, INetworkController
 		{
 			player.transform.position = message.position;
 		}
-		else SpawnPlayer(lane);
+		else 
+		{
+			Debug.Log("New player to spawn");
+			SpawnPlayer(lane);
+		}
 
-		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
+		P2PConnection connection = p2PConnectionManager.GetConnection(hostId, connectionId);
 		if(connection != null)
 			connection.lane = lane;
 	}
@@ -192,10 +223,14 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		return gameController;
 	}
+	public void SetGameController(GameController gameController)
+	{
+		this.gameController = gameController;
+	}
 
 	public bool GameStarted()
 	{
-		return GameController.gameStarted;
+		return gameController.gameStarted;
 	}
 
 	public void SetMyPort(int port)
@@ -228,7 +263,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
-			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
+			gameController.GetLane(parameters[1]).spawnManager.Spawn(consentResult);
 		}
 	}
 
