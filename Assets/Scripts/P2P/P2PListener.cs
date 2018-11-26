@@ -89,7 +89,7 @@ public class P2PListener
 		{
 			AnswerConsentMessage message = new AnswerConsentMessage();
 			message.Deserialize(networkReader);
-			p2PController.OnAnswerConsentMsg(message);
+			P2PConsentManager.ReceiveAnswerConsent(message);
 		}
 		else if(readerMsgType == MessageTypes.ApplyConsent)
 		{

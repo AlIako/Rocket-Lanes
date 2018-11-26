@@ -43,17 +43,19 @@ public class P2PController : MonoBehaviour, INetworkController
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
 		AskConsentMessage message = new AskConsentMessage();
+		message.consentId = P2PConsentManager.GetNextConsentIdAndIncrement();
 		message.consentAction = consentAction;
 		message.parameters.AddRange(parameters);
 		if(consensusAlgorithm)
 		{
 			Debug.Log("P2P: Asking consent for: " + consentAction);
+			P2PConsentManager.AddPendingConsent(message);
 			P2PSender.SendToAll(P2PChannels.ReliableChannelId, message, MessageTypes.AskConsent);
 		}
 		else
 		{
 			Debug.Log("P2P: Imposing consent for: " + consentAction);
-			OnAnswerConsentMsg(OnAskForConsentMsg(-1, -1, message));
+			P2PConsentManager.ApplyAndSpreadConsentResult(OnAskForConsentMsg(-1, -1, message));
 		}
 
 		return -1;
@@ -63,6 +65,7 @@ public class P2PController : MonoBehaviour, INetworkController
     {
 		Debug.Log("P2P: OnAskForConsentMsg for: " + message.consentAction);
 		AnswerConsentMessage answerMessage = new AnswerConsentMessage();
+		answerMessage.consentId = message.consentId;
 		answerMessage.consentAction = message.consentAction;
 
 		if(message.consentAction == ConsentAction.SpawnRocket)
@@ -76,21 +79,6 @@ public class P2PController : MonoBehaviour, INetworkController
 		return answerMessage;
     }
 
-	public void OnAnswerConsentMsg(AnswerConsentMessage message)
-	{
-		Debug.Log("P2P: OnAnswerConsentMsg for: " + message.consentAction);
-
-		if(message.consentAction == ConsentAction.SpawnRocket)
-		{
-			ApplyConsentMessage applyMessage = new ApplyConsentMessage();
-			applyMessage.consentAction = message.consentAction;
-			applyMessage.result = message.result;
-			applyMessage.parameters = message.parameters;
-
-			P2PSender.SendToAll(P2PChannels.ReliableChannelId, applyMessage, MessageTypes.ApplyConsent);
-			OnApplyConsentMsg(applyMessage);
-		}
-	}
     public void OnApplyConsentMsg(ApplyConsentMessage message)
 	{
 		Debug.Log("P2P: Applying consent for: " + message.consentAction);
@@ -139,6 +127,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	{
 		P2PConnectionManager.p2PController = this;
 		P2PListener.p2PController = this;
+		P2PConsentManager.p2PController = this;
 
 		//https://docs.unity3d.com/Manual/UNetUsingTransport.html
 		NetworkTransport.Init();
