@@ -19,28 +19,30 @@ public class P2PListener
 		byte error;
 		NetworkEventType recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
 		
-		if(recData != NetworkEventType.Nothing)
+		while(recData != NetworkEventType.Nothing)
 		{
 			//Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
 			//			", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
 			channelId ++; //get rid of warning
-		}
 		
-		switch (recData)
-		{
-			case NetworkEventType.Nothing:
-				break;
-			case NetworkEventType.ConnectEvent:
-				P2PConnectionManager.ConnectEvent(recHostId, connectionId);
-				break;
-			case NetworkEventType.DataEvent:
-				CreateNetworkReader(recBuffer);
-				break;
-			case NetworkEventType.DisconnectEvent:
-				P2PConnectionManager.RemoveConnection(recHostId, connectionId);
-				break;
-			case NetworkEventType.BroadcastEvent:
-				break;
+			switch (recData)
+			{
+				case NetworkEventType.Nothing:
+					break;
+				case NetworkEventType.ConnectEvent:
+					P2PConnectionManager.ConnectEvent(recHostId, connectionId);
+					break;
+				case NetworkEventType.DataEvent:
+					CreateNetworkReader(recBuffer);
+					break;
+				case NetworkEventType.DisconnectEvent:
+					P2PConnectionManager.RemoveConnection(recHostId, connectionId);
+					break;
+				case NetworkEventType.BroadcastEvent:
+					break;
+			}
+			
+			recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out error);
 		}
 	}
 
