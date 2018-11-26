@@ -42,28 +42,38 @@ public class P2PController : MonoBehaviour, INetworkController
 
     public int AskForConsent(ConsentAction consentAction, int[] parameters)
 	{
-		Debug.Log("P2P: Asking consent for: " + consentAction);
 		AskConsentMessage message = new AskConsentMessage();
-		message.consentAction = ConsentAction.SpawnRocket;
+		message.consentAction = consentAction;
 		message.parameters.AddRange(parameters);
-		P2PSender.SendToAll(P2PChannels.ReliableChannelId, message, MessageTypes.AskConsent);
+		if(consensusAlgorithm)
+		{
+			Debug.Log("P2P: Asking consent for: " + consentAction);
+			P2PSender.SendToAll(P2PChannels.ReliableChannelId, message, MessageTypes.AskConsent);
+		}
+		else
+		{
+			Debug.Log("P2P: Imposing consent for: " + consentAction);
+			OnAnswerConsentMsg(OnAskForConsentMsg(-1, -1, message));
+		}
 
 		return -1;
 	}
 	
-	public void OnAskForConsentMsg(int hostId, int connectionId, AskConsentMessage message)
+	public AnswerConsentMessage OnAskForConsentMsg(int hostId, int connectionId, AskConsentMessage message)
     {
 		Debug.Log("P2P: OnAskForConsentMsg for: " + message.consentAction);
+		AnswerConsentMessage answerMessage = new AnswerConsentMessage();
+		answerMessage.consentAction = message.consentAction;
 
 		if(message.consentAction == ConsentAction.SpawnRocket)
 		{
-			AnswerConsentMessage answerMessage = new AnswerConsentMessage();
-			answerMessage.consentAction = message.consentAction;
 			answerMessage.result = gameController.lanes[message.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 			answerMessage.parameters = message.parameters;
-
-			P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
+			
+			if(hostId != -1 && connectionId != -1)
+				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
 		}
+		return answerMessage;
     }
 
 	public void OnAnswerConsentMsg(AnswerConsentMessage message)
