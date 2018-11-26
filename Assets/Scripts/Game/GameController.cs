@@ -80,8 +80,8 @@ public class GameController : MonoBehaviour
 		parameters.Add(neighbourPlayerId);
 		int[] parametersInt = parameters.ToArray();
 		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
-		Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
-		if(consentResult != -1) //for p2p and singleplayer. Server-Client uses another callback (OnAskForConsentMsg)
+		//Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
+		if(consentResult != -1) //for singleplayer only. Server-Client uses another callback (OnAskForConsentMsg)
 		{
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
 		}

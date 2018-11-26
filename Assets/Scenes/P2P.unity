@@ -629,6 +629,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9104163865595160381, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1451158900}
+    - target: {fileID: 9104163865595160381, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendRocket
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 750e041fa4f3315448e0c627d6cf4803, type: 3}
 --- !u!224 &200485212 stripped
@@ -1841,6 +1851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 114735315976477408, guid: 8b02e09865b9fdf42b1c0dd192def290,
     type: 3}
+  consensusAlgorithm: 0
   myPort: 0
   myLane: 0
 --- !u!1 &1589457346

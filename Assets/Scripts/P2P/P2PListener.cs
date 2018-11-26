@@ -79,5 +79,23 @@ public class P2PListener
 			message.Deserialize(networkReader);
 			p2PController.ReceivePositionInformation(recHostId, connectionId, message);
 		}
+		else if(readerMsgType == MessageTypes.AskConsent)
+		{
+			AskConsentMessage message = new AskConsentMessage();
+			message.Deserialize(networkReader);
+			p2PController.OnAskForConsentMsg(recHostId, connectionId, message);
+		}
+		else if(readerMsgType == MessageTypes.AnswerConsent)
+		{
+			AnswerConsentMessage message = new AnswerConsentMessage();
+			message.Deserialize(networkReader);
+			p2PController.OnAnswerConsentMsg(message);
+		}
+		else if(readerMsgType == MessageTypes.ApplyConsent)
+		{
+			ApplyConsentMessage message = new ApplyConsentMessage();
+			message.Deserialize(networkReader);
+			p2PController.OnApplyConsentMsg(message);
+		}
     }
 }

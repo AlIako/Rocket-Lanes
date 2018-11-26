@@ -13,6 +13,8 @@ public class P2PController : MonoBehaviour, INetworkController
 	[SerializeField]
 	Player playerPrefab;
 
+	public bool consensusAlgorithm = true;
+
 	[HideInInspector]
 	public int myPort;
 
@@ -36,6 +38,65 @@ public class P2PController : MonoBehaviour, INetworkController
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
+	}
+
+    public int AskForConsent(ConsentAction consentAction, int[] parameters)
+	{
+		Debug.Log("P2P: Asking consent for: " + consentAction);
+		AskConsentMessage message = new AskConsentMessage();
+		message.consentAction = ConsentAction.SpawnRocket;
+		message.parameters.AddRange(parameters);
+		P2PSender.SendToAll(P2PChannels.ReliableChannelId, message, MessageTypes.AskConsent);
+
+		return -1;
+	}
+	
+	public void OnAskForConsentMsg(int hostId, int connectionId, AskConsentMessage message)
+    {
+		Debug.Log("P2P: OnAskForConsentMsg for: " + message.consentAction);
+
+		if(message.consentAction == ConsentAction.SpawnRocket)
+		{
+			AnswerConsentMessage answerMessage = new AnswerConsentMessage();
+			answerMessage.consentAction = message.consentAction;
+			answerMessage.result = gameController.lanes[message.parameters[1]].spawnManager.GetRandomSpawnerIndex();
+			answerMessage.parameters = message.parameters;
+
+			P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
+		}
+    }
+
+	public void OnAnswerConsentMsg(AnswerConsentMessage message)
+	{
+		Debug.Log("P2P: OnAnswerConsentMsg for: " + message.consentAction);
+
+		if(message.consentAction == ConsentAction.SpawnRocket)
+		{
+			ApplyConsentMessage applyMessage = new ApplyConsentMessage();
+			applyMessage.consentAction = message.consentAction;
+			applyMessage.result = message.result;
+			applyMessage.parameters = message.parameters;
+
+			P2PSender.SendToAll(P2PChannels.ReliableChannelId, applyMessage, MessageTypes.ApplyConsent);
+			OnApplyConsentMsg(applyMessage);
+		}
+	}
+    public void OnApplyConsentMsg(ApplyConsentMessage message)
+	{
+		Debug.Log("P2P: Applying consent for: " + message.consentAction);
+		if(message.consentAction == ConsentAction.SpawnRocket)
+		{
+			gameController.lanes[message.parameters[1]].spawnManager.Spawn(message.result);
+		}
+	}
+
+    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+	{
+		/*Debug.Log("P2P: Applying consent for: " + consentAction);
+		if(consentAction == ConsentAction.SpawnRocket)
+		{
+			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
+		}*/
 	}
 
 	public void NewGame()
@@ -213,24 +274,6 @@ public class P2PController : MonoBehaviour, INetworkController
 		this.targetIp = ip;
 	}
 
-
-
-    public int AskForConsent(ConsentAction consentAction, int[] parameters)
-	{
-		if(consentAction == ConsentAction.SpawnRocket)
-		{
-			//Vote necessary! Pick majority
-		}
-		return -1;
-	}
-
-    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
-	{
-		if(consentAction == ConsentAction.SpawnRocket)
-		{
-			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
-		}
-	}
 
 	public bool HandleCollisions(Lane lane)
 	{
