@@ -11,6 +11,10 @@ TagManager:
   - ErrorText
   - ErrorPanel
   - Grid
+  - Lane1UI
+  - Lane2UI
+  - Lane3UI
+  - Lane4UI
   layers:
   - Default
   - TransparentFX

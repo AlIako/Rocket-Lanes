@@ -10,6 +10,7 @@ public class Lane : MonoBehaviour
 	public SpawnerManager spawnManager;
 	public NetworkStartPosition startPosition;
 	
+	private UIController uIController;
 	Color color = new Color(1.0f, 1.0f, 1.0f);
 
 	void Start()
@@ -39,12 +40,20 @@ public class Lane : MonoBehaviour
 		this.player = player;
 		player.lane = this;
 		player.ApplyColor(this.color);
+		
+		if(uIController == null)
+			uIController = FindObjectOfType<UIController>();
+		uIController.ActivateLaneUI(id);
 	}
 
 	public void Leave(Player player)
 	{
 		player.lane = null;
 		player = null;
+		
+		if(uIController == null)
+			uIController = FindObjectOfType<UIController>();
+		uIController.DeactivateLaneUI(id);
 	}
 
 }

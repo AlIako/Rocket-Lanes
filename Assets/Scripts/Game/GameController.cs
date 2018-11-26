@@ -8,9 +8,6 @@ public class GameController : MonoBehaviour
 	public Lane[] lanes;
 
 	[SerializeField]
-	GameObject InGameUI;
-
-	[SerializeField]
 	GameObject networkControllerGameObject;
 
 	[HideInInspector]
@@ -28,8 +25,7 @@ public class GameController : MonoBehaviour
 
 	public void StartGame()
 	{
-		//Reveal in-game UI
-		InGameUI.SetActive(true);
+		GameObject.FindObjectOfType<UIController>().EnterGameUI();
 		gameStarted = true;
 	}
 
@@ -85,10 +81,10 @@ public class GameController : MonoBehaviour
 		int[] parametersInt = parameters.ToArray();
 		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
 		Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
-		/*if(consentResult != -1)
+		if(consentResult != -1) //for p2p and singleplayer. Server-Client uses another callback (OnAskForConsentMsg)
 		{
 			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
-		}*/
+		}
 	}
 
 	public bool HandleCollisions(Lane lane)
