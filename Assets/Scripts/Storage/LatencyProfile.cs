@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName="LatencyProfile", menuName="LatencyProfile", order=2)]
+[CreateAssetMenu(fileName="LatencyProfile", menuName="LatencyProfile")]
 public class LatencyProfile : ScriptableObject
 {
     public int latencyOnSending = 0;
