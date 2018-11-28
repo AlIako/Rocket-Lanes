@@ -50,7 +50,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		message.consentId = P2PConsentManager.GetNextConsentIdAndIncrement();
 		message.consentAction = consentAction;
 		message.parameters.AddRange(parameters);
-		if(consensusAlgorithm)
+		if(consensusAlgorithm && P2PConnectionManager.SuccessfulConnectionsCount() > 0)
 		{
 			Debug.Log("P2P: Asking consent for: " + consentAction);
 			P2PConsentManager.AddPendingConsent(message);
@@ -67,7 +67,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	
 	public AnswerConsentMessage OnAskForConsentMsg(int hostId, int connectionId, AskConsentMessage message)
     {
-		Debug.Log("P2P: OnAskForConsentMsg for: " + message.consentAction);
+		Debug.Log("P2P: OnAskForConsentMsg for: " + message.consentAction + ", parameter0: " + message.parameters[0]);
 		AnswerConsentMessage answerMessage = new AnswerConsentMessage();
 		answerMessage.consentId = message.consentId;
 		answerMessage.consentAction = message.consentAction;
@@ -77,7 +77,19 @@ public class P2PController : MonoBehaviour, INetworkController
 			answerMessage.result = gameController.lanes[message.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 			answerMessage.parameters = message.parameters;
 			
-			if(hostId != -1 && connectionId != -1)
+			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
+				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
+		}
+		if(message.consentAction == ConsentAction.JoinGame)
+		{
+			answerMessage.parameters = message.parameters;
+
+			Lane freeLane = gameController.GetFirstUnoccupiedLane();
+			if(freeLane == null)
+				answerMessage.parameters[0] = 10;
+			else answerMessage.parameters[0] = freeLane.id;
+
+			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
 				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
 		}
 		return answerMessage;
@@ -89,6 +101,21 @@ public class P2PController : MonoBehaviour, INetworkController
 		if(message.consentAction == ConsentAction.SpawnRocket)
 		{
 			gameController.lanes[message.parameters[1]].spawnManager.Spawn(message.result);
+		}
+		else if(message.consentAction == ConsentAction.JoinGame)
+		{
+			P2PConnection connection = P2PConnectionManager.GetConnection(message.parameters[1], message.parameters[2]);
+			if(connection != null)
+			{
+				JoinAnswerMessage answerMessage = new JoinAnswerMessage();
+				answerMessage.lane = message.parameters[0];
+				answerMessage.successfulConnections = P2PConnectionManager.GetSuccessfulConnections();
+				P2PSender.Send(message.parameters[1], message.parameters[2], P2PChannels.ReliableChannelId, answerMessage, MessageTypes.JoinAnswer);
+			
+				connection.SuccessfullyConnect();
+
+				Debug.Log("Sending JoinAnswer with lane: " + answerMessage.lane + "and " + answerMessage.successfulConnections.Count + " connections");
+			}
 		}
 	}
 
@@ -168,14 +195,14 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void StartGame()
 	{
-		P2PConnectionManager.playersInfoReceived = true;
-		P2PConnectionManager.requestPlayersInfoSent = true;
+		P2PConnectionManager.JoinRequestSend = true;
+		P2PConnectionManager.JoinAnswerReceived = true;
+		
+		gameController.StartGame();
 
 		Player player1 = SpawnPlayer(myLane);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
-
-		gameController.StartGame();
 	}
 
 	public void Quit()
@@ -218,7 +245,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void DespawnPlayer(int lane)
 	{
-		Player player = players.FirstOrDefault(p => p.lane.id == lane);
+		Player player = players.FirstOrDefault(p => p.lane != null && p.lane.id == lane);
 		if(player != null)
 			Destroy(player.gameObject);
 		players.Remove(player);
@@ -240,6 +267,9 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void ReceivePositionInformation(int hostId, int connectionId, PositionMessage message)
 	{
+		if(!GameStarted())
+			return;
+		
 		int lane = System.Convert.ToInt32(message.lane);
 		Player player = players.FirstOrDefault(p => p.lane != null && p.lane.id == lane);
 		if(player != null)

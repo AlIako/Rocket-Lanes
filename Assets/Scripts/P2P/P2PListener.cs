@@ -62,16 +62,23 @@ public class P2PListener
         short readerMsgType = (short)((readerMsgTypeData[1] << 8) + readerMsgTypeData[0]);
         //Debug.Log("Message of type " + readerMsgType + " received");
 
-		if(readerMsgType == MessageTypes.PlayersInfo)
+		if(readerMsgType == MessageTypes.JoinRequest)
 		{
-			PlayersInfoMessage message = new PlayersInfoMessage();
+			JoinRequestMessage message = new JoinRequestMessage();
 			message.Deserialize(networkReader);
-
-			P2PConnectionManager.FetchPlayersInfo(message);
+			P2PConnectionManager.OnJoinRequest(recHostId, connectionId, message);
 		}
-		else if(readerMsgType == MessageTypes.RequestPlayersInfo)
+		else if(readerMsgType == MessageTypes.JoinAnswer)
 		{
-			P2PConnectionManager.SharePlayersInfo(recHostId, connectionId); //share other connections to the new arrived
+			JoinAnswerMessage message = new JoinAnswerMessage();
+			message.Deserialize(networkReader);
+			P2PConnectionManager.OnJoinAnswer(recHostId, connectionId, message);
+		}
+		else if(readerMsgType == MessageTypes.JoinAnnounce)
+		{
+			JoinAnnounceMessage message = new JoinAnnounceMessage();
+			message.Deserialize(networkReader);
+			P2PConnectionManager.OnJoinAnnounce(recHostId, connectionId, message);
 		}
 		else if(readerMsgType == MessageTypes.Position)
 		{

@@ -13,7 +13,7 @@ public class UIController : MonoBehaviour
 	GameObject inGameUI;
 
 	GameController gameController;
-	List<GameObject> laneUIs;
+	List<GameObject> laneUIs = null;
 	List<GameObject> laneButtonUIs;
 
 	void Start()

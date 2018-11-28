@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public enum ConsentAction {SpawnRocket, CastShield};
+public enum ConsentAction {SpawnRocket, CastShield, JoinGame};
 
 public interface INetworkController
 {

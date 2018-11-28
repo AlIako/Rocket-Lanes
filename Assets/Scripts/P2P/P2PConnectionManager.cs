@@ -10,107 +10,136 @@ public class P2PConnectionManager
 	public static P2PController p2PController;
 	public static int myHostId;
 
-	public static bool requestPlayersInfoSent = false;
-	public static bool playersInfoReceived = false;
+	public static bool JoinRequestSend = false;
+	public static bool JoinAnswerReceived = false;
 
 	public static float connectionRequestSentTime = 0;
 
-	public static void ConnectEvent(int hostId, int connectionId)
+	public static int SuccessfulConnectionsCount()
 	{
-		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
-
-		if(connection == null)
-		{
-			//new connection from targeted ip or new player
-			connection = new P2PConnection(hostId, connectionId);
-			connection.SuccessfullyConnect();
-
-			if(p2PController.GameStarted())
-			{
-				//todo
-				//here we would ask consent to others if the newcomer has the right to join the game
-				//and compute his lane Id?
-			}
-			connections.Add(connection);
-			Debug.Log("New connection with " + connection);
-		}
-		else if(!connection.ConnectionSuccessful())
-		{
-			//successfully connect to an existing player. Connection requested thanks to PlayersInfo
-			connection.SuccessfullyConnect();
-		}
-
-		//on connecting to an existing game, request infos of other players
-		if(!p2PController.GameStarted())
-		{
-			//Debug.Log("Game not started yet");
-			if(!requestPlayersInfoSent)
-				P2PConnectionManager.RequestPlayersInfo(hostId, connectionId);
-			if(playersInfoReceived)
-				CheckConnectionsStatus();
-		}
-		
-	}
-
-	public static void SharePlayersInfo(int hostId, int connectionId)
-	{
-		PlayersInfoMessage message = new PlayersInfoMessage();
-
-		Lane freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane();
-		if(freeLane == null)
-			message.freeLane = 10;
-		else message.freeLane = freeLane.id;
-
-		message.connections = new List<P2PConnection>();
+		int result = 0;
 		foreach(P2PConnection connection in connections)
 		{
-			//send all connections except the one with the requester
-			if(!(connection.hostId == hostId && connection.connectionId == connectionId))
-				message.connections.Add(connection);
+			if(connection.ConnectionSuccessful())
+				result ++;
 		}
-
-		Debug.Log("Sharing players info, count: " + message.connections.Count);
-		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.PlayersInfo);
+		return result;
 	}
 
-	public static void FetchPlayersInfo(PlayersInfoMessage message)
+	public static List<P2PConnection> GetSuccessfulConnections()
 	{
-		Debug.Log("Fetching players infos..." + message.connections.Count + " my lane: " + message.freeLane);
-		playersInfoReceived = true;
+		List<P2PConnection> successfulConnections = new List<P2PConnection>();
+		foreach(P2PConnection connection in connections)
+		{
+			if(connection.ConnectionSuccessful())
+				successfulConnections.Add(connection);
+		}
+		return successfulConnections;
+	}
+
+	public static void OnJoinRequest(int hostId, int connectionId, JoinRequestMessage message)
+	{
+		Debug.Log("JoinRequest received");
+		//ask others if a player can join to that lane
+		List<int> parameters = new List<int>();
+		Lane freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane();
+		if(freeLane == null)
+			parameters.Add(10);
+		else parameters.Add(freeLane.id);
+
+		parameters.Add(hostId);
+		parameters.Add(connectionId);
+
+		int[] parametersInt = parameters.ToArray();
+		p2PController.AskForConsent(ConsentAction.JoinGame, parametersInt);
+	}
+
+	public static void OnJoinAnswer(int hostId, int connectionId, JoinAnswerMessage message)
+	{
+		if(p2PController.GameStarted() || JoinAnswerReceived)
+			return;
 		
-		p2PController.myLane = message.freeLane;
-		if(!(p2PController.myLane >= 0 && p2PController.myLane < 4))
+		Debug.Log("JoinAnswer received, lane: " + message.lane + ", playersCount: " + message.successfulConnections.Count);
+		if(!(message.lane >= 0 && message.lane < 4))
 		{
 			Debug.Log("Game is full");
 			p2PController.myLane = -1;
 			p2PController.DisplayError("Game is full");
 			return;
 		}
-
-		if(connections.Count > 1)
-		{
-			Debug.Log("Warning! Already have players infos");
-		}
 		else
 		{
-			foreach(P2PConnection connection in message.connections)
-			{
-				Debug.Log("Fetched and request connection with " + connection);
+			Debug.Log("allowed to join the game! Now need to connect to all players");
+			JoinAnswerReceived = true;
 
-				//send connection requests
+			p2PController.myLane = message.lane;
+			
+			foreach(P2PConnection connection in message.successfulConnections)
+			{
+				connections.Add(connection);
 				NetworkTransport.Connect(myHostId, connection.ip, connection.port, 0, out P2PController.error);
 				P2PController.CheckError("Connect");
 			}
+			
+			P2PConnectionManager.GetConnection(hostId, connectionId).SuccessfullyConnect();
+
+			CheckConnectionsStatus();
 		}
-		CheckConnectionsStatus();
 	}
 
-	public static void RequestPlayersInfo(int hostId, int connectionId)
+	public static void OnJoinAnnounce(int hostId, int connectionId, JoinAnnounceMessage message)
 	{
-		//Debug.Log("RequestPlayersInfo");
-		requestPlayersInfoSent = true;
-		RequestPlayersInfoMessage message = new RequestPlayersInfoMessage();
-		P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.RequestPlayersInfo);
+		Debug.Log("OnJoinAnnounce received");
+		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
+		connection.SuccessfullyConnect();
+	}
+
+	public static void ConnectEvent(int hostId, int connectionId)
+	{
+		int port;
+		string ip;
+		UnityEngine.Networking.Types.NetworkID netId;
+		UnityEngine.Networking.Types.NodeID nodeId;
+		NetworkTransport.GetConnectionInfo(hostId, connectionId, out ip, out port, out netId, out nodeId, out P2PController.error);
+
+		P2PConnection connection = P2PConnectionManager.GetConnection(ip, port);
+
+		if(connection == null)
+		{
+			//new connection from targeted ip or new player
+			connection = new P2PConnection(hostId, connectionId);
+			connection.ip = ip;
+			connection.port = port;
+			connections.Add(connection);
+			Debug.Log("New connection with " + connection);
+
+			if(!JoinRequestSend) //I'm wanting to join
+			{
+				Debug.Log("Sending Join Request");
+				JoinRequestSend = true;
+				JoinRequestMessage message = new JoinRequestMessage();
+				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, message, MessageTypes.JoinRequest);
+			}
+			else if(JoinAnswerReceived && !p2PController.GameStarted())
+				connection.SuccessfullyConnect();
+		}
+		else if(!connection.ConnectionSuccessful())
+		{
+			//successfully connect to an existing player. Connection requested previously
+			connection.hostId = hostId;
+			connection.connectionId = connectionId;
+			connection.SuccessfullyConnect();
+
+			JoinAnnounceMessage announceMessage = new JoinAnnounceMessage();
+			P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, announceMessage, MessageTypes.JoinAnnounce);
+		}
+
+		if(!p2PController.GameStarted())
+		{
+			if(JoinAnswerReceived)
+				CheckConnectionsStatus();
+		}
+		
 	}
 
 	//if succesfully connected to all, the game can start
@@ -155,10 +184,18 @@ public class P2PConnectionManager
 		return connection;
 	}
 
+	public static P2PConnection GetConnection(string ip, int port)
+	{
+		P2PConnection connection = connections.FirstOrDefault(c => 
+								c.ip == ip && 
+								c.port == port);
+		return connection;
+	}
+
 	public static void Reset()
 	{
 		connections = new List<P2PConnection>();
-		requestPlayersInfoSent = false;
-		playersInfoReceived = false;
+		JoinRequestSend = false;
+		JoinAnswerReceived = false;
 	}
 }

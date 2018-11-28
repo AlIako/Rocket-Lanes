@@ -6,26 +6,27 @@ using UnityEngine.Networking;
 
 public class P2PConnection
 {
-	public int hostId;
-	public int connectionId;
+	public int hostId = -1;
+	public int connectionId = -1;
 	public string ip;
 	public int port;
-	public int lane = -1;
+	public int lane = 10;
 	bool connectionSuccessful = false;
 
-	public P2PConnection(int hostId, int connectionId, bool fetchConnectionInfo = true)
+	public P2PConnection(int hostId, int connectionId)
 	{
 		this.hostId = hostId;
 		this.connectionId = connectionId;
 		this.ip = "";
 		this.port = 0;
+	}
 
-		if(fetchConnectionInfo)
-		{
-			UnityEngine.Networking.Types.NetworkID netId;
-        	UnityEngine.Networking.Types.NodeID nodeId;
-			NetworkTransport.GetConnectionInfo(hostId, connectionId, out ip, out port, out netId, out nodeId, out P2PController.error);
-		}
+	public P2PConnection(string ip, int port)
+	{
+		this.hostId = -1;
+		this.connectionId = -1;
+		this.ip = ip;
+		this.port = port;
 	}
 
 	public override string ToString()
