@@ -228,7 +228,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void ReceivePositionInformation(int hostId, int connectionId, PositionMessage message)
 	{
 		int lane = System.Convert.ToInt32(message.lane);
-		Player player = players.FirstOrDefault(p => p.lane.id == lane);
+		Player player = players.FirstOrDefault(p => p.lane != null && p.lane.id == lane);
 		if(player != null)
 		{
 			player.transform.position = message.position;
