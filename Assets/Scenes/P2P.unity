@@ -1854,6 +1854,7 @@ MonoBehaviour:
   latencyProfile: {fileID: 11400000, guid: e3700f6c488cba242af8be6f980e5fb0, type: 2}
   cheaterProfile: {fileID: 11400000, guid: 901b5c4e1e783d94c972a4badc11a72b, type: 2}
   consensusAlgorithm: 1
+  requestTimeoutTime: 500
   myPort: 0
   myLane: 0
 --- !u!1 &1589457346
