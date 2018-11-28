@@ -10,6 +10,48 @@ public class P2PConsentManager
     public static int nextConsentId = 0;
     static List<P2PPendingConsent> pendingConsents = new List<P2PPendingConsent>();
 
+    public static void CheckForTimeoutPendingConsents()
+    {
+        float currentTime = Time.time * 1000.0f;
+        foreach(P2PPendingConsent pendingConsent in pendingConsents)
+        {
+            //Debug.Log("current Time: " + currentTime + ", pendingConsent.pendingSince: " + pendingConsent.pendingSince +
+            //            ", p2PController.requestTimeoutTime: " + p2PController.requestTimeoutTime + "dif: " + 
+            //            (currentTime - pendingConsent.pendingSince));
+            if(currentTime - pendingConsent.pendingSince > p2PController.requestTimeoutTime)
+            {
+                Debug.Log("Request time out!");
+                if(pendingConsent.answerConsentMessages.Count > 0)
+                    ApplyPendingConsent(pendingConsent);
+                else
+                {
+                    Debug.Log("Not enough votes! (" + pendingConsent.answerConsentMessages.Count + "). Canceling request.");
+                    pendingConsents.Remove(pendingConsent);
+                }
+                break;
+            }
+        }
+    }
+
+    public static void ApplyPendingConsent(P2PPendingConsent pendingConsent)
+    {
+        Debug.Log("Received enough votes! (" + pendingConsent.answerConsentMessages.Count + ").");
+        //enough votes received! Pick the most occuring result
+        int mostOccuringAnswerResult = pendingConsent.answerConsentMessages
+                                                                .GroupBy(acm => acm.result)
+                                                                .OrderByDescending(g => g.Count())
+                                                                .Select(g => g.Key)
+                                                                .FirstOrDefault();
+        Debug.Log("Most occuring vote result: " + mostOccuringAnswerResult);
+
+        //apply it
+        AnswerConsentMessage mostOccuringAnswer = pendingConsent.answerConsentMessages[0];
+        mostOccuringAnswer.result = mostOccuringAnswerResult;
+        ApplyAndSpreadConsentResult(mostOccuringAnswer);
+
+        pendingConsents.Remove(pendingConsent);
+    }
+
     public static void AddPendingConsent(AskConsentMessage message)
     {
         pendingConsents.Add(new P2PPendingConsent(message));
@@ -23,25 +65,7 @@ public class P2PConsentManager
         {
             pendingConsent.answerConsentMessages.Add(message);
             if(pendingConsent.answerConsentMessages.Count >= P2PConnectionManager.connections.Count)
-            {
-                //enough votes received! Pick the most occuring result
-                Debug.Log("Received enough votes! (" + pendingConsent.answerConsentMessages.Count + ").");
-
-                int mostOccuringAnswerResult = pendingConsent.answerConsentMessages
-                                                                        .GroupBy(acm => acm.result)
-                                                                        .OrderByDescending(g => g.Count())
-                                                                        .Select(g => g.Key)
-                                                                        .FirstOrDefault();
-                Debug.Log("Most occuring vote result: " + mostOccuringAnswerResult);
-
-                //apply it
-                AnswerConsentMessage mostOccuringAnswer = message;
-                message.result = mostOccuringAnswerResult;
-                ApplyAndSpreadConsentResult(mostOccuringAnswer);
-
-                //remove pending consent from list
-                pendingConsents.Remove(pendingConsent);
-            }
+                ApplyPendingConsent(pendingConsent);
         }
         else
         {

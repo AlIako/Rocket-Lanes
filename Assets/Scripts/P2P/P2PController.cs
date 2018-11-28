@@ -16,6 +16,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	public LatencyProfile latencyProfile;
 	public CheaterProfile cheaterProfile;
 	public bool consensusAlgorithm = true;
+	public float requestTimeoutTime = 500; //500 ms
 
 	[HideInInspector]
 	public int myPort;
@@ -122,6 +123,7 @@ public class P2PController : MonoBehaviour, INetworkController
 			return;
 		
 		SendPositionInformation();
+		P2PConsentManager.CheckForTimeoutPendingConsents();
 		P2PListener.Listen();
 	}
 
