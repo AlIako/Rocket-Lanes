@@ -13,6 +13,9 @@ public class P2PController : MonoBehaviour, INetworkController
 	[SerializeField]
 	Player playerPrefab;
 
+	[SerializeField]
+	LatencyProfile latencyProfile;
+
 	public bool consensusAlgorithm = true;
 
 	[HideInInspector]
