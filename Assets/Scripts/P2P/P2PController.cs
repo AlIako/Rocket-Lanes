@@ -16,7 +16,8 @@ public class P2PController : MonoBehaviour, INetworkController
 	public LatencyProfile latencyProfile;
 	public CheaterProfile cheaterProfile;
 	public bool consensusAlgorithm = true;
-	public float requestTimeoutTime = 500; //500 ms
+	public float requestTimeoutTimeMs = 500; //500 ms
+	public float connectionRequestTimeoutTimeS = 2;
 
 	[HideInInspector]
 	public int myPort;
@@ -115,16 +116,28 @@ public class P2PController : MonoBehaviour, INetworkController
 
 		NetworkTransport.Connect(P2PConnectionManager.myHostId, targetIp, targetPort, 0, out error);
 		CheckError("Connect");
+		P2PConnectionManager.connectionRequestSentTime = Time.time;
 	}
 
 	void Update()
 	{
-		if(!initialized)
-			return;
+		if(initialized && !GameStarted())
+		{
+			float currentTime = Time.time;
+			if(currentTime - P2PConnectionManager.connectionRequestSentTime > connectionRequestTimeoutTimeS)
+			{
+				Debug.Log("Connection request timeout");
+				myLane = -1;
+				DisplayError("Connection request timeout");
+			}
+		}
 		
-		SendPositionInformation();
-		P2PConsentManager.CheckForTimeoutPendingConsents();
-		P2PListener.Listen();
+		if(initialized)
+		{
+			SendPositionInformation();
+			P2PConsentManager.CheckForTimeoutPendingConsents();
+			P2PListener.Listen();
+		}
 	}
 
 	public void Initialize()

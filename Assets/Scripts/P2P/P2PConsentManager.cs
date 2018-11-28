@@ -18,7 +18,7 @@ public class P2PConsentManager
             //Debug.Log("current Time: " + currentTime + ", pendingConsent.pendingSince: " + pendingConsent.pendingSince +
             //            ", p2PController.requestTimeoutTime: " + p2PController.requestTimeoutTime + "dif: " + 
             //            (currentTime - pendingConsent.pendingSince));
-            if(currentTime - pendingConsent.pendingSince > p2PController.requestTimeoutTime)
+            if(currentTime - pendingConsent.pendingSince > p2PController.requestTimeoutTimeMs)
             {
                 Debug.Log("Request time out!");
                 if(pendingConsent.answerConsentMessages.Count > 0)

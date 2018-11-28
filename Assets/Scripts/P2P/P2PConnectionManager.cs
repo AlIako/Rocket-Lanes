@@ -13,6 +13,8 @@ public class P2PConnectionManager
 	public static bool requestPlayersInfoSent = false;
 	public static bool playersInfoReceived = false;
 
+	public static float connectionRequestSentTime = 0;
+
 	public static void ConnectEvent(int hostId, int connectionId)
 	{
 		P2PConnection connection = P2PConnectionManager.GetConnection(hostId, connectionId);
