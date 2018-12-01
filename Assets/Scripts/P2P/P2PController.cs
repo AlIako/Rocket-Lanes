@@ -87,7 +87,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 			Lane freeLane = gameController.GetFirstUnoccupiedLane();
 			answerMessage.result = 10;
-			if(freeLane == null)
+			if(freeLane != null)
 				answerMessage.result = freeLane.id;
 
 			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
