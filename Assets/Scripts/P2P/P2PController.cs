@@ -326,6 +326,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public bool HandleCollisions(Lane lane)
 	{
+		return true;
 		//only if its own lane
 		return gameController.player.lane.id == lane.id;
 	}
