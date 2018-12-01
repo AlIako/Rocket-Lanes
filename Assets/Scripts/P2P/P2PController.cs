@@ -261,6 +261,7 @@ public class P2PController : MonoBehaviour, INetworkController
 			PositionMessage message = new PositionMessage();
 			message.lane = System.Convert.ToUInt32(myLane);
 			message.position = gameController.player.transform.position;
+			message.hp = System.Convert.ToUInt32(gameController.player.Health);
 
 			P2PSender.SendToAll(P2PChannels.UnreliableChannelId, message, MessageTypes.Position);
 		}
@@ -276,6 +277,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		if(player != null)
 		{
 			player.transform.position = message.position;
+			player.SetHealth(System.Convert.ToInt32(message.hp));
 		}
 		else SpawnPlayer(lane);
 

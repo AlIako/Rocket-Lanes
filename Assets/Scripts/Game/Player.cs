@@ -11,6 +11,8 @@ public class Player : NetworkBehaviour
 	private int health = 10;
 	public int Health { get { return health; } }
 
+	bool alive = true;
+	
 	void Start()
 	{
 	}
@@ -19,10 +21,33 @@ public class Player : NetworkBehaviour
 	{
 		health -= value;
 
-		if(health <= 0)
-		{
-			Destroy(gameObject);
-		}
+		if(alive && health <= 0)
+			Die();
+		else if(!alive && health > 0)
+			Rez();
+	}
+
+	public void SetHealth(int value)
+	{
+		health = value;
+
+		if(alive && health <= 0)
+			Die();
+		else if(!alive && health > 0)
+			Rez();
+	}
+
+	void Die()
+	{
+		health = 0;
+		alive = false;
+		((SpriteRenderer)GetComponent<SpriteRenderer>()).enabled = false;
+	}
+
+	void Rez()
+	{
+		alive = true;
+		((SpriteRenderer)GetComponent<SpriteRenderer>()).enabled = true;
 	}
 
 	public void ApplyColor(Color color)

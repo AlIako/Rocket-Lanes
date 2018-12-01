@@ -35,6 +35,11 @@ public class Lane : MonoBehaviour
 		return player != null;
 	}
 
+	public bool PlayerAlive()
+	{
+		return player != null && player.Health > 0;
+	}
+
 	public void Enter(Player player)
 	{
 		this.player = player;

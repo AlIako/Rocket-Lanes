@@ -62,6 +62,28 @@ public class GameController : MonoBehaviour
 		return laneId;
 	}
 
+	public int GetNextAliveLaneId(Player p)
+	{
+		int laneId = p.lane.id;
+		for(int i = 0; i < 3; i ++)
+		{
+			laneId ++;
+			if(laneId >= 4)
+				laneId = 0;
+			
+			if(lanes[laneId].PlayerAlive())
+				return laneId;
+		}
+		
+		//if no other player, just send to next lane
+		laneId = p.lane.id;
+		laneId ++;
+		if(laneId >= 4)
+			laneId = 0;
+		
+		return laneId;
+	}
+
 	public Lane GetFirstUnoccupiedLane()
 	{
 		foreach(Lane lane in lanes)
@@ -72,9 +94,12 @@ public class GameController : MonoBehaviour
 		return null;
 	}
 
-	public void SendRocket() { SendRocket(player.lane.id, GetNextOccupiedLaneId(player)); }
+	public void SendRocket() { SendRocket(player.lane.id, GetNextAliveLaneId(player)); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{
+		if(lanes[playerId].player.Health <= 0) //dead players cant send rockets
+			return;
+		
 		List<int> parameters = new List<int>();
 		parameters.Add(playerId);
 		parameters.Add(neighbourPlayerId);
