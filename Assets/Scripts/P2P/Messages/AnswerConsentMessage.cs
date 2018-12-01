@@ -12,7 +12,6 @@ public class AnswerConsentMessage : MessageBase
     public int result;
     public List<int> parameters = new List<int>();
 
-    
     public override void Deserialize(NetworkReader reader)
     {
         consentId = Convert.ToInt32(reader.ReadPackedUInt32());

@@ -44,11 +44,12 @@ public class P2PController : MonoBehaviour, INetworkController
 		gameController = GameObject.FindObjectOfType<GameController>();
 	}
 
-    public int AskForConsent(ConsentAction consentAction, int[] parameters)
+    public int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters)
 	{
 		AskConsentMessage message = new AskConsentMessage();
 		message.consentId = P2PConsentManager.GetNextConsentIdAndIncrement();
 		message.consentAction = consentAction;
+		message.result = myResult;
 		message.parameters.AddRange(parameters);
 		if(consensusAlgorithm && P2PConnectionManager.SuccessfulConnectionsCount() > 0)
 		{
@@ -85,9 +86,9 @@ public class P2PController : MonoBehaviour, INetworkController
 			answerMessage.parameters = message.parameters;
 
 			Lane freeLane = gameController.GetFirstUnoccupiedLane();
+			answerMessage.result = 10;
 			if(freeLane == null)
-				answerMessage.parameters[0] = 10;
-			else answerMessage.parameters[0] = freeLane.id;
+				answerMessage.result = freeLane.id;
 
 			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
 				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
@@ -104,13 +105,13 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 		else if(message.consentAction == ConsentAction.JoinGame)
 		{
-			P2PConnection connection = P2PConnectionManager.GetConnection(message.parameters[1], message.parameters[2]);
+			P2PConnection connection = P2PConnectionManager.GetConnection(message.parameters[0], message.parameters[1]);
 			if(connection != null)
 			{
 				JoinAnswerMessage answerMessage = new JoinAnswerMessage();
-				answerMessage.lane = message.parameters[0];
+				answerMessage.lane = message.result;
 				answerMessage.successfulConnections = P2PConnectionManager.GetSuccessfulConnections();
-				P2PSender.Send(message.parameters[1], message.parameters[2], P2PChannels.ReliableChannelId, answerMessage, MessageTypes.JoinAnswer);
+				P2PSender.Send(message.parameters[0], message.parameters[1], P2PChannels.ReliableChannelId, answerMessage, MessageTypes.JoinAnswer);
 			
 				connection.SuccessfullyConnect();
 
@@ -119,7 +120,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 	}
 
-    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+    public void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters)
 	{
 		/*Debug.Log("P2P: Applying consent for: " + consentAction);
 		if(consentAction == ConsentAction.SpawnRocket)

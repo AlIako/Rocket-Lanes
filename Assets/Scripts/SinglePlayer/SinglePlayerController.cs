@@ -54,7 +54,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		gameController.lanes[toPlayerId].spawnManager.Spawn(randomIndex);
 	}
 
-    public int AskForConsent(ConsentAction consentAction, int[] parameters)
+    public int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters)
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{
@@ -64,7 +64,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		return -1;
 	}
 	
-    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+    public void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters)
 	{
 		if(consentAction == ConsentAction.SpawnRocket)
 		{

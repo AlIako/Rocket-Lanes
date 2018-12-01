@@ -79,11 +79,13 @@ public class GameController : MonoBehaviour
 		parameters.Add(playerId);
 		parameters.Add(neighbourPlayerId);
 		int[] parametersInt = parameters.ToArray();
-		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, parametersInt);
+		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, 
+				lanes[neighbourPlayerId].spawnManager.GetRandomSpawnerIndex(), 
+				parametersInt);
 		//Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
 		if(consentResult != -1) //for singleplayer only. Server-Client uses another callback (OnAskForConsentMsg)
 		{
-			networkController.ApplyConsent(ConsentAction.SpawnRocket, parametersInt, consentResult);
+			networkController.ApplyConsent(ConsentAction.SpawnRocket, consentResult, parametersInt);
 		}
 	}
 

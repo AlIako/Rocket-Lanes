@@ -21,7 +21,7 @@ public class P2PConsentManager
             if(currentTime - pendingConsent.pendingSince > p2PController.requestTimeoutTimeMs)
             {
                 Debug.Log("Request time out!");
-                if(pendingConsent.answerConsentMessages.Count > 0)
+                if(pendingConsent.answerConsentMessages.Count > 1)
                     ApplyPendingConsent(pendingConsent);
                 else
                 {
@@ -35,7 +35,7 @@ public class P2PConsentManager
 
     public static void ApplyPendingConsent(P2PPendingConsent pendingConsent)
     {
-        Debug.Log("Received enough votes! (" + pendingConsent.answerConsentMessages.Count + ").");
+        Debug.Log("Received enough votes! (" + (pendingConsent.answerConsentMessages.Count - 1)+ ").");
         //enough votes received! Pick the most occuring result
         int mostOccuringAnswerResult = pendingConsent.answerConsentMessages
                                                                 .GroupBy(acm => acm.result)
@@ -64,7 +64,7 @@ public class P2PConsentManager
         if(pendingConsent != null)
         {
             pendingConsent.answerConsentMessages.Add(message);
-            if(pendingConsent.answerConsentMessages.Count >= P2PConnectionManager.connections.Count)
+            if(pendingConsent.answerConsentMessages.Count >= P2PConnectionManager.connections.Count - 1)
                 ApplyPendingConsent(pendingConsent);
         }
         else

@@ -43,15 +43,15 @@ public class P2PConnectionManager
 		//ask others if a player can join to that lane
 		List<int> parameters = new List<int>();
 		Lane freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane();
-		if(freeLane == null)
-			parameters.Add(10);
-		else parameters.Add(freeLane.id);
+		int result = 10;
+		if(freeLane != null)
+			result = freeLane.id;
 
 		parameters.Add(hostId);
 		parameters.Add(connectionId);
 
 		int[] parametersInt = parameters.ToArray();
-		p2PController.AskForConsent(ConsentAction.JoinGame, parametersInt);
+		p2PController.AskForConsent(ConsentAction.JoinGame, result, parametersInt);
 	}
 
 	public static void OnJoinAnswer(int hostId, int connectionId, JoinAnswerMessage message)

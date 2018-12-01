@@ -68,7 +68,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		NetworkServer.Shutdown();*/
 	}
 
-    public int AskForConsent(ConsentAction consentAction, int[] parameters)
+    public int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters)
 	{
 		IntArrayMessage msg = new IntArrayMessage();
 		msg.consentAction = consentAction;
@@ -87,11 +87,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			result = gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		}
-		ApplyConsent(msg.consentAction, msg.parameters, result);
+		ApplyConsent(msg.consentAction, result, msg.parameters);
         Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
     }
 	
-    public void ApplyConsent(ConsentAction consentAction, int[] parameters, int consentResult)
+    public void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters)
 	{
 		Debug.Log("Applying for consent " + consentAction);
 		if(consentAction == ConsentAction.SpawnRocket)
