@@ -21,6 +21,14 @@ public class P2PListener
 		
 		while(recData != NetworkEventType.Nothing)
 		{
+			if(Recorder.session != null)
+			{
+				Recorder.session.messagesReceived ++;
+				Recorder.session.incomingBandwith += dataSize;
+				if(channelId == P2PChannels.ReliableChannelId)
+					Recorder.session.importantMessagesReceived ++;
+			}
+
 			//Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
 			//			", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));
 			channelId ++; //get rid of warning

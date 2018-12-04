@@ -16,6 +16,14 @@ public class P2PSender
 
 		NetworkTransport.Send(hostId, connectionId, channelId, writerData, P2PController.bufferLength, out P2PController.error);
 		P2PController.CheckError("Send");
+
+		
+		if(Recorder.session != null)
+		{
+			Recorder.session.messagesSent ++;
+			if(channelId == P2PChannels.ReliableChannelId)
+				Recorder.session.importantMessagesSent ++;
+		}
 	}
 
 	public static void SendToAll(int channelId, MessageBase message, short messageType)

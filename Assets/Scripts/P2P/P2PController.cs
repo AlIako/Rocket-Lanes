@@ -203,6 +203,9 @@ public class P2PController : MonoBehaviour, INetworkController
 		gameController.player = player1;
 		
 		gameController.StartGame();
+		
+		if(Recorder.session != null)
+			Recorder.session.port = myPort;
 	}
 
 	public void Quit()

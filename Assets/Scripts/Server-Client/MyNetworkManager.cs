@@ -73,6 +73,12 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	{
 		networkClient = NetworkClient.allClients[0];
 		networkClient.Send(NetworkMessages.AskForConsentMsg, consentMessage);
+
+		if(Recorder.session != null)
+		{
+			Recorder.session.importantMessagesSent ++;
+			Recorder.session.messagesSent ++;
+		}
 	}
 
 	void OnAskForConsentMsg(NetworkMessage netMsg)
@@ -82,6 +88,12 @@ public class MyNetworkManager : NetworkManager, INetworkController
 			gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		ApplyConsent(msg);
         Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
+		
+		if(Recorder.session != null)
+		{
+			Recorder.session.messagesReceived ++;
+			Recorder.session.importantMessagesReceived ++;
+		}
     }
 	
     public void ApplyConsent(ConsentMessage consentMessage)

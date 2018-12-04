@@ -16,6 +16,9 @@ public class GameController : MonoBehaviour
 	[HideInInspector]
 	public static bool gameStarted = false;
 
+	[HideInInspector]
+	public Recorder recorder;
+
 	INetworkController networkController;
 
 	void Start()
@@ -27,11 +30,15 @@ public class GameController : MonoBehaviour
 	{
 		GameObject.FindObjectOfType<UIController>().EnterGameUI();
 		gameStarted = true;
+
+		recorder = GameObject.FindObjectOfType<Recorder>();
+		recorder.StartRecording();
 	}
 
 	public void LeaveGame(bool enterUI = true)
 	{
 		gameStarted = false;
+		recorder.StopRecording();
 		networkController.Quit();
 		
 		player = null;
