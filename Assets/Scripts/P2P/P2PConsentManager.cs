@@ -81,7 +81,7 @@ public class P2PConsentManager
         applyMessage.parameters = message.parameters;
 
         P2PSender.SendToAll(P2PChannels.ReliableChannelId, applyMessage, MessageTypes.ApplyConsent);
-        p2PController.OnApplyConsentMsg(applyMessage);
+        p2PController.ApplyConsent(applyMessage);
     }
 
     public static void Reset()

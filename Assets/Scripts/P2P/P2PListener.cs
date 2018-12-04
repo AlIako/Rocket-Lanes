@@ -102,7 +102,7 @@ public class P2PListener
 		{
 			ApplyConsentMessage message = new ApplyConsentMessage();
 			message.Deserialize(networkReader);
-			p2PController.OnApplyConsentMsg(message);
+			p2PController.ApplyConsent(message);
 		}
     }
 }

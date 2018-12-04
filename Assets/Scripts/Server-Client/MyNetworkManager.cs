@@ -68,37 +68,29 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		NetworkServer.Shutdown();*/
 	}
 
-    public int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters)
+    public void AskForConsent(ConsentMessage consentMessage)
 	{
-		IntArrayMessage msg = new IntArrayMessage();
-		msg.consentAction = consentAction;
-		msg.parameters = parameters;
-
 		networkClient = NetworkClient.allClients[0];
-		networkClient.Send(NetworkMessages.AskForConsentMsg, msg);
-		return -1;
+		networkClient.Send(NetworkMessages.AskForConsentMsg, consentMessage);
 	}
 
 	void OnAskForConsentMsg(NetworkMessage netMsg)
     {
-		int result = -1;
-        var msg = netMsg.ReadMessage<IntArrayMessage>();
+        ConsentMessage msg = netMsg.ReadMessage<ConsentMessage>();
 		if(msg.consentAction == ConsentAction.SpawnRocket)
-		{
-			result = gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
-		}
-		ApplyConsent(msg.consentAction, result, msg.parameters);
+			gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
+		ApplyConsent(msg);
         Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
     }
 	
-    public void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters)
+    public void ApplyConsent(ConsentMessage consentMessage)
 	{
-		Debug.Log("Applying for consent " + consentAction);
-		if(consentAction == ConsentAction.SpawnRocket)
+		Debug.Log("Applying for consent " + consentMessage.consentAction);
+		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
 			if(NetworkServer.active)
 			{
-				NetworkServer.Spawn(gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult));
+				NetworkServer.Spawn(gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result));
 			}
 		}
 	}

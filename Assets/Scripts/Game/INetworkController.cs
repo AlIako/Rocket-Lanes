@@ -10,7 +10,7 @@ public interface INetworkController
 {
     void Initialize();
     void Quit();
-    int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters);
-    void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters);
+    void AskForConsent(ConsentMessage consentMessage);
+    void ApplyConsent(ConsentMessage consentMessage);
     bool HandleCollisions(Lane lane);
 }

@@ -54,22 +54,22 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		gameController.lanes[toPlayerId].spawnManager.Spawn(randomIndex);
 	}
 
-    public int AskForConsent(ConsentAction consentAction, int myResult, int[] parameters)
+    public void AskForConsent(ConsentMessage consentMessage)
 	{
-		if(consentAction == ConsentAction.SpawnRocket)
+		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
 			//get random lane index from targeted spawnManager
-			return gameController.lanes[parameters[1]].spawnManager.GetRandomSpawnerIndex();
+			consentMessage.result = gameController.lanes[consentMessage.parameters[1]].spawnManager.GetRandomSpawnerIndex();
+			ApplyConsent(consentMessage);
 		}
-		return -1;
 	}
 	
-    public void ApplyConsent(ConsentAction consentAction, int consentResult, int[] parameters)
+    public void ApplyConsent(ConsentMessage consentMessage)
 	{
-		if(consentAction == ConsentAction.SpawnRocket)
+		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
-			Debug.Log("ap1: " + parameters[1] + ", lane count: " + gameController.lanes.Length);
-			gameController.lanes[parameters[1]].spawnManager.Spawn(consentResult);
+			Debug.Log("ap1: " + consentMessage.parameters[1] + ", lane count: " + gameController.lanes.Length);
+			gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result);
 		}
 	}
 

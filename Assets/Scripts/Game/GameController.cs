@@ -100,18 +100,13 @@ public class GameController : MonoBehaviour
 		if(lanes[playerId].player.Health <= 0) //dead players cant send rockets
 			return;
 		
-		List<int> parameters = new List<int>();
-		parameters.Add(playerId);
-		parameters.Add(neighbourPlayerId);
-		int[] parametersInt = parameters.ToArray();
-		int consentResult = networkController.AskForConsent(ConsentAction.SpawnRocket, 
-				lanes[neighbourPlayerId].spawnManager.GetRandomSpawnerIndex(), 
-				parametersInt);
-		//Debug.Log("Asking for consent " + ConsentAction.SpawnRocket + ", result: " + consentResult);
-		if(consentResult != -1) //for singleplayer only. Server-Client uses another callback (OnAskForConsentMsg)
-		{
-			networkController.ApplyConsent(ConsentAction.SpawnRocket, consentResult, parametersInt);
-		}
+		ConsentMessage consentMessage = new ConsentMessage();
+		consentMessage.consentAction = ConsentAction.SpawnRocket;
+		consentMessage.parameters.Add(playerId);
+		consentMessage.parameters.Add(neighbourPlayerId);
+		consentMessage.result = lanes[neighbourPlayerId].spawnManager.GetRandomSpawnerIndex();
+		
+		networkController.AskForConsent(consentMessage);
 	}
 
 	public bool HandleCollisions(Lane lane)
