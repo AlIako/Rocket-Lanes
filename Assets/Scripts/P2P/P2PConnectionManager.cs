@@ -8,7 +8,7 @@ public class P2PConnectionManager
 {
 	public static List<P2PConnection> connections = new List<P2PConnection>();
 	public static P2PController p2PController;
-	public static int myHostId;
+	public static int myHostId = -1;
 
 	public static bool JoinRequestSend = false;
 	public static bool JoinAnswerReceived = false;
@@ -145,6 +145,9 @@ public class P2PConnectionManager
 	//if succesfully connected to all, the game can start
 	static void CheckConnectionsStatus()
 	{
+		if(myHostId == -1)
+			return;
+		
 		bool connectedToAll = true;
 		foreach(P2PConnection connection in connections)
 		{
@@ -195,6 +198,7 @@ public class P2PConnectionManager
 	public static void Reset()
 	{
 		connections = new List<P2PConnection>();
+		myHostId = -1;
 		JoinRequestSend = false;
 		JoinAnswerReceived = false;
 	}

@@ -41,9 +41,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		gameController.StartGame();
     }
 
-	public void Initialize()
+	public bool Initialize()
 	{
 		NetworkServer.RegisterHandler(NetworkMessages.AskForConsentMsg, OnAskForConsentMsg);
+		return true;
 	}
 
 	public override void OnStartHost()

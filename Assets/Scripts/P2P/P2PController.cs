@@ -121,19 +121,20 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
-		Initialize();
-
-		StartNewGame();
+		if(Initialize())
+			StartNewGame();
 	}
 
 	public void JoinGame()
 	{
 		Debug.Log("Joining P2P Game " + targetIp + ":" + targetPort + "... (my port: " + myPort + ")");
-		Initialize();
+		if(Initialize())
+		{
+			NetworkTransport.Connect(P2PConnectionManager.myHostId, targetIp, targetPort, 0, out error);
+			CheckError("Connect");
+			P2PConnectionManager.connectionRequestSentTime = Time.time;
+		}
 
-		NetworkTransport.Connect(P2PConnectionManager.myHostId, targetIp, targetPort, 0, out error);
-		CheckError("Connect");
-		P2PConnectionManager.connectionRequestSentTime = Time.time;
 	}
 
 	void Update()
@@ -157,7 +158,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 	}
 
-	public void Initialize()
+	public bool Initialize()
 	{
 		P2PConnectionManager.p2PController = this;
 		P2PListener.p2PController = this;
@@ -173,8 +174,16 @@ public class P2PController : MonoBehaviour, INetworkController
 		HostTopology topology = new HostTopology(config, 10);
 
 		P2PConnectionManager.myHostId = NetworkTransport.AddHost(topology, myPort);
+		Debug.Log("my host id: " + P2PConnectionManager.myHostId);
+
+		if(P2PConnectionManager.myHostId == -1) //port busy or something
+		{
+			DisplayError("Port " + myPort + " is busy");
+			return false;
+		}
 
 		initialized = true;
+		return true;
 	}
 
 	public void StartNewGame()
@@ -185,14 +194,15 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public void StartGame()
 	{
+		Debug.Log("Starting Game");
 		P2PConnectionManager.JoinRequestSend = true;
 		P2PConnectionManager.JoinAnswerReceived = true;
-		
-		gameController.StartGame();
 
 		Player player1 = SpawnPlayer(myLane);
 		player1.gameObject.GetComponent<PlayerController>().enabled = true;
 		gameController.player = player1;
+		
+		gameController.StartGame();
 	}
 
 	public void Quit()

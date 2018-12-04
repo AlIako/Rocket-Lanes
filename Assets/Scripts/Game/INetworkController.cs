@@ -8,7 +8,7 @@ public enum ConsentAction {SpawnRocket, CastShield, JoinGame};
 
 public interface INetworkController
 {
-    void Initialize();
+    bool Initialize();
     void Quit();
     void AskForConsent(ConsentMessage consentMessage);
     void ApplyConsent(ConsentMessage consentMessage);

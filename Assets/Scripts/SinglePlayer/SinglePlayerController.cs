@@ -18,7 +18,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		Initialize();
 	}
 	
-	public void Initialize()
+	public bool Initialize()
 	{
 		//spawn player
 		Player player1 = Instantiate(playerPrefab, gameController.lanes[0].startPosition.transform.position, Quaternion.identity);
@@ -34,6 +34,7 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		}
 
 		gameController.StartGame();
+		return true;
 	}
 
 	public void Quit()
