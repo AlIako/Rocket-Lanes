@@ -28,6 +28,7 @@ public class P2PListener
 				if(channelId == P2PChannels.ReliableChannelId)
 					Recorder.session.importantMessagesReceived ++;
 			}
+			//Debug.Log("Adding data size: " + dataSize);
 
 			//Debug.Log("Received: " + recData + ", recHostId: " + recHostId + ", connectionId: " + connectionId + 
 			//			", channelId: " + channelId + ", recBuffer: " + Encoding.UTF8.GetString(recBuffer));

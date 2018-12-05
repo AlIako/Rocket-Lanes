@@ -13,6 +13,7 @@ public class P2PSender
 		message.Serialize(writer);
 		writer.FinishMessage();
 		byte[] writerData = writer.ToArray();
+		int bufferLength = P2PController.bufferLength;
 
 		NetworkTransport.Send(hostId, connectionId, channelId, writerData, P2PController.bufferLength, out P2PController.error);
 		P2PController.CheckError("Send");
@@ -21,6 +22,7 @@ public class P2PSender
 		if(Recorder.session != null)
 		{
 			Recorder.session.messagesSent ++;
+			Recorder.session.leavingBandwith += bufferLength;
 			if(channelId == P2PChannels.ReliableChannelId)
 				Recorder.session.importantMessagesSent ++;
 		}
