@@ -38,7 +38,8 @@ public class GameController : MonoBehaviour
 	public void LeaveGame(bool enterUI = true)
 	{
 		gameStarted = false;
-		recorder.StopRecording();
+		if(recorder != null)
+			recorder.StopRecording();
 		networkController.Quit();
 		
 		player = null;
