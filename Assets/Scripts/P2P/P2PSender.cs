@@ -22,7 +22,7 @@ public class P2PSender
 		if(Recorder.session != null)
 		{
 			Recorder.session.messagesSent ++;
-			Recorder.session.leavingBandwith += bufferLength;
+			Recorder.session.AddLeavingBandwidth(bufferLength);
 			if(channelId == P2PChannels.ReliableChannelId)
 				Recorder.session.importantMessagesSent ++;
 		}

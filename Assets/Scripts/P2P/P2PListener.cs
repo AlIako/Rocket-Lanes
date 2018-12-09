@@ -24,7 +24,7 @@ public class P2PListener
 			if(Recorder.session != null)
 			{
 				Recorder.session.messagesReceived ++;
-				Recorder.session.incomingBandwith += dataSize;
+				Recorder.session.AddIncomingBandwidth(dataSize);
 				if(channelId == P2PChannels.ReliableChannelId)
 					Recorder.session.importantMessagesReceived ++;
 			}
