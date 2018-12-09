@@ -12,8 +12,8 @@ public class Session
 {
     public string date = "";
     public NetworkModel networkModel;
-    public int port = 0;
-    public string ip = "";
+    //public int port = 0;
+    //public string ip = "";
     public float duration = 0;
     public float averagePlayersCount = 0;
 
@@ -24,6 +24,7 @@ public class Session
     public float incomingBandwith = 0; //size in mb
     public float leavingBandwith = 0; //size in mb
 
+    //P2P only
     public float averageTimeUntilAnswerForConsent = 0;
 
     public int cheatsTried = 0;
