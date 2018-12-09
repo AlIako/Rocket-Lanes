@@ -25,7 +25,10 @@ public class Session
     //public float leavingBandwith = 0; //size in mb. Not conclusive, better to use external software!
 
     //P2P only
+    public int consentSent = 0;
     public float averageTimeUntilAnswerForConsent = 0;
+    public float totalTimeWaitingForConsent = 0;
+    public int consentTimeOut = 0;
     public int cheatsTried = 0;
     public int cheatsPassed = 0;
 
@@ -55,6 +58,13 @@ public class Session
         duration = Time.time * 1000.0f - startTime;
         date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         UpdatePlayersCount(lastPlayersCount);
+    }
+
+    public void AddSentAndAppliedConsent(float timeToConsent)
+    {
+        consentSent ++;
+        totalTimeWaitingForConsent += Time.time * 1000.0f - timeToConsent;
+        averageTimeUntilAnswerForConsent = totalTimeWaitingForConsent / consentSent;
     }
 
     public void UpdatePlayersCount(int playersCount)

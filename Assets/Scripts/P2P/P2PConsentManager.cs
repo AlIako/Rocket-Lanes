@@ -20,6 +20,11 @@ public class P2PConsentManager
             //            (currentTime - pendingConsent.pendingSince));
             if(currentTime - pendingConsent.pendingSince > p2PController.requestTimeoutTimeMs)
             {
+                if(Recorder.session != null)
+                {
+                    Recorder.session.consentTimeOut ++;
+                }
+
                 Debug.Log("Request time out!");
                 if(pendingConsent.answerConsentMessages.Count > 1)
                     ApplyPendingConsent(pendingConsent);
@@ -35,6 +40,11 @@ public class P2PConsentManager
 
     public static void ApplyPendingConsent(P2PPendingConsent pendingConsent)
     {
+        if(Recorder.session != null)
+        {
+            Recorder.session.AddSentAndAppliedConsent(pendingConsent.pendingSince);
+        }
+        
         Debug.Log("Received enough votes! (" + (pendingConsent.answerConsentMessages.Count - 1)+ ").");
         //enough votes received! Pick the most occuring result
         int mostOccuringAnswerResult = pendingConsent.answerConsentMessages
