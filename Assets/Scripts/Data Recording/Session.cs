@@ -29,6 +29,53 @@ public class Session
     public int cheatsTried = 0;
     public int cheatsPassed = 0;
 
+
+    //non serialized
+    [NonSerialized]
+    float startTime;
+    
+    [NonSerialized]
+    int lastPlayersCount = 0;
+    
+    [NonSerialized]
+    float lastPlayersCountTime = 0;
+
+    public Session(NetworkModel networkModel)
+    {
+        this.networkModel = networkModel;
+    }
+
+    public void Start()
+    {
+        startTime = Time.time * 1000.0f;
+    }
+
+    public void Stop()
+    {
+        duration = Time.time * 1000.0f - startTime;
+        date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        UpdatePlayersCount(lastPlayersCount);
+    }
+
+    public void UpdatePlayersCount(int playersCount)
+    {
+        float currentTime = Time.time * 1000.0f - startTime;
+        if(lastPlayersCountTime == 0)
+        {
+            averagePlayersCount = playersCount;
+        }
+        else
+        {
+            float untilLastCountWeight = lastPlayersCountTime / currentTime;
+            float lastCountUntilNowWeight = (currentTime - lastPlayersCountTime) / currentTime;
+
+            averagePlayersCount = untilLastCountWeight * averagePlayersCount + lastCountUntilNowWeight * lastPlayersCount;
+        }
+        
+        lastPlayersCount = playersCount;
+        lastPlayersCountTime = currentTime;
+    }
+
     public void AddIncomingBandwidth(int data)
     {
         //incomingBandwith += data;

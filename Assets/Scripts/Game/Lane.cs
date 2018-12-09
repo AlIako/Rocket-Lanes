@@ -11,6 +11,7 @@ public class Lane : MonoBehaviour
 	public NetworkStartPosition startPosition;
 	
 	private UIController uIController;
+	private GameController gameController;
 	Color color = new Color(1.0f, 1.0f, 1.0f);
 
 	void Start()
@@ -49,6 +50,10 @@ public class Lane : MonoBehaviour
 		if(uIController == null)
 			uIController = FindObjectOfType<UIController>();
 		uIController.ActivateLaneUI(id);
+
+		if(gameController == null)
+			gameController = FindObjectOfType<GameController>();
+		StartCoroutine(gameController.UpdatePlayersCount());
 	}
 
 	public void Leave(Player player)
@@ -59,6 +64,10 @@ public class Lane : MonoBehaviour
 		if(uIController == null)
 			uIController = FindObjectOfType<UIController>();
 		uIController.DeactivateLaneUI(id);
+		
+		if(gameController == null)
+			gameController = FindObjectOfType<GameController>();
+		StartCoroutine(gameController.UpdatePlayersCount());
 	}
 
 }

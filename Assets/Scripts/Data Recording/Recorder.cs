@@ -9,8 +9,6 @@ public class Recorder : MonoBehaviour
     NetworkModel networkModel;
     public static Session session = null;
 
-    float timestampStart;
-
     void Start()
     {
         if(GameObject.FindObjectOfType<SinglePlayerController>())
@@ -25,8 +23,8 @@ public class Recorder : MonoBehaviour
     {
         if(RecordingEnabled())
         {
-            session = new Session();
-            timestampStart = Time.time * 1000.0f;
+            session = new Session(networkModel);
+            session.Start();
         }
     }
 
@@ -34,23 +32,27 @@ public class Recorder : MonoBehaviour
     {
         if(RecordingEnabled() && session != null)
         {
-            session.date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            session.networkModel = networkModel;
-            session.duration = Time.time * 1000.0f - timestampStart;
-
-            WriteSessionFile();
-
+            session.Stop();
+            WriteSessionFile(session);
             session = null;
         }
     }
 
-    void WriteSessionFile()
+    public void UpdatePlayersCount(int playersCount)
+    {
+        if(RecordingEnabled() && session != null)
+        {
+            session.UpdatePlayersCount(playersCount);
+        }
+    }
+
+    void WriteSessionFile(Session sessionToWrite)
     {
         string directoryPath = "Network Data/";
         string fileName = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".nd";
         string path = directoryPath + fileName;
 
-        string content = JsonUtility.ToJson(session, true);
+        string content = JsonUtility.ToJson(sessionToWrite, true);
 
         Directory.CreateDirectory(directoryPath);
         

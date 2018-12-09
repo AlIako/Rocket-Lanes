@@ -12,8 +12,11 @@ public class GameController : MonoBehaviour
 
 	[HideInInspector]
 	public Player player;
-
+	
 	[HideInInspector]
+	public int playersCount = 0; //small delay
+	private int UpdatePlayersCountDelay = 1;
+
 	public static bool gameStarted = false;
 
 	[HideInInspector]
@@ -46,6 +49,20 @@ public class GameController : MonoBehaviour
 
 		if(enterUI)
         	SceneManager.LoadScene("Main Menu");
+	}
+
+	public IEnumerator UpdatePlayersCount()
+	{
+		yield return new WaitForSeconds(UpdatePlayersCountDelay);
+		playersCount = 0;
+		foreach(Lane lane in lanes)
+		{
+			if(lane.IsOccupied())
+				playersCount ++;
+		}
+		
+		if(recorder != null)
+			recorder.UpdatePlayersCount(playersCount);
 	}
 
 	public int GetNextOccupiedLaneId(Player p)
