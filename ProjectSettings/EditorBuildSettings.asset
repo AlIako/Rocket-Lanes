@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Automated P2P.unity
     guid: f9eb6ed6c2654194985592f89b865304
+  - enabled: 1
+    path: Assets/Scenes/Automated Server-Client.unity
+    guid: 80b98b4a952b422429e5c67dd8e99ea9
   m_configObjects: {}

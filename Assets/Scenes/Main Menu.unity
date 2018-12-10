@@ -150,7 +150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 272.7, y: -129.5}
+  m_AnchoredPosition: {x: 273.7, y: -159}
   m_SizeDelta: {x: 70.19, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &13777581
@@ -297,7 +297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 148, y: -129}
+  m_AnchoredPosition: {x: 148, y: -159}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &110215917
@@ -1996,7 +1996,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1378646408
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2014,7 +2014,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 148, y: -159}
+  m_AnchoredPosition: {x: 148, y: -129.5}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1378646409
@@ -2056,7 +2056,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1378646410}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 666605150}
+        m_MethodName: StartLevel
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Automated Server-Client
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1378646410
@@ -2911,6 +2922,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 5101928406406588000, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5101928406406588002, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2975,6 +2991,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1.5929146
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101928405826128487, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101928405830614541, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101928406153729714, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101928407425404614, guid: 66d59c2bcaafb0b45b6578de33ffee0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66d59c2bcaafb0b45b6578de33ffee0b, type: 3}
