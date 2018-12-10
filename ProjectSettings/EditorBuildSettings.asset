@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SinglePlayer.unity
     guid: 14a16c6af01454841a87ff33b04e16ef
+  - enabled: 1
+    path: Assets/Scenes/Automated P2P.unity
+    guid: f9eb6ed6c2654194985592f89b865304
   m_configObjects: {}

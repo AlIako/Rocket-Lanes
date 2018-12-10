@@ -7,6 +7,14 @@ public class BackButton : MonoBehaviour
 {
 	public void Click()
 	{
-		SceneManager.LoadScene("Main Menu");
+		GameController gc = GameObject.FindObjectOfType<GameController>();
+		gc.LeaveGame(true);
+		//SceneManager.LoadScene("Main Menu");
+	}
+
+	public void ReloadCurrent()
+	{
+		Scene scene = SceneManager.GetActiveScene(); 
+		SceneManager.LoadScene(scene.name);
 	}
 }

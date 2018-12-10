@@ -15,6 +15,7 @@ TagManager:
   - Lane2UI
   - Lane3UI
   - Lane4UI
+  - State
   layers:
   - Default
   - TransparentFX

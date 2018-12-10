@@ -27,7 +27,7 @@ public class P2PController : MonoBehaviour, INetworkController
 	
 	GameController gameController;
 
-	string targetIp; //only when joining
+	string targetIp = "127.0.0.1"; //only when joining
 	int targetPort; //only when joining
 	bool initialized = false;
 	List<Player> players = new List<Player>();
