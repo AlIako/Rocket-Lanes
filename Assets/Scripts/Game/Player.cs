@@ -7,7 +7,7 @@ public class Player : NetworkBehaviour
 {
 	public Lane lane;
 
-	[SerializeField]
+	[SerializeField, SyncVar(hook = "SetHealth")]
 	private int health = 10;
 	public int Health { get { return health; } }
 
