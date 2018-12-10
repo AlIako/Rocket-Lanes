@@ -7,7 +7,7 @@ public class RunStatePlaying : RunState
 {
     public RunStatePlaying(): base()
     {
-        timeUntilTransition = 30;
+        timeUntilTransition = Random.Range(20, 40);
 
         Player player = GameObject.FindObjectOfType<GameController>().player;
         if(player.GetComponent<AI>() == null)

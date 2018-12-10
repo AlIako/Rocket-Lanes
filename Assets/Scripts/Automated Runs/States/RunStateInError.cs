@@ -6,7 +6,7 @@ public class RunStateInError : RunState
 {
     public RunStateInError(): base()
     {
-        timeUntilTransition = 2;
+        timeUntilTransition = Random.Range(1, 3);
     }
 
     public override RunState Transite()

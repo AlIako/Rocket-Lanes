@@ -6,7 +6,7 @@ public class RunStateIdle : RunState
 {
     public RunStateIdle(): base()
     {
-        timeUntilTransition = 3;
+        timeUntilTransition = Random.Range(2, 4);
     }
 
     public override RunState Transite()
