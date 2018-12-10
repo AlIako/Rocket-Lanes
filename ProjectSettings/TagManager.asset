@@ -16,6 +16,8 @@ TagManager:
   - Lane3UI
   - Lane4UI
   - State
+  - DropdownP2P
+  - DropdownServerClient
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 //DEA
 public class AutomatedP2PRunController : MonoBehaviour
 {
-    [SerializeField]
     RunState currentState;
     
     public static GameController gameController = null;
