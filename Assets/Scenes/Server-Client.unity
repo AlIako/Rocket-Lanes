@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 109901595}
   m_Layer: 5
   m_Name: SCUI
-  m_TagString: Untagged
+  m_TagString: SCUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
