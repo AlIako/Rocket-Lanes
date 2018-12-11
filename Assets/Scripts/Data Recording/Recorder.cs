@@ -6,17 +6,17 @@ using UnityEngine;
 
 public class Recorder : MonoBehaviour
 {
-    NetworkModel networkModel;
+    string networkModel;
     public static Session session = null;
 
     void Start()
     {
         if(GameObject.FindObjectOfType<SinglePlayerController>())
-            SetNetworkModel(NetworkModel.SinglePlayer);
+            networkModel = "SinglePlayer";
         else if(GameObject.FindObjectOfType<MyNetworkManager>())
-            SetNetworkModel(NetworkModel.ServerClient);
+            networkModel = "Server-Client";
         else if(GameObject.FindObjectOfType<P2PController>())
-            SetNetworkModel(NetworkModel.P2P);
+            networkModel = "P2P";
     }
 
     public void StartRecording()
@@ -64,10 +64,5 @@ public class Recorder : MonoBehaviour
     public bool RecordingEnabled()
     {
         return PlayerPrefs.GetInt("Recording", 0) == 1;
-    }
-
-    void SetNetworkModel(NetworkModel networkModel)
-    {
-        this.networkModel = networkModel;
     }
 }

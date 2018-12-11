@@ -11,7 +11,7 @@ public enum NetworkModel {SinglePlayer, ServerClient, P2P};
 public class Session
 {
     public string date = "";
-    public NetworkModel networkModel;
+    public string networkModel;
     //public int port = 0; //interesting but useless
     //public string ip = ""; //interesting but useless
     public float duration = 0;
@@ -43,7 +43,7 @@ public class Session
     [NonSerialized]
     float lastPlayersCountTime = 0;
 
-    public Session(NetworkModel networkModel)
+    public Session(string networkModel)
     {
         this.networkModel = networkModel;
     }
