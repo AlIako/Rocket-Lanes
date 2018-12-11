@@ -10,6 +10,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public string targetIp = "localhost";
 
+	public int playersMax = 4;
+	float connectionRequestTimeoutTimeS = 2;
+	float connectionRequestSentTime = 0;
+
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
@@ -24,13 +28,40 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	public void Join()
 	{
 		networkAddress = targetIp;
+		connectionRequestSentTime = Time.time;
 		StartClient();
 		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
+	}
+
+	public void DisplayError(string er)
+	{
+		gameController.LeaveGame(false);
+		FindObjectOfType<UIController>().DisplayError(er);
+	}
+	
+	void Update()
+	{
+		if(connectionRequestSentTime != 0 && !GameController.gameStarted && GameObject.FindGameObjectWithTag("ErrorPanel") == null)
+		{
+			float currentTime = Time.time;
+			if(currentTime - connectionRequestSentTime > connectionRequestTimeoutTimeS)
+			{
+				Debug.Log("Connection request timeout");
+				DisplayError("Connection request timeout");
+			}
+		}
 	}
 
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
+		int playersCount = GameObject.FindObjectsOfType<Player>().Length;
+		if(playersCount >= playersMax)
+		{
+			conn.Disconnect();
+			return;
+		}
+
 		Lane lane = gameController.GetFirstUnoccupiedLane();
         GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, lane.startPosition.transform.position, Quaternion.identity);
 
@@ -56,6 +87,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		//Reveal in-game UI
 		gameController.StartGame();
     }
+
+	public override void OnClientDisconnect(NetworkConnection conn)
+	{
+		DisplayError("Game is full");
+	}
 
 
 	public bool Initialize()

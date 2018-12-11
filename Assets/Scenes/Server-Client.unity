@@ -1548,6 +1548,16 @@ PrefabInstance:
       propertyPath: inGameUI
       value: 
       objectReference: {fileID: 422775627}
+    - target: {fileID: 6901436298689325066, guid: 570c5d0256eca6542954130085310043,
+        type: 3}
+      propertyPath: errorPanel
+      value: 
+      objectReference: {fileID: 424300383}
+    - target: {fileID: 6901436298689325066, guid: 570c5d0256eca6542954130085310043,
+        type: 3}
+      propertyPath: errorText
+      value: 
+      objectReference: {fileID: 1800835795}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 570c5d0256eca6542954130085310043, type: 3}
 --- !u!4 &1063293299 stripped
@@ -3027,6 +3037,7 @@ MonoBehaviour:
   isNetworkActive: 0
   matchMaker: {fileID: 0}
   targetIp: localhost
+  playersMax: 4
 --- !u!114 &1563236285404722791
 MonoBehaviour:
   m_ObjectHideFlags: 0
