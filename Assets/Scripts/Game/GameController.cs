@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	GameObject networkControllerGameObject;
 
+	public CheaterProfileContainer cheaterProfileContainer;
+
 	[HideInInspector]
 	public Player player;
 	
@@ -130,6 +132,18 @@ public class GameController : MonoBehaviour
 		consentMessage.parameters.Add(playerId);
 		consentMessage.parameters.Add(neighbourPlayerId);
 		consentMessage.result = lanes[neighbourPlayerId].spawnManager.GetRandomSpawnerIndex();
+
+		//Cheating only implemented in P2PController
+		/*//will I cheat?
+		int randomInt = Random.Range(0, 100);
+		if(randomInt < cheaterProfileContainer.cheaterProfile.cheatingRate)
+		{
+			if(Recorder.session != null)
+				Recorder.session.cheatsTried ++;
+
+			//sending a wrong spawner index
+			consentMessage.result = 100;
+		}*/
 		
 		networkController.AskForConsent(consentMessage);
 	}

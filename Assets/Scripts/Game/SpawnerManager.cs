@@ -68,4 +68,9 @@ public class SpawnerManager : MonoBehaviour
 		GameObject spawner = spawners[index];
 		return Instantiate(projectile, spawner.transform.position, spawner.transform.rotation);
 	}
+
+	public bool ValidIndex(int index)
+	{
+		return index >= 0 && index < spawners.Count;
+	}
 }

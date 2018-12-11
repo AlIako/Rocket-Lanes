@@ -14,7 +14,6 @@ public class P2PController : MonoBehaviour, INetworkController
 	Player playerPrefab;
 
 	public LatencyProfile latencyProfile;
-	public CheaterProfile cheaterProfile;
 	public bool consensusAlgorithm = true;
 	public float requestTimeoutTimeMs = 500; //500 ms
 	public float connectionRequestTimeoutTimeS = 2;
@@ -75,6 +74,17 @@ public class P2PController : MonoBehaviour, INetworkController
 		{
 			answerMessage.result = gameController.lanes[message.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 			answerMessage.parameters = message.parameters;
+
+			//will I cheat?
+			int randomInt = UnityEngine.Random.Range(0, 100);
+			if(randomInt < gameController.cheaterProfileContainer.cheaterProfile.cheatingRate)
+			{
+				if(Recorder.session != null)
+					Recorder.session.cheatsTried ++;
+
+				//sending a wrong spawner index
+				answerMessage.result = 100;
+			}
 			
 			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
 				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
@@ -99,7 +109,15 @@ public class P2PController : MonoBehaviour, INetworkController
 		Debug.Log("P2P: Applying consent for: " + message.consentAction);
 		if(message.consentAction == ConsentAction.SpawnRocket)
 		{
-			gameController.lanes[message.parameters[1]].spawnManager.Spawn(message.result);
+			bool cheating = !gameController.lanes[message.parameters[1]].spawnManager.ValidIndex(message.result);
+			if(!cheating)
+				gameController.lanes[message.parameters[1]].spawnManager.Spawn(message.result);
+			else 
+			{
+				Debug.Log("Cheat!");
+				if(Recorder.session != null)
+					Recorder.session.cheatsPassed ++;
+			}
 		}
 		else if(message.consentAction == ConsentAction.JoinGame)
 		{

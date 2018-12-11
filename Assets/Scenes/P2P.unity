@@ -1052,6 +1052,93 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &667044294
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1589457347}
+    m_Modifications:
+    - target: {fileID: 381741123652806326, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_Name
+      value: CheaterProfile
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d9ba383dab41d84419d01bf2b7d105f0, type: 3}
+--- !u!4 &667044295 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7496903994697362129, guid: d9ba383dab41d84419d01bf2b7d105f0,
+    type: 3}
+  m_PrefabInstance: {fileID: 667044294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &667044296 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1959165608975552827, guid: d9ba383dab41d84419d01bf2b7d105f0,
+    type: 3}
+  m_PrefabInstance: {fileID: 667044294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fc5b35c3fc47f540a81d35bf6ca68e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &667276439
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1880,6 +1967,7 @@ MonoBehaviour:
   - {fileID: 494429918}
   - {fileID: 706741712}
   networkControllerGameObject: {fileID: 1473620944}
+  cheaterProfileContainer: {fileID: 667044296}
   player: {fileID: 0}
   playersCount: 0
   recorder: {fileID: 0}
@@ -1929,7 +2017,6 @@ MonoBehaviour:
   playerPrefab: {fileID: 114735315976477408, guid: 8b02e09865b9fdf42b1c0dd192def290,
     type: 3}
   latencyProfile: {fileID: 11400000, guid: e3700f6c488cba242af8be6f980e5fb0, type: 2}
-  cheaterProfile: {fileID: 11400000, guid: 901b5c4e1e783d94c972a4badc11a72b, type: 2}
   consensusAlgorithm: 1
   requestTimeoutTimeMs: 500
   connectionRequestTimeoutTimeS: 2
@@ -1966,6 +2053,7 @@ Transform:
   - {fileID: 2044949961}
   - {fileID: 1473620945}
   - {fileID: 667276440}
+  - {fileID: 667044295}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

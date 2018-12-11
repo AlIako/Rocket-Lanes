@@ -118,7 +118,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			if(NetworkServer.active)
 			{
-				NetworkServer.Spawn(gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result));
+				bool cheating = !gameController.lanes[consentMessage.parameters[1]].spawnManager.ValidIndex(consentMessage.result);
+				if(!cheating)
+					NetworkServer.Spawn(gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result));
+				else Debug.Log("Cheat!");
 			}
 		}
 	}

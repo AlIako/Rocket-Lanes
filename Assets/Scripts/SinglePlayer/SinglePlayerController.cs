@@ -49,28 +49,19 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 			Destroy(p.gameObject);
 	}
 
-    public void SpawnRocket(int fromPlayerId, int toPlayerId)
-	{
-		int randomIndex = gameController.lanes[toPlayerId].spawnManager.GetRandomSpawnerIndex();
-		gameController.lanes[toPlayerId].spawnManager.Spawn(randomIndex);
-	}
-
     public void AskForConsent(ConsentMessage consentMessage)
 	{
-		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
-		{
-			//get random lane index from targeted spawnManager
-			consentMessage.result = gameController.lanes[consentMessage.parameters[1]].spawnManager.GetRandomSpawnerIndex();
-			ApplyConsent(consentMessage);
-		}
+		ApplyConsent(consentMessage);
 	}
 	
     public void ApplyConsent(ConsentMessage consentMessage)
 	{
 		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
-			//Debug.Log("ap1: " + consentMessage.parameters[1] + ", lane count: " + gameController.lanes.Length);
-			gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result);
+			bool cheating = !gameController.lanes[consentMessage.parameters[1]].spawnManager.ValidIndex(consentMessage.result);
+			if(!cheating)
+				gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result);
+			else Debug.Log("Cheat!");
 		}
 	}
 
