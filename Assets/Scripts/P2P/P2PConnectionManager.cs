@@ -78,6 +78,9 @@ public class P2PConnectionManager
 
 			p2PController.myLane = message.lane;
 			
+			P2PController.gameColor = new Color(message.r / 255.0f, message.g / 255.0f, message.b / 255.0f);
+			GameObject.FindObjectOfType<UIController>().UpdateGameColor(P2PController.gameColor);
+			
 			foreach(P2PConnection connection in message.successfulConnections)
 			{
 				connections.Add(connection);

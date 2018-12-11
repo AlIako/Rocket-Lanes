@@ -20,6 +20,7 @@ TagManager:
   - DropdownServerClient
   - SCUI
   - Status
+  - GameColor
   layers:
   - Default
   - TransparentFX

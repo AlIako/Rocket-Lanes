@@ -65,4 +65,9 @@ public class UIController : MonoBehaviour
 	{
 		laneUIs[index].SetActive(false);
 	}
+
+	public void UpdateGameColor(Color color)
+	{
+		GameObject.FindGameObjectWithTag("GameColor").GetComponent<Image>().color = color;
+	}
 }

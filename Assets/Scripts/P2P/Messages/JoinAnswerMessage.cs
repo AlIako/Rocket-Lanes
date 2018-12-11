@@ -9,6 +9,7 @@ public class JoinAnswerMessage : MessageBase
 {
     public int lane;
     public List<P2PConnection> successfulConnections = new List<P2PConnection>();
+    public int r, g, b;
 
     public override void Deserialize(NetworkReader reader)
     {
@@ -25,6 +26,9 @@ public class JoinAnswerMessage : MessageBase
             
             successfulConnections.Add(connection);
         }
+        r = Convert.ToInt32(reader.ReadPackedUInt32());
+        g = Convert.ToInt32(reader.ReadPackedUInt32());
+        b = Convert.ToInt32(reader.ReadPackedUInt32());
     }
 
     public override void Serialize(NetworkWriter writer)
@@ -37,5 +41,8 @@ public class JoinAnswerMessage : MessageBase
             writer.WritePackedUInt32(Convert.ToUInt32(connection.port));
             writer.WritePackedUInt32(Convert.ToUInt32(connection.lane));
         }
+        writer.WritePackedUInt32(Convert.ToUInt32(r));
+        writer.WritePackedUInt32(Convert.ToUInt32(g));
+        writer.WritePackedUInt32(Convert.ToUInt32(b));
     }
 }

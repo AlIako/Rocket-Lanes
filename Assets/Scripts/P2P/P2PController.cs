@@ -31,6 +31,8 @@ public class P2PController : MonoBehaviour, INetworkController
 	bool initialized = false;
 	List<Player> players = new List<Player>();
 
+	public static Color gameColor = Color.white;
+
 	public static int bufferLength = 1024;
 	public static byte error;
 
@@ -127,6 +129,10 @@ public class P2PController : MonoBehaviour, INetworkController
 				JoinAnswerMessage answerMessage = new JoinAnswerMessage();
 				answerMessage.lane = message.result;
 				answerMessage.successfulConnections = P2PConnectionManager.GetSuccessfulConnections();
+				answerMessage.r = Convert.ToInt32(gameColor.r * 255);
+				answerMessage.g = Convert.ToInt32(gameColor.g * 255);
+				answerMessage.b = Convert.ToInt32(gameColor.b * 255);
+
 				P2PSender.Send(message.parameters[0], message.parameters[1], P2PChannels.ReliableChannelId, answerMessage, MessageTypes.JoinAnswer);
 			
 				connection.SuccessfullyConnect();
@@ -139,6 +145,9 @@ public class P2PController : MonoBehaviour, INetworkController
 	public void NewGame()
 	{
 		Debug.Log("Starting New P2P Game... port: " + myPort);
+		gameColor = new Color(UnityEngine.Random.Range(0, 1.0f), UnityEngine.Random.Range(0, 1.0f), UnityEngine.Random.Range(0, 1.0f));
+		GameObject.FindObjectOfType<UIController>().UpdateGameColor(gameColor);
+
 		if(Initialize())
 			StartNewGame();
 	}
