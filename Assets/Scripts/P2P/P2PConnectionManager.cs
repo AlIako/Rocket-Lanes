@@ -40,6 +40,10 @@ public class P2PConnectionManager
 	public static void OnJoinRequest(int hostId, int connectionId, JoinRequestMessage message)
 	{
 		Debug.Log("JoinRequest received");
+
+		if(!GameController.gameStarted)
+			return;
+		
 		//ask others if a player can join to that lane
 		ConsentMessage consentMessage = new ConsentMessage();
 		consentMessage.consentAction = ConsentAction.JoinGame;
