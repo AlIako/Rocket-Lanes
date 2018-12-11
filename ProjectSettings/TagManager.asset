@@ -21,6 +21,7 @@ TagManager:
   - SCUI
   - Status
   - GameColor
+  - DropdownP2PRange
   layers:
   - Default
   - TransparentFX

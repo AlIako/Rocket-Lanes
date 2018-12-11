@@ -13,6 +13,7 @@ public class AutomatedP2PRunController : MonoBehaviour
 
     public static int myPort = 0;
     public static List<int> targetPorts = null;
+    public static int range = 5;
 
     Text stateText;
 
@@ -57,6 +58,17 @@ public class AutomatedP2PRunController : MonoBehaviour
             targetPorts.Add(8883);
             targetPorts.Add(8884);
             targetPorts.Add(8885);
+            targetPorts.Add(8886);
+            targetPorts.Add(8887);
+            targetPorts.Add(8888);
+            targetPorts.Add(8889);
+            targetPorts.Add(8890);
         }
+    }
+
+    public static void UpdateRange(int range)
+    {
+        PlayerPrefs.SetInt("range", range);
+        AutomatedP2PRunController.range = range + 1;
     }
 }

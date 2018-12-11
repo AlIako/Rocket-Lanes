@@ -12,7 +12,7 @@ public class RunStateIdle : RunState
     public override RunState Transite()
     {
         //pick a port
-        int targetPortId = Random.Range(0, AutomatedP2PRunController.targetPorts.Count);
+        int targetPortId = Random.Range(0, AutomatedP2PRunController.range);
 
         AutomatedP2PRunController.p2PController.myPort = AutomatedP2PRunController.myPort;
         int targetPort = AutomatedP2PRunController.targetPorts[targetPortId];
