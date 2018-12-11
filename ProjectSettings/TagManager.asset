@@ -19,6 +19,7 @@ TagManager:
   - DropdownP2P
   - DropdownServerClient
   - SCUI
+  - Status
   layers:
   - Default
   - TransparentFX

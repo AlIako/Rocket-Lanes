@@ -22,6 +22,9 @@ public class AutomatedP2PRunController : MonoBehaviour
         p2PController = GameObject.FindObjectOfType<P2PController>();
         stateText = GameObject.FindGameObjectWithTag("State").GetComponent<Text>();
 
+        Text statusText = GameObject.FindGameObjectWithTag("Status").GetComponent<Text>();
+        statusText.text = "Port: " + myPort;
+
         IniTargetPorts();
 
         currentState = new RunStateIdle();

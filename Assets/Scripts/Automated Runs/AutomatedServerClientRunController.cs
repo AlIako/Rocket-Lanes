@@ -18,6 +18,11 @@ public class AutomatedServerClientRunController : MonoBehaviour
         gameController = GameObject.FindObjectOfType<GameController>();
         serverClientController = GameObject.FindObjectOfType<MyNetworkManager>();
         stateText = GameObject.FindGameObjectWithTag("State").GetComponent<Text>();
+        
+        Text statusText = GameObject.FindGameObjectWithTag("Status").GetComponent<Text>();
+        if(status == 0)
+            statusText.text = "Server";
+        else statusText.text = "Client";
 
         currentState = new RunStateSCIdle();
     }
