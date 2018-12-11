@@ -17,17 +17,12 @@ public class RunStateSCJoining : RunState
         {
             return new RunStateSCPlaying();
         }
-        
-        if(timeUntilTransition >= 2) //timeout after 2 sec
+        else if(GameObject.FindGameObjectWithTag("ErrorPanel") != null)
         {
-            GameObject.FindObjectOfType<GameController>().LeaveGame(false);
-            
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+            return new RunStateInError();
         }
 
-        timeUntilTransition *= 2;
-        return this;
+        return new RunStateSCJoining();
     }
     
     public override string Name()
