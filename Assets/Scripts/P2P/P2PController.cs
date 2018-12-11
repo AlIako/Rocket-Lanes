@@ -38,7 +38,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	//temp
 	float lastSendPosition = 0;
-	float cooldownSendPosition = 33;
+	float cooldownSendPosition = 3;
 
 	void Start()
 	{
@@ -264,9 +264,13 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public Player SpawnPlayer(int lane)
 	{
+		if(gameController.lanes[lane].player != null)
+			return gameController.lanes[lane].player;
+		
 		//Debug.Log("Spawn player on lane " + lane);
 		Player player = Instantiate(playerPrefab, gameController.lanes[lane].startPosition.transform.position, Quaternion.identity);
 		players.Add(player);
+		gameController.lanes[lane].player = player;
 		return player;
 	}
 
