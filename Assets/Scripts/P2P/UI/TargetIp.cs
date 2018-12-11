@@ -14,6 +14,12 @@ public class TargetIp : MonoBehaviour
 	public void UpdateField()
 	{
 		P2PController c = GameObject.FindObjectOfType<P2PController>();
-		c.SetTargetIp(GetComponent<InputField>().text);
+
+		if(c != null)
+			c.SetTargetIp(GetComponent<InputField>().text);
+
+		MyNetworkManager m = GameObject.FindObjectOfType<MyNetworkManager>();
+		if(m != null)
+			m.targetIp = GetComponent<InputField>().text;
 	}
 }

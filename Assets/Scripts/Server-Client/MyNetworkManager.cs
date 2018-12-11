@@ -8,6 +8,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	GameController gameController;
 	NetworkClient networkClient;
 
+	public string targetIp = "localhost";
+
 	void Start()
 	{
 		gameController = GameObject.FindObjectOfType<GameController>();
@@ -15,13 +17,13 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public void Host()
 	{
-		//StartHost(null, 1);
 		StartHost();
 		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
 	}
 
 	public void Join()
 	{
+		networkAddress = targetIp;
 		StartClient();
 		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
 	}
