@@ -18,7 +18,7 @@ public class RunStateSCIdle : RunState
         }
         else
         {
-            AutomatedServerClientRunController.serverClientController.StartClient();
+            AutomatedServerClientRunController.serverClientController.Join();
         }
         return new RunStateSCJoining();
 

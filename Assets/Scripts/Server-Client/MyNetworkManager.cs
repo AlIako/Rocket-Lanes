@@ -22,7 +22,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	public void Host()
 	{
 		StartHost();
-		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
+		if(GameObject.FindGameObjectWithTag("SCUI") != null)
+			GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
 	}
 
 	public void Join()
@@ -30,7 +31,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		networkAddress = targetIp;
 		connectionRequestSentTime = Time.time;
 		StartClient();
-		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
+		if(GameObject.FindGameObjectWithTag("SCUI") != null)
+			GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
 	}
 
 	public void DisplayError(string er)
