@@ -13,7 +13,10 @@ public class TargetPortField : MonoBehaviour
 	
 	public void UpdateField()
 	{
+		int port = 0;
+
 		P2PController c = GameObject.FindObjectOfType<P2PController>();
-		c.SetTargetPort(Int32.Parse(GetComponent<InputField>().text));
+		if(c != null && Int32.TryParse(GetComponent<InputField>().text, out port))
+			c.SetTargetPort(port);
 	}
 }
