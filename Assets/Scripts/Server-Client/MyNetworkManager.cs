@@ -13,6 +13,19 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		gameController = GameObject.FindObjectOfType<GameController>();
 	}
 
+	public void Host()
+	{
+		//StartHost(null, 1);
+		StartHost();
+		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
+	}
+
+	public void Join()
+	{
+		StartClient();
+		GameObject.FindGameObjectWithTag("SCUI").SetActive(false);
+	}
+
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
 	public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
@@ -31,6 +44,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public override void OnClientConnect(NetworkConnection connection)
     {
+		//connection.
         Debug.Log(connection.connectionId + " Connected!");
 
 		//Bypass "Client Ready" button
@@ -40,6 +54,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		//Reveal in-game UI
 		gameController.StartGame();
     }
+
 
 	public bool Initialize()
 	{
