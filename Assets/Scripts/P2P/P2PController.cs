@@ -38,7 +38,7 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	//temp
 	float lastSendPosition = 0;
-	float cooldownSendPosition = 33;
+	float cooldownSendPosition = 111;
 
 	void Start()
 	{
