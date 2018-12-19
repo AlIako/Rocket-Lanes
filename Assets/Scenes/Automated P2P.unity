@@ -672,6 +672,21 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9104163865595160379, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104163865142868357, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9104163865595160380, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9104163865595160381, guid: 750e041fa4f3315448e0c627d6cf4803,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -687,20 +702,30 @@ PrefabInstance:
       propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9104163865595160379, guid: 750e041fa4f3315448e0c627d6cf4803,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9104163865595160380, guid: 750e041fa4f3315448e0c627d6cf4803,
+    - target: {fileID: 3772284704456972074, guid: 750e041fa4f3315448e0c627d6cf4803,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9104163865142868357, guid: 750e041fa4f3315448e0c627d6cf4803,
+    - target: {fileID: 2620101593087240961, guid: 750e041fa4f3315448e0c627d6cf4803,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620101593087240961, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_Interactable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2620101593087240961, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1451158900}
+    - target: {fileID: 2620101593087240961, guid: 750e041fa4f3315448e0c627d6cf4803,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CastShield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 750e041fa4f3315448e0c627d6cf4803, type: 3}
@@ -3429,6 +3454,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4482105241148842277, guid: 6ac5f63e6f9583043899bf392029c22c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329851790563581198, guid: 6ac5f63e6f9583043899bf392029c22c,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329851790563581198, guid: 6ac5f63e6f9583043899bf392029c22c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1451158900}
+    - target: {fileID: 3329851790563581198, guid: 6ac5f63e6f9583043899bf392029c22c,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CastShield
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ac5f63e6f9583043899bf392029c22c, type: 3}
 --- !u!224 &1817428981967207165 stripped
@@ -3574,15 +3619,35 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5093971627257597167, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5093971627850142294, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5093971627257597167, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
+    - target: {fileID: 914450677493539392, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068674486826458731, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2068674486826458731, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1451158900}
+    - target: {fileID: 2068674486826458731, guid: d9a5fe583d8076d4fbd4bf4cafecdebd,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CastShield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9a5fe583d8076d4fbd4bf4cafecdebd, type: 3}
@@ -3827,6 +3892,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5996941171287939844, guid: c4f32a7df4a437e40ae54202231138a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844969741105899311, guid: c4f32a7df4a437e40ae54202231138a3,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844969741105899311, guid: c4f32a7df4a437e40ae54202231138a3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1451158900}
+    - target: {fileID: 4844969741105899311, guid: c4f32a7df4a437e40ae54202231138a3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CastShield
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4f32a7df4a437e40ae54202231138a3, type: 3}

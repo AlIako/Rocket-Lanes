@@ -121,6 +121,19 @@ public class GameController : MonoBehaviour
 		return null;
 	}
 
+	public void CastShield() { CastShield(player.lane.id); }
+	public void CastShield(int playerId)
+	{
+		if(lanes[playerId].player.Health <= 0) //dead players cant cast shields
+			return;
+		
+		ConsentMessage consentMessage = new ConsentMessage();
+		consentMessage.consentAction = ConsentAction.CastShield;
+		consentMessage.parameters.Add(playerId);
+		consentMessage.result = 1; //1 = allowed, 0 = not allowed
+		networkController.AskForConsent(consentMessage);
+	}
+
 	public void SendRocket() { SendRocket(player.lane.id, GetNextAliveLaneId(player)); }
 	public void SendRocket(int playerId, int neighbourPlayerId)
 	{

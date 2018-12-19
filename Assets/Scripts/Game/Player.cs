@@ -12,9 +12,21 @@ public class Player : NetworkBehaviour
 	public int Health { get { return health; } }
 
 	bool alive = true;
+	Shield shield = null;
 	
 	void Start()
 	{
+		shield = GetComponent<Shield>();
+	}
+
+	public bool ShieldEnabled()
+	{
+		return shield.shieldEnabled;
+	}
+
+	public void CastShield()
+	{
+		shield.EnableShield();
 	}
 
 	public void LoseHealth(int value)

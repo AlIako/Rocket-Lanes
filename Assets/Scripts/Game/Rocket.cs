@@ -27,7 +27,8 @@ public class Rocket : MonoBehaviour
 			Player player = other.GetComponent<Player>();
 			if (player != null)
 			{
-				player.LoseHealth(1);
+				if(!player.ShieldEnabled())
+					player.LoseHealth(1);
 				Destroy(gameObject);
 			}
 			else if (other.tag.Equals("Bottom"))

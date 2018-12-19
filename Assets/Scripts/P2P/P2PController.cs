@@ -91,6 +91,14 @@ public class P2PController : MonoBehaviour, INetworkController
 			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
 				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
 		}
+		if(message.consentAction == ConsentAction.CastShield)
+		{
+			answerMessage.result = message.result;
+			answerMessage.parameters = message.parameters;
+			
+			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
+				P2PSender.Send(hostId, connectionId, P2PChannels.ReliableChannelId, answerMessage, MessageTypes.AnswerConsent);
+		}
 		if(message.consentAction == ConsentAction.JoinGame)
 		{
 			answerMessage.parameters = message.parameters;
@@ -120,6 +128,11 @@ public class P2PController : MonoBehaviour, INetworkController
 				if(Recorder.session != null)
 					Recorder.session.cheatsPassed ++;
 			}
+		}
+		else if(message.consentAction == ConsentAction.CastShield)
+		{
+			Lane lane = gameController.lanes[message.parameters[0]];
+			lane.player.CastShield();
 		}
 		else if(message.consentAction == ConsentAction.JoinGame)
 		{

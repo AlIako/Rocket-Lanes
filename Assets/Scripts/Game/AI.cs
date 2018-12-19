@@ -18,6 +18,9 @@ public class AI : MonoBehaviour
 	float timeBetweenSendRockets = 1.0f;
 	float nextTimeBetweenSendRockets = 1.0f;
 	float lastSendRocket = 0.0f;
+
+	float timeBetweenUseShield = 15.0f;
+	float lastUseShield = 0.0f;
 	
 	void Start()
 	{
@@ -26,12 +29,14 @@ public class AI : MonoBehaviour
 		gameController = GameObject.FindObjectOfType<GameController>();
 		lastDirection = Time.time;
 		lastSendRocket = Time.time;
+		lastUseShield = Time.time - timeBetweenUseShield / 2;
 	}
 	
 	void Update()
 	{
 		PickDirection();
 		SendRocket();
+		UseShield();
 		Move(new Vector2(randomXDirection, randomYDirection));
 	}
 
@@ -44,6 +49,15 @@ public class AI : MonoBehaviour
 										Random.Range(-timeBetweenSendRockets/10.0f, timeBetweenSendRockets/10.0f);
 			
 			lastSendRocket = Time.time;
+		}
+	}
+
+	void UseShield()
+	{
+		if(Time.time - lastUseShield > timeBetweenUseShield)
+		{
+			gameController.CastShield(player.lane.id);
+			lastUseShield = Time.time;
 		}
 	}
 

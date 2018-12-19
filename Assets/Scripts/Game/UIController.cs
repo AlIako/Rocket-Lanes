@@ -44,7 +44,7 @@ public class UIController : MonoBehaviour
 			laneUIs.Add(GameObject.FindGameObjectWithTag("Lane4UI"));
 			foreach(GameObject laneUI in laneUIs)
 			{
-				GameObject button = laneUI.GetComponentInChildren<Button>().gameObject;
+				GameObject button = laneUI.GetComponentInChildren<ButtonContainer>().gameObject;
 				laneButtonUIs.Add(button);
 				button.SetActive(false);
 				laneUI.SetActive(false);

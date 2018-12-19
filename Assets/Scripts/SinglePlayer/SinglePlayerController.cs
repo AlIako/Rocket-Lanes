@@ -63,6 +63,11 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 				gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result);
 			else Debug.Log("Cheat!");
 		}
+		else if(consentMessage.consentAction == ConsentAction.CastShield)
+		{
+			Lane lane = gameController.lanes[consentMessage.parameters[0]];
+			lane.player.CastShield();
+		}
 	}
 
 	public bool HandleCollisions(Lane lane)

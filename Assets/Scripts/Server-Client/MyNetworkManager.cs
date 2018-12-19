@@ -92,7 +92,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 	public override void OnClientDisconnect(NetworkConnection conn)
 	{
-		DisplayError("Game is full");
+		DisplayError("Kicked from the game");
 	}
 
 
@@ -162,6 +162,14 @@ public class MyNetworkManager : NetworkManager, INetworkController
 				if(!cheating)
 					NetworkServer.Spawn(gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result));
 				else Debug.Log("Cheat!");
+			}
+		}
+		else if(consentMessage.consentAction == ConsentAction.CastShield)
+		{
+			if(NetworkServer.active)
+			{
+				Lane lane = gameController.lanes[consentMessage.parameters[0]];
+				lane.player.CastShield();
 			}
 		}
 	}
