@@ -93,7 +93,11 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 		if(message.consentAction == ConsentAction.CastShield)
 		{
-			answerMessage.result = message.result;
+			Lane lane = gameController.lanes[message.parameters[0]];
+			if(!lane.player.ShieldReady())
+				answerMessage.result = 0;
+			else answerMessage.result = 1;
+
 			answerMessage.parameters = message.parameters;
 			
 			if(hostId != -1 && connectionId != -1) //not imposing consent (see AskForConsent)
@@ -114,7 +118,7 @@ public class P2PController : MonoBehaviour, INetworkController
 		return answerMessage;
     }
 
-    public void ApplyConsent(ConsentMessage message)
+    public void ApplyConsent(ConsentMessage message, bool wasMyRequest = false)
 	{
 		Debug.Log("P2P: Applying consent for: " + message.consentAction);
 		if(message.consentAction == ConsentAction.SpawnRocket)
@@ -125,14 +129,23 @@ public class P2PController : MonoBehaviour, INetworkController
 			else 
 			{
 				Debug.Log("Cheat!");
-				if(Recorder.session != null)
+				if(wasMyRequest && Recorder.session != null)
 					Recorder.session.cheatsPassed ++;
 			}
 		}
 		else if(message.consentAction == ConsentAction.CastShield)
 		{
-			Lane lane = gameController.lanes[message.parameters[0]];
-			lane.player.CastShield();
+			if(message.result == 1)
+			{
+				Lane lane = gameController.lanes[message.parameters[0]];
+				if(!lane.player.ShieldReady())
+				{
+					Debug.Log("Cheat!");
+					if(wasMyRequest && Recorder.session != null)
+						Recorder.session.cheatsPassed ++;
+				}
+				lane.player.CastShield();
+			}
 		}
 		else if(message.consentAction == ConsentAction.JoinGame)
 		{

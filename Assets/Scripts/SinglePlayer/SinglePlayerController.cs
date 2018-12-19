@@ -54,19 +54,21 @@ public class SinglePlayerController : MonoBehaviour, INetworkController
 		ApplyConsent(consentMessage);
 	}
 	
-    public void ApplyConsent(ConsentMessage consentMessage)
+    public void ApplyConsent(ConsentMessage consentMessage, bool wasMyRequest = false)
 	{
 		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
 			bool cheating = !gameController.lanes[consentMessage.parameters[1]].spawnManager.ValidIndex(consentMessage.result);
 			if(!cheating)
 				gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result);
-			else Debug.Log("Cheat!");
+			else Debug.Log("Cheat! wrong rocket infos");
 		}
 		else if(consentMessage.consentAction == ConsentAction.CastShield)
 		{
 			Lane lane = gameController.lanes[consentMessage.parameters[0]];
-			lane.player.CastShield();
+			if(lane.player.ShieldReady())
+				lane.player.CastShield();
+			else Debug.Log("Cheat! Shield not ready");
 		}
 	}
 

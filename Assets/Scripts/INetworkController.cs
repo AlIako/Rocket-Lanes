@@ -11,6 +11,6 @@ public interface INetworkController
     bool Initialize();
     void Quit();
     void AskForConsent(ConsentMessage consentMessage);
-    void ApplyConsent(ConsentMessage consentMessage);
+    void ApplyConsent(ConsentMessage consentMessage, bool wasMyRequest);
     bool HandleCollisions(Lane lane);
 }

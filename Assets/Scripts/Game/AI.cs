@@ -19,7 +19,7 @@ public class AI : MonoBehaviour
 	float nextTimeBetweenSendRockets = 1.0f;
 	float lastSendRocket = 0.0f;
 
-	float timeBetweenUseShield = 15.0f;
+	float timeBetweenUseShield = 8.0f;
 	float lastUseShield = 0.0f;
 	
 	void Start()

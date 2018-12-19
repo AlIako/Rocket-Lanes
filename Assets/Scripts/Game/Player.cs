@@ -24,6 +24,11 @@ public class Player : NetworkBehaviour
 		return shield.shieldEnabled;
 	}
 
+	public bool ShieldReady()
+	{
+		return shield.ShieldReady();
+	}
+
 	public void CastShield()
 	{
 		shield.EnableShield();

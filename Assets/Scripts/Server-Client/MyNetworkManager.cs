@@ -151,7 +151,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		}
     }
 	
-    public void ApplyConsent(ConsentMessage consentMessage)
+    public void ApplyConsent(ConsentMessage consentMessage, bool wasMyRequest = false)
 	{
 		Debug.Log("Applying for consent " + consentMessage.consentAction);
 		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
@@ -161,7 +161,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 				bool cheating = !gameController.lanes[consentMessage.parameters[1]].spawnManager.ValidIndex(consentMessage.result);
 				if(!cheating)
 					NetworkServer.Spawn(gameController.lanes[consentMessage.parameters[1]].spawnManager.Spawn(consentMessage.result));
-				else Debug.Log("Cheat!");
+				else Debug.Log("Cheat! wrong rocket infos");
 			}
 		}
 		else if(consentMessage.consentAction == ConsentAction.CastShield)
@@ -169,7 +169,9 @@ public class MyNetworkManager : NetworkManager, INetworkController
 			if(NetworkServer.active)
 			{
 				Lane lane = gameController.lanes[consentMessage.parameters[0]];
-				lane.player.CastShield();
+				if(lane.player.ShieldReady())
+					lane.player.CastShield();
+				else Debug.Log("Cheat! Shield not ready");
 			}
 		}
 	}

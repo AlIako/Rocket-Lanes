@@ -74,7 +74,7 @@ public class P2PConsentManager
         if(pendingConsent != null)
         {
             pendingConsent.answerConsentMessages.Add(message);
-            if(pendingConsent.answerConsentMessages.Count >= P2PConnectionManager.connections.Count - 1)
+            if(pendingConsent.answerConsentMessages.Count - 1 >= P2PConnectionManager.connections.Count)
                 ApplyPendingConsent(pendingConsent);
         }
         else
@@ -91,7 +91,7 @@ public class P2PConsentManager
         applyMessage.parameters = message.parameters;
 
         P2PSender.SendToAll(P2PChannels.ReliableChannelId, applyMessage, MessageTypes.ApplyConsent);
-        p2PController.ApplyConsent(applyMessage);
+        p2PController.ApplyConsent(applyMessage, true);
     }
 
     public static void Reset()

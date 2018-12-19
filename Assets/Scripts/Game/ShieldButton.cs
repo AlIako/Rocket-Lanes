@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ShieldButton : MonoBehaviour
 {
-    public float cooldown = 15;
     bool onCooldown = false;
     float clickedAt = 0;
 
@@ -20,7 +19,7 @@ public class ShieldButton : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(onCooldown && Time.time - clickedAt > cooldown)
+        if(onCooldown && Time.time - clickedAt > Shield.Cooldown / 2)
         {
             onCooldown = false;
             GetComponent<Button>().interactable = true;

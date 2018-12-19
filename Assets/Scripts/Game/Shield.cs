@@ -13,6 +13,13 @@ public class Shield : NetworkBehaviour
 
     public GameObject shieldGO = null;
 
+    public static float Cooldown = 15.0f;
+
+    public bool ShieldReady()
+    {
+        return timeStartShield == 0 || Time.time - timeStartShield > Cooldown;
+    }
+
     void OnShieldEnabledChange(bool newShieldEnabled)
     {
         shieldEnabled = newShieldEnabled;
