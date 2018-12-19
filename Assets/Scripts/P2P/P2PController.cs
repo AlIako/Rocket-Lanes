@@ -97,6 +97,9 @@ public class P2PController : MonoBehaviour, INetworkController
 			if(!lane.player.ShieldReady())
 				answerMessage.result = 0;
 			else answerMessage.result = 1;
+			
+			if(hostId == -1 && connectionId == -1) //imposing: dont change result
+				answerMessage.result = message.result;
 
 			answerMessage.parameters = message.parameters;
 			

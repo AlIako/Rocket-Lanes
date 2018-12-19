@@ -131,6 +131,15 @@ public class GameController : MonoBehaviour
 		consentMessage.consentAction = ConsentAction.CastShield;
 		consentMessage.parameters.Add(playerId);
 		consentMessage.result = 1; //1 = allowed, 0 = not allowed
+
+		//are we cheating? if so, count it
+		Lane lane = lanes[consentMessage.parameters[0]];
+		if(!lane.player.ShieldReady())
+		{
+			if(Recorder.session != null)
+				Recorder.session.cheatsTried ++;
+		}
+
 		networkController.AskForConsent(consentMessage);
 	}
 
