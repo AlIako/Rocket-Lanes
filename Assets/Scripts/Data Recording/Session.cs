@@ -17,20 +17,20 @@ public class Session
     public float duration = 0;
     public float averagePlayersCount = 0;
 
-    public int messagesSent = 0;
-    public int importantMessagesSent = 0;
-    public int messagesReceived = 0;
-    public int importantMessagesReceived = 0;
+    public float messagesSent = 0;
+    public float importantMessagesSent = 0;
+    public float messagesReceived = 0;
+    public float importantMessagesReceived = 0;
     //public float incomingBandwith = 0; //size in mb. Not conclusive, better to use external software!
     //public float leavingBandwith = 0; //size in mb. Not conclusive, better to use external software!
 
     //P2P only
-    public int consentSent = 0;
+    public float consentSent = 0;
     public float averageTimeUntilAnswerForConsent = 0;
     public float totalTimeWaitingForConsent = 0;
-    public int consentTimeOut = 0;
-    public int cheatsTried = 0;
-    public int cheatsPassed = 0;
+    public float consentTimeOut = 0;
+    public float cheatsTried = 0;
+    public float cheatsPassed = 0;
 
 
     //non serialized
@@ -43,7 +43,7 @@ public class Session
     [NonSerialized]
     float lastPlayersCountTime = 0;
 
-    public Session(string networkModel)
+    public Session(string networkModel = "")
     {
         this.networkModel = networkModel;
     }
