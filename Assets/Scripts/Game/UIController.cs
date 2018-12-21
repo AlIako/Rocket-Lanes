@@ -20,6 +20,24 @@ public class UIController : MonoBehaviour
 	{
 		gameController = FindObjectOfType<GameController>();
 	}
+
+	public void UpdateUseAI()
+	{
+		Toggle toggleUseAI = GameObject.FindGameObjectWithTag("ToggleUseAI").GetComponent<Toggle>();
+		bool useAI = toggleUseAI.isOn;
+		Player player = gameController.player;
+
+		if(useAI)
+		{
+			player.gameObject.AddComponent<AI>();
+			player.gameObject.GetComponent<PlayerController>().enabled = false;
+		}
+		else
+		{
+			Destroy(player.gameObject.GetComponent<AI>());
+			player.gameObject.GetComponent<PlayerController>().enabled = true;
+		}
+	}
 	
 	public void DisplayError(string er)
 	{
