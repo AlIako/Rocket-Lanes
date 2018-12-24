@@ -48,6 +48,10 @@ public class Recorder : MonoBehaviour
 
     void WriteSessionFile(Session sessionToWrite)
     {
+        //Debug.Log("Write.. " + sessionToWrite.totalTimeWaitingForConsent);
+        if(sessionToWrite.averagePlayersCount < 1)
+            return;
+
         string directoryPath = "Network Data/";
         string fileName = "";
         if(networkModel == "Server-Client")

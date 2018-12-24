@@ -177,7 +177,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			Recorder.session.importantMessagesSent ++;
 			Recorder.session.messagesSent ++;
-			Recorder.session.consentSent ++;
 		}
 	}
 
@@ -189,14 +188,14 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		ApplyConsent(msg);
 
 		//send apply consent confirmation
-		NetworkServer.SendToAll(NetworkMessages.ApplyConsentMsg, msg);
+		NetworkServer.SendToClient(netMsg.conn.connectionId, NetworkMessages.ApplyConsentMsg, msg);
 		
 		if(Recorder.session != null)
 		{
 			Recorder.session.messagesReceived ++;
 			Recorder.session.importantMessagesReceived ++;
 
-			//Send consent apply to each client
+			//Send consent apply to each client in theory
 			int clientsCount = GameObject.FindObjectsOfType<Player>().Length - 1;
 			Recorder.session.importantMessagesSent += clientsCount;
 			Recorder.session.messagesSent += clientsCount;

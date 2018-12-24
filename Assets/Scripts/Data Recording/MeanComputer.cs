@@ -74,7 +74,7 @@ public class MeanComputer : MonoBehaviour
 
         //write
         string directoryPath = "Network Data/Mean/";
-        string fileN = architecture + "_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss.fff") + ".nd";
+        string fileN = architecture + ".nd";
         string path = directoryPath + fileN;
 
         string c = JsonUtility.ToJson(meanFile, true);

@@ -64,10 +64,6 @@ public class P2PConsentManager
 
     public static void AddPendingConsent(AskConsentMessage message)
     {
-        if(Recorder.session != null)
-        {
-            Recorder.session.consentSent++;
-        }
         pendingConsents.Add(new P2PPendingConsent(message));
     }
     public static void ReceiveAnswerConsent(AnswerConsentMessage message)
