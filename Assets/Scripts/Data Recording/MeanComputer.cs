@@ -16,10 +16,18 @@ public class MeanComputer : MonoBehaviour
 
     public void ComputeMean()
     {
+        ComputeMean("Server");
+        ComputeMean("Client");
+        ComputeMean("P2P");
+        ComputeMean("SinglePlayer");
+    }
+
+    public void ComputeMean(string architecture)
+    {
         MeanFile meanFile = new MeanFile();
 
         //read all files
-        foreach (string fileName in Directory.GetFiles("Network Data/", "*.nd"))
+        foreach (string fileName in Directory.GetFiles("Network Data/", architecture + "_*.nd"))
         {
             meanFile.filesCount ++;
             string content = File.ReadAllText(fileName);
@@ -62,7 +70,7 @@ public class MeanComputer : MonoBehaviour
 
         //write
         string directoryPath = "Network Data/Mean/";
-        string fileN = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".nd";
+        string fileN = architecture + "_" + DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss.fff") + ".nd";
         string path = directoryPath + fileN;
 
         string c = JsonUtility.ToJson(meanFile, true);
