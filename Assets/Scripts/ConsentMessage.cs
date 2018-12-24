@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 
 public class ConsentMessage : MessageBase
 {
+    public int timestampSendMs = 0;
     public int consentId;
     public ConsentAction consentAction;
     public int result;
@@ -14,6 +15,7 @@ public class ConsentMessage : MessageBase
 
     public override void Deserialize(NetworkReader reader)
     {
+        timestampSendMs = Convert.ToInt32(reader.ReadPackedUInt32());
         consentId = Convert.ToInt32(reader.ReadPackedUInt32());
         consentAction = (ConsentAction)reader.ReadPackedUInt32();
         result = Convert.ToInt32(reader.ReadPackedUInt32());
@@ -27,6 +29,7 @@ public class ConsentMessage : MessageBase
 
     public override void Serialize(NetworkWriter writer)
     {
+        writer.WritePackedUInt32(Convert.ToUInt32(timestampSendMs));
         writer.WritePackedUInt32(Convert.ToUInt32(consentId));
         writer.WritePackedUInt32(Convert.ToUInt32(consentAction));
         writer.WritePackedUInt32(Convert.ToUInt32(result));

@@ -170,6 +170,7 @@ public class GameController : MonoBehaviour
 			return;
 		
 		ConsentMessage consentMessage = new ConsentMessage();
+		consentMessage.timestampSendMs = System.Convert.ToInt32(Time.time * 1000);
 		consentMessage.consentAction = ConsentAction.SpawnRocket;
 		consentMessage.parameters.Add(playerId);
 		consentMessage.parameters.Add(neighbourPlayerId);

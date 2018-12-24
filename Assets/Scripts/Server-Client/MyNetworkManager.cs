@@ -107,6 +107,16 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		base.OnStartHost();
 	}
 
+	public override void OnStartClient(NetworkClient client)
+	{
+		if(!IsServer())
+		{
+			networkClient = NetworkClient.allClients[0];
+			networkClient.RegisterHandler(NetworkMessages.ApplyConsentMsg, OnApplyConsentMsg);
+		}
+		base.OnStartClient(client);
+	}
+
 
 
 	public void Quit()
@@ -167,10 +177,7 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			Recorder.session.importantMessagesSent ++;
 			Recorder.session.messagesSent ++;
-			
-			//Receive consent apply
-			Recorder.session.messagesReceived ++;
-			Recorder.session.importantMessagesReceived ++;
+			Recorder.session.consentSent ++;
 		}
 	}
 
@@ -180,7 +187,9 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		if(msg.consentAction == ConsentAction.SpawnRocket)
 			gameController.lanes[msg.parameters[1]].spawnManager.GetRandomSpawnerIndex();
 		ApplyConsent(msg);
-        Debug.Log("Received OnAskForConsentMsg " + msg.consentAction);
+
+		//send apply consent confirmation
+		NetworkServer.SendToAll(NetworkMessages.ApplyConsentMsg, msg);
 		
 		if(Recorder.session != null)
 		{
@@ -193,10 +202,23 @@ public class MyNetworkManager : NetworkManager, INetworkController
 			Recorder.session.messagesSent += clientsCount;
 		}
     }
+
+	void OnApplyConsentMsg(NetworkMessage netMsg)
+    {
+        ConsentMessage msg = netMsg.ReadMessage<ConsentMessage>();
+		if(Recorder.session != null)
+		{
+			Recorder.session.AddSentAndAppliedConsent(msg.timestampSendMs);
+
+			//Receive consent apply
+			Recorder.session.messagesReceived ++;
+			Recorder.session.importantMessagesReceived ++;
+		}
+    }
 	
     public void ApplyConsent(ConsentMessage consentMessage, bool wasMyRequest = false)
 	{
-		Debug.Log("Applying for consent " + consentMessage.consentAction);
+		//Debug.Log("Applying for consent " + consentMessage.consentAction);
 		if(consentMessage.consentAction == ConsentAction.SpawnRocket)
 		{
 			if(NetworkServer.active)

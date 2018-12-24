@@ -62,7 +62,6 @@ public class Session
 
     public void AddSentAndAppliedConsent(float timeToConsent)
     {
-        consentSent ++;
         totalTimeWaitingForConsent += Time.time * 1000.0f - timeToConsent;
         averageTimeUntilAnswerForConsent = totalTimeWaitingForConsent / consentSent;
     }
