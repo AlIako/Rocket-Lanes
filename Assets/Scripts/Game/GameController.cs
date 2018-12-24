@@ -148,6 +148,7 @@ public class GameController : MonoBehaviour
 			return;
 		
 		ConsentMessage consentMessage = new ConsentMessage();
+		consentMessage.timestampSendMs = System.Convert.ToInt32(Time.time * 1000.0f);
 		consentMessage.consentAction = ConsentAction.CastShield;
 		consentMessage.parameters.Add(playerId);
 		consentMessage.result = 1; //1 = allowed, 0 = not allowed

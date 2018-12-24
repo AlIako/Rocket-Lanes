@@ -62,10 +62,10 @@ public class Session
 
     public void AddSentAndAppliedConsent(float timeToConsent)
     {
-        //Debug.Log("AddSentAndAppliedConsent, " + (Time.time * 1000.0f - timeToConsent) + " ms");
+        Debug.Log("AddSentAndAppliedConsent, " + (Time.time * 1000.0f - timeToConsent) + " ms");
         consentSent ++;
         totalTimeWaitingForConsent += Time.time * 1000.0f - timeToConsent;
-        //Debug.Log("totalTimeWaitingForConsent, " + totalTimeWaitingForConsent + " ms");
+        Debug.Log("totalTimeWaitingForConsent, " + totalTimeWaitingForConsent + " ms");
         averageTimeUntilAnswerForConsent = totalTimeWaitingForConsent / consentSent;
     }
 
