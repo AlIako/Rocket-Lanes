@@ -71,13 +71,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		Lane lane = gameController.GetFirstUnoccupiedLane();
         GameObject playerGameObject = (GameObject)Instantiate(playerPrefab, lane.startPosition.transform.position, Quaternion.identity);
 
-		PlayerNetwork playerNetwork = playerGameObject.GetComponent<PlayerNetwork>();
-		if(playerNetwork != null)
-		{
-			playerNetwork.enabled = true;
-		}
-		else Debug.Log("[MyNetworkManager:OnServerAddPlayer] playerNetwork script not found");
-
         NetworkServer.AddPlayerForConnection(conn, playerGameObject, playerControllerId);
     }
 
@@ -121,13 +114,6 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		StopClient();
 		StopHost();
 		StopServer();
-		
-		/*NetworkServer.UnregisterHandler(NetworkMessages.AskForConsentMsg);
-		
-		ClientScene.DestroyAllClientObjects();
-		NetworkServer.SetAllClientsNotReady();
-		NetworkServer.Reset();
-		NetworkServer.Shutdown();*/
 	}
 
 	void CountMessagesPerEntity()
