@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,12 +20,21 @@ public class MainMenuController : MonoBehaviour
         Dropdown dropdown3 = GameObject.FindGameObjectWithTag("DropdownP2PRange").GetComponent<Dropdown>();
         dropdown3.value = PlayerPrefs.GetInt("range", 4);
         AutomatedP2PRunController.UpdateRange(dropdown3.value);
+        
+        InputField timeToQuitField = GameObject.FindGameObjectWithTag("TimeToQuitField").GetComponent<InputField>();
+        timeToQuitField.text = PlayerPrefs.GetInt("timeToQuit", 0).ToString();
     }
 
 
     public void StartLevel(string level)
     {
         SceneManager.LoadScene(level);
+    }
+
+    public void UpdateTimeToQuit()
+    {
+        InputField timeToQuitField = GameObject.FindGameObjectWithTag("TimeToQuitField").GetComponent<InputField>();
+        PlayerPrefs.SetInt("timeToQuit", Convert.ToInt32(timeToQuitField.text));
     }
 
     public void UpdateDropdownP2PA()

@@ -26,6 +26,9 @@ public class GameController : MonoBehaviour
 
 	INetworkController networkController;
 
+	float timeStartGame = 0;
+	float timeQuitGame = 0;
+
 	void Start()
 	{
 		networkController = networkControllerGameObject.GetComponent<INetworkController>();
@@ -38,6 +41,23 @@ public class GameController : MonoBehaviour
 
 		recorder = GameObject.FindObjectOfType<Recorder>();
 		recorder.StartRecording();
+
+		if(PlayerPrefs.GetInt("timeToQuit") != 0)
+		{
+			timeStartGame = Time.time;
+			timeQuitGame = timeStartGame + PlayerPrefs.GetInt("timeToQuit") * 60.0f;
+		}
+	}
+
+	void Update()
+	{
+		if(timeStartGame != 0)
+		{
+			if(Time.time - timeQuitGame > 0)
+			{
+				LeaveGame(true);
+			}
+		}
 	}
 
 	public void LeaveGame(bool enterUI = true)

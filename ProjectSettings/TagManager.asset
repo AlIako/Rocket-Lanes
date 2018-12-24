@@ -23,6 +23,7 @@ TagManager:
   - GameColor
   - DropdownP2PRange
   - ToggleUseAI
+  - TimeToQuitField
   layers:
   - Default
   - TransparentFX
