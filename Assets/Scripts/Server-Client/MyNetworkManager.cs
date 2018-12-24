@@ -13,6 +13,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 	public int playersMax = 4;
 	float connectionRequestTimeoutTimeS = 2;
 	float connectionRequestSentTime = 0;
+	
+	float lastTimeSecond = 0;
 
 	void Start()
 	{
@@ -52,6 +54,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 				DisplayError("Connection request timeout");
 			}
 		}
+
+		CountMessagesPerEntity();
 	}
 
 	//Called on the server when a client adds a new player with ClientScene.AddPlayer.
@@ -88,6 +92,8 @@ public class MyNetworkManager : NetworkManager, INetworkController
 
 		//Reveal in-game UI
 		gameController.StartGame();
+
+		lastTimeSecond = Time.time;
     }
 
 	public override void OnClientDisconnect(NetworkConnection conn)
@@ -124,6 +130,48 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		NetworkServer.Shutdown();*/
 	}
 
+	void CountMessagesPerEntity()
+	{
+		/*
+		Count "manually" how many messages are sent / received in ServerClient: 
+		Each moment a rocket/player is alive, count messages sent / received depending 
+		on tickrate and status (host or client). Use Time deltas for this
+		 */
+		if(Recorder.session != null)
+		{
+			float currentTime = Time.time;
+
+			if(currentTime - lastTimeSecond > 1)
+			{
+				lastTimeSecond ++;
+				if(NetworkServer.active) //server
+				{
+					/*
+					3x out : player sync 9 per sec
+					3x in : player sync 9 per sec
+					*/
+					int clientsCount = GameObject.FindObjectsOfType<Player>().Length - 1;
+					Recorder.session.messagesSent += clientsCount * 9;
+					Recorder.session.messagesReceived += clientsCount * 9;
+				}
+				else //client
+				{
+					/*
+					1x out : player sync
+					1x in : player sync
+					*/
+					Recorder.session.messagesSent += 9;
+					Recorder.session.messagesReceived += 9;
+				}
+			}
+		}
+	}
+
+	public bool IsServer()
+	{
+		return NetworkServer.active;
+	}
+
     public void AskForConsent(ConsentMessage consentMessage)
 	{
 		networkClient = NetworkClient.allClients[0];
@@ -133,6 +181,10 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			Recorder.session.importantMessagesSent ++;
 			Recorder.session.messagesSent ++;
+			
+			//Receive consent apply
+			Recorder.session.messagesReceived ++;
+			Recorder.session.importantMessagesReceived ++;
 		}
 	}
 
@@ -148,6 +200,11 @@ public class MyNetworkManager : NetworkManager, INetworkController
 		{
 			Recorder.session.messagesReceived ++;
 			Recorder.session.importantMessagesReceived ++;
+
+			//Send consent apply to each client
+			int clientsCount = GameObject.FindObjectsOfType<Player>().Length - 1;
+			Recorder.session.importantMessagesSent += clientsCount;
+			Recorder.session.messagesSent += clientsCount;
 		}
     }
 	

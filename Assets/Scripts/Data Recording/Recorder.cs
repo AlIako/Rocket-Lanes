@@ -49,7 +49,17 @@ public class Recorder : MonoBehaviour
     void WriteSessionFile(Session sessionToWrite)
     {
         string directoryPath = "Network Data/";
-        string fileName = DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss") + ".nd";
+        string fileName = "";
+        if(networkModel == "Server-Client")
+        {
+            if(GameObject.FindObjectOfType<MyNetworkManager>().IsServer())
+                fileName = "Server_";
+            else fileName = "Client_";
+        }
+        else fileName = networkModel + "_";
+        fileName += DateTime.Now.ToString("yyyy-MM-dd HH.mm.ss.fff") + ".nd";
+
+
         string path = directoryPath + fileName;
 
         string content = JsonUtility.ToJson(sessionToWrite, true);
