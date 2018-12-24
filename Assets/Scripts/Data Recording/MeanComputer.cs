@@ -43,7 +43,8 @@ public class MeanComputer : MonoBehaviour
             meanFile.sessionTotal.importantMessagesReceived += session.importantMessagesReceived;
             
             meanFile.sessionTotal.consentSent += session.consentSent;
-            meanFile.sessionTotal.averageTimeUntilAnswerForConsent += session.averageTimeUntilAnswerForConsent;
+            if(!Double.IsInfinity(session.averageTimeUntilAnswerForConsent))
+                meanFile.sessionTotal.averageTimeUntilAnswerForConsent += session.averageTimeUntilAnswerForConsent;
             meanFile.sessionTotal.totalTimeWaitingForConsent += session.totalTimeWaitingForConsent;
             meanFile.sessionTotal.consentTimeOut += session.consentTimeOut;
             meanFile.sessionTotal.cheatsTried += session.cheatsTried;
