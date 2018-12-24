@@ -50,6 +50,9 @@ public class MeanComputer : MonoBehaviour
             meanFile.sessionTotal.cheatsPassed += session.cheatsPassed;
         }
 
+        if(meanFile.filesCount == 0)
+            return;
+
         //compute mean file
             
         meanFile.sessionMean.networkModel = meanFile.sessionTotal.networkModel;
