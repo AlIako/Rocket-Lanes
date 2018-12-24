@@ -26,6 +26,7 @@ public class Session
 
     //P2P only
     public float consentSent = 0;
+    public float applyConsentReceived = 0;
     public float averageTimeUntilAnswerForConsent = 0;
     public float totalTimeWaitingForConsent = 0;
     public float consentTimeOut = 0;
@@ -62,8 +63,9 @@ public class Session
 
     public void AddSentAndAppliedConsent(float timeToConsent)
     {
+        applyConsentReceived ++;
         totalTimeWaitingForConsent += Time.time * 1000.0f - timeToConsent;
-        averageTimeUntilAnswerForConsent = totalTimeWaitingForConsent / consentSent;
+        averageTimeUntilAnswerForConsent = totalTimeWaitingForConsent / applyConsentReceived;
     }
 
     public void UpdatePlayersCount(int playersCount)
