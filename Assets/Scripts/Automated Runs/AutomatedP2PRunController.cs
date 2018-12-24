@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //DEA
 public class AutomatedP2PRunController : MonoBehaviour
@@ -16,6 +17,9 @@ public class AutomatedP2PRunController : MonoBehaviour
     public static int range = 5;
 
     Text stateText;
+
+	static float timeStartGame = 0;
+	static float timeQuitGame = 0;
 
     void Start()
     {
@@ -38,6 +42,28 @@ public class AutomatedP2PRunController : MonoBehaviour
             currentState = currentState.Transite();
             stateText.text = "State: " + currentState.Name();
         }
+
+		if(timeStartGame != 0)
+		{
+			if(Time.time - timeQuitGame > 0)
+			{
+                if(GameController.gameStarted)
+    				gameController.LeaveGame(true);
+                else
+                    SceneManager.LoadScene("Main Menu");
+			}
+		}
+    }
+
+    public static void ResetQuitTimers()
+    {
+        timeStartGame = 0;
+        timeQuitGame = 0;
+		if(PlayerPrefs.GetInt("timeToQuit") != 0)
+		{
+    		timeStartGame = Time.time;
+			timeQuitGame = timeStartGame + PlayerPrefs.GetInt("timeToQuit") * 60.0f;
+		}
     }
 
     public static void SelectPort(int value)

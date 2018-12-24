@@ -29,6 +29,8 @@ public class MainMenuController : MonoBehaviour
     public void StartLevel(string level)
     {
         SceneManager.LoadScene(level);
+        AutomatedP2PRunController.ResetQuitTimers();
+        AutomatedServerClientRunController.ResetQuitTimers();
     }
 
     public void UpdateTimeToQuit()

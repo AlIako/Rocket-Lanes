@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AutomatedServerClientRunController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class AutomatedServerClientRunController : MonoBehaviour
     public static int status = 0; //0 = hosting, 1 = joining
 
     Text stateText;
+
+	static float timeStartGame = 0;
+	static float timeQuitGame = 0;
 
     void Start()
     {
@@ -34,6 +38,29 @@ public class AutomatedServerClientRunController : MonoBehaviour
             currentState = currentState.Transite();
             stateText.text = "State: " + currentState.Name();
         }
+
+		if(timeStartGame != 0)
+		{
+			if(Time.time - timeQuitGame > 0)
+			{
+                if(GameController.gameStarted)
+    				gameController.LeaveGame(true);
+                else
+                    SceneManager.LoadScene("Main Menu");
+			}
+		}
+    }
+    
+    public static void ResetQuitTimers()
+    {
+        timeStartGame = 0;
+        timeQuitGame = 0;
+
+		if(PlayerPrefs.GetInt("timeToQuit") != 0)
+		{
+			timeStartGame = Time.time;
+			timeQuitGame = timeStartGame + PlayerPrefs.GetInt("timeToQuit") * 60.0f;
+		}
     }
 
     public static void SelectStatus(int value)
