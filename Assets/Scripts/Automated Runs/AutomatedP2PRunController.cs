@@ -15,6 +15,7 @@ public class AutomatedP2PRunController : MonoBehaviour
     public static int myPort = 0;
     public static List<int> targetPorts = null;
     public static int range = 5;
+    public static int lastTargetPort = 0;
 
     Text stateText;
 

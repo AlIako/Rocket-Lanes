@@ -9,6 +9,8 @@ public class MainMenuController : MonoBehaviour
 {
     void Start()
     {
+        TimeRemaining.timeStart = 0;
+        
         Dropdown dropdown = GameObject.FindGameObjectWithTag("DropdownP2P").GetComponent<Dropdown>();
         dropdown.value = PlayerPrefs.GetInt("myPortIndex", 0);
         AutomatedP2PRunController.SelectPort(dropdown.value);
@@ -26,6 +28,9 @@ public class MainMenuController : MonoBehaviour
         
         InputField subfolderField = GameObject.FindGameObjectWithTag("SubfolderField").GetComponent<InputField>();
         subfolderField.text = PlayerPrefs.GetString("subfolder", "");
+        
+        Toggle creatorNeverLeaves = GameObject.FindGameObjectWithTag("CreatorNeverLeaves").GetComponent<Toggle>();
+        creatorNeverLeaves.isOn = Convert.ToBoolean(PlayerPrefs.GetInt("CreatorNeverLeaves", 0));
     }
 
 
@@ -34,6 +39,12 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(level);
         AutomatedP2PRunController.ResetQuitTimers();
         AutomatedServerClientRunController.ResetQuitTimers();
+    }
+
+    public void UpdateCreatorNeverLeaves()
+    {
+        Toggle creatorNeverLeaves = GameObject.FindGameObjectWithTag("CreatorNeverLeaves").GetComponent<Toggle>();
+        PlayerPrefs.SetInt("CreatorNeverLeaves", Convert.ToInt32(creatorNeverLeaves.isOn));
     }
 
     public void UpdateSubfolder()

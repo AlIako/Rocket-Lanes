@@ -8,7 +8,7 @@ public class TimeRemaining : MonoBehaviour
     Text text;
 
     int timeToQuit = 0;
-    static float timeStart = 0;
+    public static float timeStart = 0;
 
     static float lastTextUpdate = 0;
     static float timeToUpdate = 20;

@@ -16,6 +16,12 @@ public class RunStatePlaying : RunState
 
     public override RunState Transite()
     {
+        if(PlayerPrefs.GetInt("CreatorNeverLeaves") == 1)
+        {
+            if(AutomatedP2PRunController.lastTargetPort == AutomatedP2PRunController.myPort)
+                return this;
+        }
+
         GameObject.FindObjectOfType<GameController>().LeaveGame(false);
         
 		Scene scene = SceneManager.GetActiveScene();

@@ -15,18 +15,18 @@ public class RunStateIdle : RunState
         int targetPortId = Random.Range(0, AutomatedP2PRunController.range);
 
         AutomatedP2PRunController.p2PController.myPort = AutomatedP2PRunController.myPort;
-        int targetPort = AutomatedP2PRunController.targetPorts[targetPortId];
+        AutomatedP2PRunController.lastTargetPort = AutomatedP2PRunController.targetPorts[targetPortId];
 
-        if(targetPort == AutomatedP2PRunController.myPort)
+        if(AutomatedP2PRunController.lastTargetPort == AutomatedP2PRunController.myPort)
         {
             AutomatedP2PRunController.p2PController.NewGame();
             return new RunStateJoining();
         }
         else
         {
-            AutomatedP2PRunController.p2PController.SetTargetPort(targetPort);
+            AutomatedP2PRunController.p2PController.SetTargetPort(AutomatedP2PRunController.lastTargetPort);
             AutomatedP2PRunController.p2PController.JoinGame();
-            return new RunStateJoining(targetPort);
+            return new RunStateJoining(AutomatedP2PRunController.lastTargetPort);
         }
 
     }
