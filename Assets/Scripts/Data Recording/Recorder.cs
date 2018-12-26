@@ -53,6 +53,9 @@ public class Recorder : MonoBehaviour
             return;
 
         string directoryPath = "Network Data/";
+        if(PlayerPrefs.GetString("subfolder") != "")
+            directoryPath += PlayerPrefs.GetString("subfolder") + "/";
+
         string fileName = "";
         if(networkModel == "Server-Client")
         {

@@ -23,6 +23,9 @@ public class MainMenuController : MonoBehaviour
         
         InputField timeToQuitField = GameObject.FindGameObjectWithTag("TimeToQuitField").GetComponent<InputField>();
         timeToQuitField.text = PlayerPrefs.GetInt("timeToQuit", 0).ToString();
+        
+        InputField subfolderField = GameObject.FindGameObjectWithTag("SubfolderField").GetComponent<InputField>();
+        subfolderField.text = PlayerPrefs.GetString("subfolder", "");
     }
 
 
@@ -31,6 +34,12 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(level);
         AutomatedP2PRunController.ResetQuitTimers();
         AutomatedServerClientRunController.ResetQuitTimers();
+    }
+
+    public void UpdateSubfolder()
+    {
+        InputField subfolderField = GameObject.FindGameObjectWithTag("SubfolderField").GetComponent<InputField>();
+        PlayerPrefs.SetString("subfolder", subfolderField.text);
     }
 
     public void UpdateTimeToQuit()

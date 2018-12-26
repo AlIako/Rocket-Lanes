@@ -26,8 +26,12 @@ public class MeanComputer : MonoBehaviour
     {
         MeanFile meanFile = new MeanFile();
 
+        string directoryPath = "Network Data/";
+        if(PlayerPrefs.GetString("subfolder") != "")
+            directoryPath += PlayerPrefs.GetString("subfolder") + "/";
+        
         //read all files
-        foreach (string fileName in Directory.GetFiles("Network Data/", architecture + "_*.nd"))
+        foreach (string fileName in Directory.GetFiles(directoryPath, architecture + "_*.nd"))
         {
             meanFile.filesCount ++;
             string content = File.ReadAllText(fileName);
@@ -73,7 +77,7 @@ public class MeanComputer : MonoBehaviour
         meanFile.sessionMean.cheatsPassed = meanFile.sessionTotal.cheatsPassed / (float)meanFile.filesCount;
 
         //write
-        string directoryPath = "Network Data/Mean/";
+        directoryPath += "Mean/";
         string fileN = architecture + ".nd";
         string path = directoryPath + fileN;
 

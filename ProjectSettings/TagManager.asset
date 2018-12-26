@@ -24,6 +24,7 @@ TagManager:
   - DropdownP2PRange
   - ToggleUseAI
   - TimeToQuitField
+  - SubfolderField
   layers:
   - Default
   - TransparentFX
