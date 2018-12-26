@@ -24,8 +24,6 @@ public class RunStateSCPlaying : RunState
         {
             if(AutomatedServerClientRunController.status == 0)
             {
-                // host resets his pv
-                GameObject.FindObjectOfType<GameController>().player.SetHealth(5);
                 return this;
             }
             else // client leaves game

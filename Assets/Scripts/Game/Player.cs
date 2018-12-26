@@ -13,10 +13,23 @@ public class Player : NetworkBehaviour
 
 	bool alive = true;
 	Shield shield = null;
+
+	float timeToRez = 10;
+	float timeDeath = 0;
+
 	
 	void Start()
 	{
 		shield = GetComponent<Shield>();
+	}
+
+	void Update()
+	{
+		if(!alive)
+		{
+			if(Time.time - timeDeath > timeToRez)
+				SetHealth(5);
+		}
 	}
 
 	public bool ShieldEnabled()
@@ -59,6 +72,8 @@ public class Player : NetworkBehaviour
 		health = 0;
 		alive = false;
 		((SpriteRenderer)GetComponent<SpriteRenderer>()).enabled = false;
+
+		timeDeath = Time.time;
 	}
 
 	void Rez()
