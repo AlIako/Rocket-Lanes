@@ -25,6 +25,7 @@ TagManager:
   - ToggleUseAI
   - TimeToQuitField
   - SubfolderField
+  - TimeRemaining
   layers:
   - Default
   - TransparentFX
