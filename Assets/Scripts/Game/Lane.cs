@@ -13,10 +13,35 @@ public class Lane : MonoBehaviour
 	private UIController uIController;
 	private GameController gameController;
 	Color color = new Color(1.0f, 1.0f, 1.0f);
+	private bool isRequested = false;
+	private float timeRequest = 0;
 
 	void Start()
 	{
 		PickColor();
+	}
+
+	public void Request()
+	{
+		isRequested = true;
+		timeRequest = Time.time;
+	}
+
+	public bool IsRequested()
+	{
+		return isRequested;
+	}
+
+	void Update()
+	{
+		if(isRequested == true)
+		{
+			if(Time.time - timeRequest > 5)
+			{
+				isRequested = false;
+				timeRequest = 0;
+			}
+		}
 	}
 
 	void PickColor()

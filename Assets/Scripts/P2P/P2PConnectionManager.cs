@@ -15,6 +15,8 @@ public class P2PConnectionManager
 
 	public static float connectionRequestSentTime = 0;
 
+	static List<Lane> requestedLanes = new List<Lane>();
+
 	public static int SuccessfulConnectionsCount()
 	{
 		int result = 0;
@@ -47,7 +49,7 @@ public class P2PConnectionManager
 		//ask others if a player can join to that lane
 		ConsentMessage consentMessage = new ConsentMessage();
 		consentMessage.consentAction = ConsentAction.JoinGame;
-		Lane freeLane = p2PController.GetGameController().GetFirstUnoccupiedLane();
+		Lane freeLane = GetFirstUnoccupiedAndUnrequestedLaneAndRequest();
 		consentMessage.result = 10;
 		if(freeLane != null)
 			consentMessage.result = freeLane.id;
@@ -56,6 +58,19 @@ public class P2PConnectionManager
 		consentMessage.parameters.Add(connectionId);
 
 		p2PController.AskForConsent(consentMessage);
+	}
+
+	static Lane GetFirstUnoccupiedAndUnrequestedLaneAndRequest()
+	{
+		foreach(Lane lane in p2PController.GetGameController().lanes)
+		{
+			if(!lane.IsRequested() && !lane.IsOccupied())
+			{
+				lane.Request();
+				return lane;
+			}
+		}
+		return null;
 	}
 
 	public static void OnJoinAnswer(int hostId, int connectionId, JoinAnswerMessage message)
