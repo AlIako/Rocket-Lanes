@@ -10,8 +10,11 @@ public class RunStatePlaying : RunState
         timeUntilTransition = Random.Range(20, 40);
 
         Player player = GameObject.FindObjectOfType<GameController>().player;
-        if(player.GetComponent<AI>() == null)
+        if(player != null && player.GetComponent<AI>() == null)
             player.gameObject.AddComponent<AI>();
+        
+        if(player == null)
+            Debug.Log(AutomatedP2PRunController.myPort + " Error: gameController.player is null");
     }
 
     public override RunState Transite()

@@ -316,6 +316,12 @@ public class P2PController : MonoBehaviour, INetworkController
 		float currentTime = Time.time * 1000;
 		if(GameStarted() && currentTime - lastSendPosition > cooldownSendPosition)
 		{
+			if(gameController != null && gameController.player != null)
+				Debug.Log(myPort + " SendPositionInformation: " + gameController.player.transform.position + 
+					", lane: " + myLane + ", health:" + gameController.player.Health);
+			else 
+				Debug.Log(myPort + " SendPositionInformation: null, lane: " + myLane);
+			
 			lastSendPosition = Time.time * 1000;
 			PositionMessage message = new PositionMessage();
 			message.lane = System.Convert.ToUInt32(myLane);
