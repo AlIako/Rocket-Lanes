@@ -323,13 +323,18 @@ public class P2PController : MonoBehaviour, INetworkController
 				Debug.Log(myPort + " SendPositionInformation: null, lane: " + myLane);
 			
 			lastSendPosition = Time.time * 1000;
+			
 			PositionMessage message = new PositionMessage();
-			message.lane = System.Convert.ToUInt32(myLane);
-			message.position = gameController.player.transform.position;
-
-			if(gameController.player.Health <= 0)
-				message.hp = 0;
-			else message.hp = System.Convert.ToUInt32(gameController.player.Health);
+			message.hp = 0;
+			message.lane = 10;
+			message.position = new Vector2(0, 0);
+			if(gameController.player != null)
+			{
+				message.lane = System.Convert.ToUInt32(myLane);
+				message.position = gameController.player.transform.position;
+				if(gameController.player.Health > 0)
+					message.hp = System.Convert.ToUInt32(gameController.player.Health);
+			}
 
 			P2PSender.SendToAll(P2PChannels.UnreliableChannelId, message, MessageTypes.Position);
 		}
