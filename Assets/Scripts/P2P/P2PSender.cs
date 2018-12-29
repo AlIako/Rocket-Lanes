@@ -14,8 +14,10 @@ public class P2PSender
 		writer.FinishMessage();
 		byte[] writerData = writer.ToArray();
 		int bufferLength = P2PController.bufferLength;
+		bufferLength = writerData.Length;
+		//Debug.Log("Send packet with size: " + bufferLength);
 
-		NetworkTransport.Send(hostId, connectionId, channelId, writerData, P2PController.bufferLength, out P2PController.error);
+		NetworkTransport.Send(hostId, connectionId, channelId, writerData, bufferLength, out P2PController.error);
 		P2PController.CheckError("Send");
 
 		
