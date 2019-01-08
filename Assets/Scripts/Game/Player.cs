@@ -39,6 +39,8 @@ public class Player : NetworkBehaviour
 
 	public bool ShieldReady()
 	{
+		if(shield == null)
+			return false;
 		return shield.ShieldReady();
 	}
 

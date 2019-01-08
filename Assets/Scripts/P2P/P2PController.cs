@@ -93,10 +93,11 @@ public class P2PController : MonoBehaviour, INetworkController
 		}
 		if(message.consentAction == ConsentAction.CastShield)
 		{
+			answerMessage.result = 0;
+
 			Lane lane = gameController.lanes[message.parameters[0]];
-			if(!lane.player.ShieldReady())
-				answerMessage.result = 0;
-			else answerMessage.result = 1;
+			if(lane != null && lane.player != null && lane.player.ShieldReady())
+				answerMessage.result = 1;
 			
 			if(hostId == -1 && connectionId == -1) //imposing: dont change result
 				answerMessage.result = message.result;
@@ -140,7 +141,12 @@ public class P2PController : MonoBehaviour, INetworkController
 		{
 			if(message.result == 1)
 			{
+				if(gameController == null) return;
+
 				Lane lane = gameController.lanes[message.parameters[0]];
+
+				if(lane == null || lane.player == null) return;
+
 				if(!lane.player.ShieldReady())
 				{
 					Debug.Log("Cheat!");
