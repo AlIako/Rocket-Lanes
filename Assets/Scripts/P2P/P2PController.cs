@@ -299,6 +299,8 @@ public class P2PController : MonoBehaviour, INetworkController
 
 	public Player SpawnPlayer(int lane)
 	{
+		if(lane < 0 || lane > 3)
+			return null;
 		if(gameController.lanes[lane].player != null)
 			return gameController.lanes[lane].player;
 		
