@@ -25,7 +25,7 @@ Then follow these steps:
 - open git bash in project folder
 - $ git init
 - $ git remote add origin
-https://github.com/AlIako/Rocket-Lanes.git
+https://github.com/alexisdavidson/Rocket-Lanes.git
 - $ git pull origin master
 ```
 
