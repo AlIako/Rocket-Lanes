@@ -35,12 +35,6 @@ To create an executable, open the Unity project and under the File menu, select 
 
 ## Running the game
 
-When launching the software, a window will show up and you can choose which resolution you want to start with. 
-Note that we optimized the interface for a 4:3 ratio, specifically a 640\*480 resolution. 
-If you want a good user experience, pick 640\*480 windowed.
-
-
-
 ### The modes
 
 The three first modes are: the single player mode, the client-server mode and the
