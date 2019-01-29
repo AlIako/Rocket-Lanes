@@ -1242,7 +1242,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Automated P2P
+  m_Text: Automated Distributed
 --- !u!222 &332962611
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1321,7 +1321,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: P2P
+  m_Text: Distributed
 --- !u!222 &350434278
 CanvasRenderer:
   m_ObjectHideFlags: 0
