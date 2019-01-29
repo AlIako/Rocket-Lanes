@@ -1,6 +1,6 @@
 # Rocket-Lanes
 
-Rocket Lanes is a game project in Unity implementing both the client-server and the distributed P2P network architectures for academic purposes.
+Rocket Lanes is a game project in Unity implementing both the client-server and the distributed network architectures for academic purposes.
 
 ## Getting Started
 
@@ -38,9 +38,8 @@ To create an executable, open the Unity project and under the File menu, select 
 ### The modes
 
 The three first modes are: the single player mode, the client-server mode and the
-distributed P2P mode. The two last only exist for the sake of experimenting. They
-simulate a player that joins and leaves games regularly, on the client-server or distributed
-P2P network architecture.
+distributed mode. The two last only exist for the sake of experimenting. They
+simulate a player that joins and leaves games regularly, on the client-server or distributed network architecture.
 
 ### Settings
 
@@ -68,7 +67,7 @@ When in-game, at the top of the screen, there is an option to use an AI to contr
 It can be toggled anytime.
 
 
-### Distributed P2P
+### Distributed
 Enter your listening port on the corresponding field. 
 
 When joining a game, enter the targeted port as well and click on *Join*. 
@@ -80,7 +79,7 @@ Before launching this mode, you need to specify if the current instance will be 
 To do that, use the dropdown on the right of the *Automated Server-Client* button in the main menus.
 
 
-### Automated distributed P2P
+### Automated distributed
 Before launching this mode, you need to specify which listening port the current instance will have.
 To do that, use the dropdown on the right of the *Automated Server-Client* button in the main menus.
 
@@ -98,7 +97,7 @@ Here is an example of instructions to run an experiment with 3 instances:
 * Set the *My Port* field to respectively 8881, 8882, 8883
 * For each instance, set *Ports range to join* to 3
 * Set *Creator never leaves* to false
-* Click on *Automated P2P* on each instance
+* Click on *Automated Distributed* on each instance
 
 With this setting, three instances will be creating, joining games and playing with each other.
 
