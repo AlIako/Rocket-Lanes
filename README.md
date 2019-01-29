@@ -81,7 +81,7 @@ To do that, use the dropdown on the right of the *Automated Server-Client* butto
 
 ### Automated distributed
 Before launching this mode, you need to specify which listening port the current instance will have.
-To do that, use the dropdown on the right of the *Automated Server-Client* button in the main menus.
+To do that, use the dropdown on the right of the *Automated Distributed* button in the main menus.
 
 You also need to specify which range of ports it will try to join. If set to 1, it will only join the port 8881. 
 If set to 7, it will join the ports between 8881 and 8887, randomly. 
